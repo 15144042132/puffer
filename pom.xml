@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.3.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.puffer</groupId>
+    <artifactId>puffer</artifactId>
+    <version>final</version>
+    <name>puffer</name>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>puffer-core</module>
+        <module>puffer-db</module>
+        <module>puffer-generate</module>
+        <module>puffer-wechat</module>
+        <module>puffer-test</module>
+        <module>puffer-mq</module>
+        <module>puffer-websocket</module>
+        <module>puffer-cache</module>
+    </modules>
+
+    <!--整体项目依赖管理-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-core</artifactId>
+                <version>${puffer.core}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-db</artifactId>
+                <version>${puffer.db}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-generate</artifactId>
+                <version>${puffer.generate}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-wechat</artifactId>
+                <version>${puffer.wechat}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-test</artifactId>
+                <version>${puffer.test}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-mq</artifactId>
+                <version>${puffer.mq}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-websocket</artifactId>
+                <version>${puffer.websocket}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-cache</artifactId>
+                <version>${puffer.cache}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache}</version>
+            </dependency>
+
+            <!--阿里云OSS-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-sdk-oss}</version>
+            </dependency>
+
+            <!-- SQL输出-->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!--全局属性-->
+    <properties>
+        <!--    公共变量    -->
+        <java.encoding>UTF-8</java.encoding>
+        <java.source>1.8</java.source>
+        <java.target>1.8</java.target>
+
+        <!--    内部包    -->
+        <puffer.core>0.0.1</puffer.core>
+        <puffer.db>0.0.1</puffer.db>
+        <puffer.generate>0.0.1</puffer.generate>
+        <puffer.wechat>0.0.1</puffer.wechat>
+        <puffer.test>0.0.1</puffer.test>
+        <puffer.mq>0.0.1</puffer.mq>
+        <puffer.websocket>0.0.1</puffer.websocket>
+        <puffer.cache>0.0.1</puffer.cache>
+
+        <!--    第三方依赖    -->
+        <p6spy>3.8.0</p6spy>
+        <guava>24.1-jre</guava>
+        <ehcache>3.8.1</ehcache>
+        <mi-rule>0.1.38</mi-rule>
+        <java-jwt>3.10.0</java-jwt>
+        <fastjson>1.2.47</fastjson>
+        <commons-io>2.6</commons-io>
+        <easyexcel>2.1.7</easyexcel>
+        <freemarker>2.3.28</freemarker>
+        <commons-lang3>3.10</commons-lang3>
+        <aliyun-sdk-oss>3.8.0</aliyun-sdk-oss>
+        <fastdfs-client>1.26.6</fastdfs-client>
+        <dynamic-datasource>2.5.8</dynamic-datasource>
+        <mysql-connector-java>8.0.13</mysql-connector-java>
+        <mybatis-plus-generator>3.1.2</mybatis-plus-generator>
+        <mybatis-plus-boot-starter>3.3.0</mybatis-plus-boot-starter>
+    </properties>
+
+    <!--    <distributionManagement>-->
+    <!--        <repository>-->
+    <!--            <id>releases-mi</id>-->
+    <!--            <url>http://49.235.16.209:8081/repository/maven-releases/</url>-->
+    <!--        </repository>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>snapshots-mi</id>-->
+    <!--            <url>http://49.235.16.209:8081/repository/maven-snapshots/</url>-->
+    <!--        </snapshotRepository>-->
+    <!--    </distributionManagement>-->
+
+</project>
+        <!--mvn clean deploy -DskipTests-->
