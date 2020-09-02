@@ -16,6 +16,7 @@
     <name>puffer</name>
 
     <packaging>pom</packaging>
+    <!--子模块-->
     <modules>
         <module>puffer-core</module>
         <module>puffer-db</module>
@@ -25,6 +26,7 @@
         <module>puffer-mq</module>
         <module>puffer-websocket</module>
         <module>puffer-cache</module>
+        <module>puffer-timer</module>
     </modules>
 
     <!--整体项目依赖管理-->
@@ -70,7 +72,11 @@
                 <artifactId>puffer-cache</artifactId>
                 <version>${puffer.cache}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-timer</artifactId>
+                <version>${puffer.timer}</version>
+            </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
@@ -151,6 +157,7 @@
         <puffer.mq>0.0.1</puffer.mq>
         <puffer.websocket>0.0.1</puffer.websocket>
         <puffer.cache>0.0.1</puffer.cache>
+        <puffer.timer>0.0.1</puffer.timer>
 
         <!--    第三方依赖    -->
         <p6spy>3.8.0</p6spy>
