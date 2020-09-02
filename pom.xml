@@ -27,6 +27,7 @@
         <module>puffer-websocket</module>
         <module>puffer-cache</module>
         <module>puffer-timer</module>
+        <module>puffer-demo</module>
     </modules>
 
     <!--整体项目依赖管理-->
@@ -76,6 +77,11 @@
                 <groupId>com.puffer</groupId>
                 <artifactId>puffer-timer</artifactId>
                 <version>${puffer.timer}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-demo</artifactId>
+                <version>${puffer.demo}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -158,6 +164,7 @@
         <puffer.websocket>0.0.1</puffer.websocket>
         <puffer.cache>0.0.1</puffer.cache>
         <puffer.timer>0.0.1</puffer.timer>
+        <puffer.demo>0.0.1</puffer.demo>
 
         <!--    第三方依赖    -->
         <p6spy>3.8.0</p6spy>
