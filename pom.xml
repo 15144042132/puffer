@@ -18,16 +18,16 @@
     <packaging>pom</packaging>
     <!--子模块-->
     <modules>
-        <module>puffer-core</module>
-        <module>puffer-db</module>
-        <module>puffer-generate</module>
-        <module>puffer-wechat</module>
-        <module>puffer-test</module>
-        <module>puffer-mq</module>
-        <module>puffer-websocket</module>
-        <module>puffer-cache</module>
-        <module>puffer-timer</module>
-        <module>puffer-demo</module>
+        <module>sting-core</module>
+        <module>sting-db</module>
+        <module>sting-generate</module>
+        <module>sting-wechat</module>
+        <module>sting-test</module>
+        <module>sting-mq</module>
+        <module>sting-websocket</module>
+        <module>sting-cache</module>
+        <module>sting-timer</module>
+        <module>sting-demo</module>
     </modules>
 
     <!--整体项目依赖管理-->
@@ -35,53 +35,53 @@
         <dependencies>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-core</artifactId>
-                <version>${puffer.core}</version>
+                <artifactId>sting-core</artifactId>
+                <version>${sting.core}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-db</artifactId>
-                <version>${puffer.db}</version>
+                <artifactId>sting-db</artifactId>
+                <version>${sting.db}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-generate</artifactId>
-                <version>${puffer.generate}</version>
+                <artifactId>sting-generate</artifactId>
+                <version>${sting.generate}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-wechat</artifactId>
-                <version>${puffer.wechat}</version>
+                <artifactId>sting-wechat</artifactId>
+                <version>${sting.wechat}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-test</artifactId>
-                <version>${puffer.test}</version>
+                <artifactId>sting-test</artifactId>
+                <version>${sting.test}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-mq</artifactId>
-                <version>${puffer.mq}</version>
+                <artifactId>sting-mq</artifactId>
+                <version>${sting.mq}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-websocket</artifactId>
-                <version>${puffer.websocket}</version>
+                <artifactId>sting-websocket</artifactId>
+                <version>${sting.websocket}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-cache</artifactId>
-                <version>${puffer.cache}</version>
+                <artifactId>sting-cache</artifactId>
+                <version>${sting.cache}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-timer</artifactId>
-                <version>${puffer.timer}</version>
+                <artifactId>sting-timer</artifactId>
+                <version>${sting.timer}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
-                <artifactId>puffer-demo</artifactId>
-                <version>${puffer.demo}</version>
+                <artifactId>sting-demo</artifactId>
+                <version>${sting.demo}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -155,16 +155,16 @@
         <java.target>1.8</java.target>
 
         <!--    内部包    -->
-        <puffer.core>0.0.1</puffer.core>
-        <puffer.db>0.0.1</puffer.db>
-        <puffer.generate>0.0.1</puffer.generate>
-        <puffer.wechat>0.0.1</puffer.wechat>
-        <puffer.test>0.0.1</puffer.test>
-        <puffer.mq>0.0.1</puffer.mq>
-        <puffer.websocket>0.0.1</puffer.websocket>
-        <puffer.cache>0.0.1</puffer.cache>
-        <puffer.timer>0.0.1</puffer.timer>
-        <puffer.demo>0.0.1</puffer.demo>
+        <sting.core>0.0.1</sting.core>
+        <sting.db>0.0.1</sting.db>
+        <sting.generate>0.0.1</sting.generate>
+        <sting.wechat>0.0.1</sting.wechat>
+        <sting.test>0.0.1</sting.test>
+        <sting.mq>0.0.1</sting.mq>
+        <sting.websocket>0.0.1</sting.websocket>
+        <sting.cache>0.0.1</sting.cache>
+        <sting.timer>0.0.1</sting.timer>
+        <sting.demo>0.0.1</sting.demo>
 
         <!--    第三方依赖    -->
         <p6spy>3.8.0</p6spy>
