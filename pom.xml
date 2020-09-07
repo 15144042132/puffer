@@ -102,6 +102,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3}</version>
@@ -153,6 +159,8 @@
         <java.encoding>UTF-8</java.encoding>
         <java.source>1.8</java.source>
         <java.target>1.8</java.target>
+        <maven-compiler-plugin>3.1</maven-compiler-plugin>
+        <maven-source-plugin>2.4</maven-source-plugin>
 
         <!--    内部包    -->
         <sting.core>0.0.1</sting.core>
@@ -175,7 +183,7 @@
         <fastjson>1.2.47</fastjson>
         <commons-io>2.6</commons-io>
         <easyexcel>2.1.7</easyexcel>
-        <freemarker>2.3.28</freemarker>
+        <freemarker>2.3.30</freemarker>
         <commons-lang3>3.10</commons-lang3>
         <aliyun-sdk-oss>3.8.0</aliyun-sdk-oss>
         <fastdfs-client>1.26.6</fastdfs-client>

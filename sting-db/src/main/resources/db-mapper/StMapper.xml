@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//com.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sting.db.StMapper">
+    <!--  #{entity[${key}]} 这样读取会报错-->
+    <!--    keyColumn="entity.id"-->
+    <!--  insert  -->
+    <insert id="_insert_by_str_">
+         ${sqlString}
+    </insert>
+    <insert id="_insert_by_map_" useGeneratedKeys="true" keyProperty="entity.id">
+        INSERT INTO ${tableName}
+        <foreach item='column' index='index' collection='entity.keys' open='(' separator=',' close=')'>
+            `${column}`
+        </foreach>
+        VALUES
+        <foreach item='key' index='index' collection='entity.keys' open='(' separator=',' close=')'>
+            #{entity.${key}}
+        </foreach>
+    </insert>
+    <insert id="_insert_by_entity_" useGeneratedKeys="true" keyProperty="entity.id">
+        INSERT INTO ${tableName}
+        <foreach item='column' index='index' collection='entityColumn.values' open='(' separator=',' close=')'>
+            `${column}`
+        </foreach>
+        VALUES
+        <foreach item='key' index='index' collection='entityColumn.keys' open='(' separator=',' close=')'>
+            #{entity.${key}}
+        </foreach>
+    </insert>
+    <insert id="_insert_batch_by_entity_" useGeneratedKeys="true" keyProperty="entityList.id">
+        INSERT INTO ${tableName}
+        <foreach item='column' index='index' collection='entityColumn.values' open='(' separator=',' close=')'>
+            `${column}`
+        </foreach>
+        values
+        <foreach collection="entityList" item="entityItem" separator=",">
+            <foreach item='key' index='index' collection='entityColumn.keys' open='(' separator=',' close=')'>
+                #{entityItem.${key}}
+            </foreach>
+        </foreach>
+    </insert>
+
+
+    <!--  delete  -->
+    <delete id="_delete_by_str_">
+     ${sqlString}
+    </delete>
+    <delete id="_delete_by_id_">
+        DELETE  FROM  ${tableName} WHERE id=#{id}
+    </delete>
+    <delete id="_delete_by_ids_">
+        DELETE FROM ${tableName} WHERE id in
+        <foreach item='value' index='index' collection='ids' open='(' separator=',' close=')'>
+            #{value}
+        </foreach>
+    </delete>
+    <delete id="_delete_by_map_">
+        DELETE FROM ${tableName} WHERE
+        <foreach item='key' index='index' collection='column.keys' separator=' and '>
+            `${key}`=#{column.${key}}
+        </foreach>
+    </delete>
+    <delete id="_delete_by_wrapper_">
+        DELETE  FROM  ${tableName} WHERE ${ew.sqlSegment}
+    </delete>
+
+
+    <!--  update  -->
+    <update id="_update_by_id_">
+        UPDATE ${tableName} SET
+        <foreach item='key' index='index' collection='column.keys' separator=','>
+            `${column[key]}`=#{entity.${key}}
+        </foreach>
+        WHERE ${idColumn}=#{id}
+    </update>
+    <update id="_update_by_str_">
+        ${sqlString}
+    </update>
+    <update id="_update_by_map_id_">
+        UPDATE ${tableName} SET
+        <foreach item='key' index='index' collection='entity.keys' separator=','>
+            `${key}`=#{entity.${key}}
+        </foreach>
+        WHERE id=#{id}
+    </update>
+    <update id="_update_by_map_ids_">
+        UPDATE ${tableName} SET
+        <foreach item='key' index='index' collection='entity.keys' separator=','>
+            `${key}`=#{entity.${key}}
+        </foreach>
+        WHERE id in
+        <foreach item='value' index='index' collection='ids' open='(' separator=',' close=')'>
+            #{value}
+        </foreach>
+    </update>
+    <update id="_update_by_wrapper_">
+        UPDATE ${tableName} SET
+        <foreach item='key' index='index' collection='column.keys' separator=','>
+            `${column[key]}`=#{entity.${key}}
+        </foreach>
+        WHERE ${ew.sqlSegment}
+    </update>
+    <update id="_update_by_wrapper_sql_set_">
+        UPDATE ${tableName} SET ${sqlSet} WHERE ${ew.sqlSegment}
+    </update>
+    <update id="_update_batch_by_id_" useGeneratedKeys="true" keyProperty="entityList.id">
+        update ${tableName} set
+        <foreach item='key' index='index' collection='column.keys' separator=",">
+            `${column[key]}`=case id
+            <trim suffix="end">
+                <foreach collection="entityList" item="entity" index="index">
+                    when #{entity.id} then #{entity.${key}}
+                </foreach>
+            </trim>
+        </foreach>
+        where id in
+        <foreach collection="entityList" index="index" item="entity"
+                 separator="," open="(" close=")">
+            #{entity.id}
+        </foreach>
+    </update>
+
+
+    <!--  select  -->
+    <select id="_count_" resultType="java.lang.Long">
+        SELECT count(1)  FROM  ${tableName} where 1=1
+    </select>
+    <select id="_count_by_str_" resultType="java.lang.Long">
+              ${sqlString}
+    </select>
+    <select id="_count_by_id_" resultType="java.lang.Long">
+        SELECT count(1)  FROM  ${tableName} WHERE ${column}=#{id}
+    </select>
+    <select id="_count_by_wrapper_" resultType="java.lang.Long">
+        SELECT count(${column})  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment}
+    </select>
+
+    <select id="_select_one_map_by_id_" resultType="map">
+        select * from ${tableName} where `${idColumn}`=#{id}
+    </select>
+    <select id="_select_one_map_by_str_" resultType="map">
+     ${sqlString} limit 1
+    </select>
+    <select id="_select_one_obj_by_str_" resultType="object">
+     ${sqlString} limit 1
+    </select>
+    <select id="_select_one_map_by_wrapper_" resultType="map">
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment} limit 1
+    </select>
+    <select id="_select_one_obj_by_wrapper_" resultType="object">
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment} limit 1
+    </select>
+
+    <select id="_select_list_map_" resultType="map">
+        SELECT *  FROM  ${tableName}
+    </select>
+    <select id="_select_list_obj_" resultType="object">
+        SELECT *  FROM  ${tableName}
+    </select>
+    <select id="_select_list_obj_by_wrapper_" resultType="object">
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment}
+    </select>
+    <select id="_select_list_obj_by_str_" resultType="object">
+     ${sqlString}
+    </select>
+    <select id="_select_list_by_wrapper_" resultType="map">
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment}
+    </select>
+    <select id="_select_list_by_map_" resultType="map">
+        SELECT * FROM ${tableName} WHERE
+        <foreach item='key' index='index' collection='column.keys' separator=' and '>
+            `${key}`=#{column.${key}}
+        </foreach>
+    </select>
+    <select id="_select_list_map_by_str_" resultType="map">
+     ${sqlString}
+    </select>
+
+    <select id="_page_map_by_str_" resultType="map">
+      ${sqlString} limit ${limit},#{offset}
+    </select>
+    <select id="_page_map_by_wrapper_" resultType="map">
+        SELECT ${column} FROM ${tableName} ${join} WHERE ${ew.sqlSegment} limit ${limit},#{offset}
+    </select>
+
+</mapper>
