@@ -1,0 +1,20 @@
+server:
+  port: 8090
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.136.136:3306/test?serverTimezone=Asia/Shanghai&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&useUnicode=true&useSSL=false&useTimezone=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234qwer
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    # 注释 log-impl 停止查询结果SQL日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    lazy-loading-enabled: true
+    call-setters-on-nulls: true
+  mapper-locations: classpath*:/db-mapper/*.xml

@@ -1,4 +1,4 @@
-package com.sting.db;
+package com.sting.db.util;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.sting.core.spring.ContextKit;
+import com.sting.db.entity.StEntity;
 import lombok.Data;
 
 import java.lang.reflect.Field;
@@ -23,7 +24,8 @@ public class MiHelp {
 
     public static <P extends StEntity> void add(P entity) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-        if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
+        if (tableInfo == null)
+            TableInfoHelper.initTableInfo(null, entity.getClass());
     }
 
     public static <P extends StEntity> void add(Class<P> tClass) {
@@ -144,10 +146,18 @@ public class MiHelp {
      */
     public static <P extends StEntity> void insertFill(P entity) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-        if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
+        if (tableInfo == null) {
+            TableInfoHelper.initTableInfo(null, entity.getClass());
+        }
         tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
 
-        FillHandler handler = ContextKit.getBean(FillHandler.class);
+        FillHandler handler;
+        try {
+            handler = ContextKit.getBean(FillHandler.class);
+        } catch (Exception e) {
+            return;
+        }
+
         List<TableFieldInfo> insert = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithInsertFill).collect(Collectors.toList());
 
         //循环遍历
@@ -169,10 +179,18 @@ public class MiHelp {
      */
     public static <P extends StEntity> void updateFill(P entity) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-        if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
+        if (tableInfo == null) {
+            TableInfoHelper.initTableInfo(null, entity.getClass());
+        }
         tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
 
-        FillHandler handler = ContextKit.getBean(FillHandler.class);
+        FillHandler handler;
+        try {
+            handler = ContextKit.getBean(FillHandler.class);
+        } catch (Exception e) {
+            return;
+        }
+
         List<TableFieldInfo> update = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithUpdateFill).collect(Collectors.toList());
 
         //循环遍历

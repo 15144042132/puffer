@@ -1,4 +1,4 @@
-package com.sting.db;
+package com.sting.db.entity;
 
 /**
  * 泛型检查

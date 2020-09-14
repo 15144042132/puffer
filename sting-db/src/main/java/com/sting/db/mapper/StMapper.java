@@ -1,4 +1,4 @@
-package com.sting.db;
+package com.sting.db.mapper;
 
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;

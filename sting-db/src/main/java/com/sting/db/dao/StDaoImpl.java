@@ -1,6 +1,9 @@
-package com.sting.db;
+package com.sting.db.dao;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.sting.db.util.MiHelp;
+import com.sting.db.entity.StEntity;
+import com.sting.db.mapper.StMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,8 +72,8 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public long insert(String sqlString) {
-        return miMapper._insert_by_str_(sqlString);
+    public long insert(String fullSqlString) {
+        return miMapper._insert_by_str_(fullSqlString);
     }
 
     @Override

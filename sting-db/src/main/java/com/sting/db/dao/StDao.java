@@ -1,6 +1,7 @@
-package com.sting.db;
+package com.sting.db.dao;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.sting.db.entity.StEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public interface StDao {
 
     <P extends StEntity> long insertOrUpdateBatch(List<P> entityList, int batchSize);
 
-    long insert(String sqlString);
+    long insert(String fullSqlString);
 
     long insert(String tableName, Map<String, Object> map);
 
