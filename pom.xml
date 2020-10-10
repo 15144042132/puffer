@@ -27,7 +27,6 @@
         <module>sting-websocket</module>
         <module>sting-cache</module>
         <module>sting-timer</module>
-        <module>sting-demo</module>
     </modules>
 
     <!--整体项目依赖管理-->
@@ -77,11 +76,6 @@
                 <groupId>com.puffer</groupId>
                 <artifactId>sting-timer</artifactId>
                 <version>${sting.timer}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.puffer</groupId>
-                <artifactId>sting-demo</artifactId>
-                <version>${sting.demo}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -172,7 +166,6 @@
         <sting.websocket>0.0.1</sting.websocket>
         <sting.cache>0.0.1</sting.cache>
         <sting.timer>0.0.1</sting.timer>
-        <sting.demo>0.0.1</sting.demo>
 
         <!--    第三方依赖    -->
         <p6spy>3.8.0</p6spy>

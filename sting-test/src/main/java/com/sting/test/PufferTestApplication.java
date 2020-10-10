@@ -12,7 +12,6 @@ public class PufferTestApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PufferTestApplication.class, args);
-
     }
 
 }
