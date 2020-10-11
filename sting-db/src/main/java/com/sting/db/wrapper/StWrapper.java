@@ -39,7 +39,7 @@ public class StWrapper<T>
     private final SharedString sqlSelect = new SharedString();
 
     public StWrapper(Class<T> entityClass) {
-        this.entityClass = entityClass;
+        this.setEntityClass(entityClass);
         this.sqlSet = new ArrayList<>();
         super.initNeed();
     }
@@ -61,7 +61,7 @@ public class StWrapper<T>
                       SharedString lastSql, SharedString sqlComment) {
         super.setEntity(entity);
         this.sqlSet = sqlSet;
-        this.entityClass = entityClass;
+        this.setEntityClass(entityClass);
         this.paramNameSeq = paramNameSeq;
         this.paramNameValuePairs = paramNameValuePairs;
         this.expression = mergeSegments;
@@ -104,13 +104,14 @@ public class StWrapper<T>
 
     @Override
     public StWrapper<T> select(Predicate<TableFieldInfo> predicate) {
-        return select(entityClass, predicate);
+        return select(getEntityClass(), predicate);
     }
 
     @Override
     public StWrapper<T> select(Class<T> entityClass, Predicate<TableFieldInfo> predicate) {
-        this.entityClass = entityClass;
-        this.sqlSelect.setStringValue(TableInfoHelper.getTableInfo(getCheckEntityClass()).chooseSelect(predicate));
+
+        this.setEntityClass(entityClass);
+        this.sqlSelect.setStringValue(TableInfoHelper.getTableInfo(getEntityClass()).chooseSelect(predicate));
         return typedThis;
     }
 
@@ -123,7 +124,14 @@ public class StWrapper<T>
      */
     @Override
     protected StWrapper<T> instance() {
-        return new StWrapper<>(entity, sqlSet, entityClass, paramNameSeq, paramNameValuePairs, new MergeSegments(),
+        return new StWrapper<>(getEntity(), sqlSet, getEntityClass(), paramNameSeq, paramNameValuePairs, new MergeSegments(),
                 SharedString.emptyString(), SharedString.emptyString());
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        sqlSelect.toNull();
+        sqlSet.clear();
     }
 }
