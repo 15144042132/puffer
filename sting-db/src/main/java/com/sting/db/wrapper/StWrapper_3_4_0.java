@@ -1,4 +1,4 @@
-//package com.sting.db.wrapper;
+package com.sting.db.wrapper;//package com.sting.db.wrapper;
 //
 //import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 //import com.baomidou.mybatisplus.core.conditions.SharedString;

@@ -1,5 +1,8 @@
 package com.sting.db.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
@@ -7,6 +10,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.sting.core.spring.ContextKit;
 import com.sting.db.entity.StEntity;
+import com.sting.db.wrapper.StWrapper;
 import lombok.Data;
 
 import java.lang.reflect.Field;
@@ -17,15 +21,14 @@ import java.util.stream.Collectors;
 /**
  * 帮助类
  *
- * @author WangYongJi
+ * @author 王永吉
  */
 @Data
-public class MiHelp {
+public class DbHelp {
 
     public static <P extends StEntity> void add(P entity) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-        if (tableInfo == null)
-            TableInfoHelper.initTableInfo(null, entity.getClass());
+        if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
     }
 
     public static <P extends StEntity> void add(Class<P> tClass) {
@@ -141,24 +144,35 @@ public class MiHelp {
         return idValue;
     }
 
+    public static <T> T parsObj(Object map, Class<T> tClass) {
+        if (map == null) return null;
+        String s = JSON.toJSONString(map, SerializerFeature.WriteMapNullValue);
+        return JSONObject.parseObject(s, tClass);
+    }
+
+    public static <T> List<T> parsArray(Object map, Class<T> tClass) {
+        if (map == null) return null;
+        String s = JSON.toJSONString(map, SerializerFeature.WriteMapNullValue);
+        return JSONObject.parseArray(s, tClass);
+    }
+
+    public static <P extends StEntity> String getSqlSelect(StWrapper<P> wrapper) {
+        if (wrapper.getSqlSelect() == null || wrapper.getSqlSelect().equals("")) {
+            wrapper.select("*");
+        }
+        return wrapper.getSqlSelect();
+    }
+
     /**
-     * 填充 INSERT
+     * 填充
      */
     public static <P extends StEntity> void insertFill(P entity) {
-        //所有需要填充的字段
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-        if (tableInfo == null) {
-            TableInfoHelper.initTableInfo(null, entity.getClass());
-        }
-        List<TableFieldInfo> insert = TableInfoHelper.getTableInfo(entity.getClass()).getFieldList().stream().filter(TableFieldInfo::isWithInsertFill).collect(Collectors.toList());
+        if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
+        tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
 
-
-        FillHandler handler;
-        try {
-            handler = ContextKit.getBean(FillHandler.class);
-        } catch (Exception e) {
-            return;
-        }
+        com.sting.db.util.FillHandler handler = ContextKit.getBean(com.sting.db.util.FillHandler.class);
+        List<TableFieldInfo> insert = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithInsertFill).collect(Collectors.toList());
 
         //循环遍历
         for (TableFieldInfo tableFieldInfo : insert) {
@@ -169,28 +183,22 @@ public class MiHelp {
             try {
                 setNotNullProperty(entity, property, o);
             } catch (Exception ignored) {
+
             }
         }
     }
 
     /**
-     * 填充 UPDATE
+     * 填充
      */
     public static <P extends StEntity> void updateFill(P entity) {
-        //所有需要填充的字段
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-        if (tableInfo == null) {
-            TableInfoHelper.initTableInfo(null, entity.getClass());
-        }
-        List<TableFieldInfo> update = TableInfoHelper.getTableInfo(entity.getClass()).getFieldList().stream().filter(TableFieldInfo::isWithUpdateFill).collect(Collectors.toList());
+        if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
+        tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
 
+        com.sting.db.util.FillHandler handler = ContextKit.getBean(FillHandler.class);
+        List<TableFieldInfo> update = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithUpdateFill).collect(Collectors.toList());
 
-        FillHandler handler;
-        try {
-            handler = ContextKit.getBean(FillHandler.class);
-        } catch (Exception e) {
-            return;
-        }
         //循环遍历
         for (TableFieldInfo tableFieldInfo : update) {
             String property = tableFieldInfo.getProperty();

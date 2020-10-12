@@ -1,5 +1,6 @@
 package com.sting.db.wrapper;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 import com.baomidou.mybatisplus.core.conditions.SharedString;
 import com.baomidou.mybatisplus.core.conditions.query.Query;
@@ -11,6 +12,8 @@ import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.sting.db.entity.StEntity;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +34,69 @@ public class StWrapper<T>
         Update<StWrapper<T>, String>,
         Query<StWrapper<T>, T, String>,
         StJoin<StWrapper<T>, String> {
-    /**
-     * SQL 更新字段内容，例如：name='1', age=2
-     */
-    private final List<String> sqlSet;
+
+
+    //实现了MiEntity接口的实体列
+    private Class<T> mipClass;
+
+    //fromTable=null时，表名从typeClass读取
+    private String fromTable = null;
 
     /**
-     * 查询字段
+     * limit 操作
+     *
+     * @param limit 截取条数
      */
-    private final SharedString sqlSelect = new SharedString();
+    public StWrapper<T> limit(Object limit) {
+        this.last("limit " + limit);
+        return typedThis;
+    }
+
+    public Class<T> tClass() {
+        return mipClass;
+    }
+
+    public String getFromTable() {
+        return fromTable;
+    }
+
+    public StWrapper<T> setFromTable(String fromTable) {
+        this.fromTable = fromTable;
+        return typedThis;
+    }
+
+
+    /**
+     * FIND_IN_SET
+     *
+     * @param condition 是否使用条件
+     * @param column    字段
+     * @param value     数据
+     */
+    public StWrapper<T> findInSet(boolean condition, String column, Object value) {
+        if (condition) {
+            this.findInSet(column, value);
+        }
+        return typedThis;
+    }
+
+    public StWrapper<T> findInSet(String column, Object value) {
+        this.apply(" FIND_IN_SET (" + value + " , " + column + ") ");
+        return typedThis;
+    }
+
 
     public StWrapper(Class<T> entityClass) {
+        boolean assignableFrom = StEntity.class.isAssignableFrom(mipClass);
+        if (assignableFrom) {
+            TableName annotation = AnnotationUtils.findAnnotation(mipClass, TableName.class);
+            if (annotation != null) {
+                this.fromTable = annotation.value();
+            }
+        }
+        this.mipClass = mipClass;
+
+
         this.entityClass = entityClass;
         this.sqlSet = new ArrayList<>();
         super.initNeed();
@@ -76,6 +131,28 @@ public class StWrapper<T>
         this.sqlJoin = sqlJoin;
     }
 
+
+    /**
+     * 用于生成嵌套 sql
+     * <p>
+     * 故 sqlSelect 不向下传递
+     * </p>
+     */
+    @Override
+    protected StWrapper<T> instance() {
+        return new StWrapper<>(entity, sqlSet, entityClass,
+                paramNameSeq, paramNameValuePairs, new MergeSegments(),
+                SharedString.emptyString(), SharedString.emptyString(),
+                joinString, joinCondition, sqlJoin
+        );
+    }
+
+
+    /**
+     * SQL 更新字段内容，例如：name='1', age=2
+     */
+    private final List<String> sqlSet;
+
     @Override
     public String getSqlSet() {
         if (CollectionUtils.isEmpty(sqlSet)) {
@@ -101,6 +178,11 @@ public class StWrapper<T>
     }
 
 
+    /**
+     * 查询字段
+     */
+    private final SharedString sqlSelect = new SharedString();
+
     @Override
     public StWrapper<T> select(String... columns) {
         if (ArrayUtils.isNotEmpty(columns)) {
@@ -119,22 +201,6 @@ public class StWrapper<T>
         this.entityClass = entityClass;
         this.sqlSelect.setStringValue(TableInfoHelper.getTableInfo(getCheckEntityClass()).chooseSelect(predicate));
         return typedThis;
-    }
-
-
-    /**
-     * 用于生成嵌套 sql
-     * <p>
-     * 故 sqlSelect 不向下传递
-     * </p>
-     */
-    @Override
-    protected StWrapper<T> instance() {
-        return new StWrapper<>(entity, sqlSet, entityClass,
-                paramNameSeq, paramNameValuePairs, new MergeSegments(),
-                SharedString.emptyString(), SharedString.emptyString(),
-                joinString, joinCondition, sqlJoin
-        );
     }
 
 

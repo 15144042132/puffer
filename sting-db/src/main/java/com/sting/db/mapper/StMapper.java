@@ -2,6 +2,7 @@ package com.sting.db.mapper;
 
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.sting.db.wrapper.StWrapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author WangYongJi
+ * @author 王永吉
  */
 @Component
 public interface StMapper extends StBaseMapper {
@@ -75,7 +76,7 @@ public interface StMapper extends StBaseMapper {
 
     long _delete_by_map_(@Param(TABLE_NAME) String tableName, @Param(COLUMN) Map column);
 
-    long _delete_by_wrapper_(@Param(TABLE_NAME) String tableName, @Param(EW) Wrapper<?> wrapper);
+    long _delete_by_wrapper_(@Param(TABLE_NAME) String tableName, @Param(EW) StWrapper<?> wrapper);
 
 
     long _update_by_id_(
@@ -90,13 +91,13 @@ public interface StMapper extends StBaseMapper {
             @Param(TABLE_NAME) String tableName,
             @Param(COLUMN) Map column,
             @Param(ENTITY) Object entity,
-            @Param(EW) Wrapper<?> wrapper
+            @Param(EW) StWrapper<?> wrapper
     );
 
     long _update_by_wrapper_sql_set_(
             @Param(TABLE_NAME) Object tableName,
             @Param(SQL_SET) String sqlSet,
-            @Param(EW) Wrapper<?> wrapper
+            @Param(EW) StWrapper<?> wrapper
     );
 
     long _update_batch_by_id_(
@@ -117,7 +118,7 @@ public interface StMapper extends StBaseMapper {
             @Param(TABLE_NAME) String tableName,
             @Param(JOIN) String join,
             @Param(COLUMN) Object column,
-            @Param(EW) Wrapper<?> wrapper
+            @Param(EW) StWrapper<?> wrapper
     );
 
     List<Map<String, Object>> _select_list_map_(@Param(TABLE_NAME) String tableName);
@@ -128,14 +129,14 @@ public interface StMapper extends StBaseMapper {
             @Param(COLUMN) String column,
             @Param(TABLE_NAME) String tableName,
             @Param("join") String join,
-            @Param(EW) Wrapper<?> wrapper
+            @Param(EW) StWrapper<?> wrapper
     );
 
     List<Object> _select_list_obj_by_wrapper_(
             @Param(COLUMN) String column,
             @Param(TABLE_NAME) String tableName,
             @Param("join") String join,
-            @Param(EW) Wrapper<?> wrapper
+            @Param(EW) StWrapper<?> wrapper
     );
 
     List<Map> _select_list_by_map_(
@@ -153,7 +154,7 @@ public interface StMapper extends StBaseMapper {
             @Param(COLUMN) String column,
             @Param(TABLE_NAME) String tableName,
             @Param("join") String join,
-            @Param(EW) Wrapper<?> wrapper
+            @Param(EW) StWrapper<?> wrapper
     );
 
 
@@ -161,7 +162,7 @@ public interface StMapper extends StBaseMapper {
             @Param(COLUMN) String column,
             @Param(TABLE_NAME) String tableName,
             @Param("join") String join,
-            @Param(EW) Wrapper<?> wrapper
+            @Param(EW) StWrapper<?> wrapper
     );
 
     List<Map<String, Object>> _page_map_by_wrapper_(
