@@ -27,17 +27,7 @@ import java.util.function.Predicate;
  */
 public class StWrapper<T>
         extends AbstractWrapper<T, String, StWrapper<T>>
-        implements Update<StWrapper<T>, String>, Query<StWrapper<T>, T, String>, StJoin {
-    /**
-     * SQL 更新字段内容，例如：name='1', age=2
-     */
-    private final List<String> sqlSet;
-
-
-    /**
-     * 查询字段
-     */
-    private final SharedString sqlSelect = new SharedString();
+        implements Update<StWrapper<T>, String>, Query<StWrapper<T>, T, String>, StJoin<StWrapper<T>, String> {
 
     public StWrapper(Class<T> entityClass) {
         this.setEntityClass(entityClass);
@@ -58,8 +48,8 @@ public class StWrapper<T>
      * @param entityClass 本不应该需要的
      */
     private StWrapper(T entity, List<String> sqlSet, Class<T> entityClass, AtomicInteger paramNameSeq,
-                      Map<String, Object> paramNameValuePairs, MergeSegments mergeSegments,
-                      SharedString lastSql, SharedString sqlComment) {
+                      Map<String, Object> paramNameValuePairs, MergeSegments mergeSegments, SharedString lastSql,
+                      SharedString sqlComment, List<String> joinCondition, List<String> sqlJoin, String joinString) {
         super.setEntity(entity);
         this.sqlSet = sqlSet;
         this.setEntityClass(entityClass);
@@ -68,7 +58,42 @@ public class StWrapper<T>
         this.expression = mergeSegments;
         this.lastSql = lastSql;
         this.sqlComment = sqlComment;
+        this.joinCondition = joinCondition;
+        this.sqlJoin = sqlJoin;
+        this.joinString = joinString;
+
+
     }
+
+    /**
+     * 用于生成嵌套 sql
+     * <p>
+     * 故 sqlSelect 不向下传递
+     * </p>
+     */
+    @Override
+    protected StWrapper<T> instance() {
+        return new StWrapper<>(getEntity(), sqlSet, getEntityClass(), paramNameSeq, paramNameValuePairs, new MergeSegments(),
+                SharedString.emptyString(), SharedString.emptyString(), joinCondition,
+                sqlJoin,
+                joinString);
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        sqlSelect.toNull();
+        sqlSet.clear();
+        joinCondition.clear();
+        sqlJoin.clear();
+        joinString = "";
+    }
+
+
+    /**
+     * UPDATE 接口实现
+     */
+    private final List<String> sqlSet;
 
     @Override
     public String getSqlSet() {
@@ -95,6 +120,11 @@ public class StWrapper<T>
     }
 
 
+    /**
+     * QUERY接口实现
+     */
+    private final SharedString sqlSelect = new SharedString();
+
     @Override
     public StWrapper<T> select(String... columns) {
         if (ArrayUtils.isNotEmpty(columns)) {
@@ -117,32 +147,14 @@ public class StWrapper<T>
 
 
     /**
-     * 用于生成嵌套 sql
-     * <p>
-     * 故 sqlSelect 不向下传递
-     * </p>
+     * StJOIN 接口实现
      */
-    @Override
-    protected StWrapper<T> instance() {
-        return new StWrapper<>(getEntity(), sqlSet, getEntityClass(), paramNameSeq, paramNameValuePairs, new MergeSegments(),
-                SharedString.emptyString(), SharedString.emptyString());
-    }
-
-    @Override
-    public void clear() {
-        super.clear();
-        sqlSelect.toNull();
-        sqlSet.clear();
-    }
-
-
     private List<String> joinCondition = new ArrayList<>();
     private List<String> sqlJoin = new ArrayList<>();
-
     private String joinString = "";
 
     @Override
-    public Object leftJoin(String tableName) {
+    public StWrapper<T> leftJoin(String tableName) {
         if (!joinString.isEmpty()) {
             sqlJoin.add(joinString + getJoinSqlCondition());
             joinCondition.clear();
@@ -153,7 +165,7 @@ public class StWrapper<T>
     }
 
     @Override
-    public Object rightJoin(String tableName) {
+    public StWrapper<T> rightJoin(String tableName) {
         if (!joinString.isEmpty()) {
             sqlJoin.add(joinString + getJoinSqlCondition());
             joinCondition.clear();
@@ -163,7 +175,7 @@ public class StWrapper<T>
     }
 
     @Override
-    public Object join(String tableName) {
+    public StWrapper<T> join(String tableName) {
         if (!joinString.isEmpty()) {
             sqlJoin.add(joinString + getJoinSqlCondition());
             joinCondition.clear();
@@ -173,7 +185,7 @@ public class StWrapper<T>
     }
 
     @Override
-    public Object on(boolean condition, Object column, Object val) {
+    public StWrapper<T> on(boolean condition, String column, Object val) {
         if (condition) {
             joinCondition.add(String.format("%s=%s", column, formatSql("{0}", val)));
         }
@@ -181,7 +193,7 @@ public class StWrapper<T>
     }
 
     @Override
-    public Object onSql(boolean condition, String sql) {
+    public StWrapper<T> onSql(boolean condition, String sql) {
         if (condition && StringUtils.isNotBlank(sql)) {
             joinCondition.add(sql);
         }
