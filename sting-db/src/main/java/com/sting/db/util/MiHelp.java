@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * 帮助类
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 @Data
 public class MiHelp {

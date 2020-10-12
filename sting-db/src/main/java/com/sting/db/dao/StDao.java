@@ -11,7 +11,7 @@ import java.util.Map;
  * P:实体类
  * tenantName: 动态数据源
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 public interface StDao {
     /**

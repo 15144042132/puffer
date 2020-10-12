@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * 角色表 实体
  * </p>
  *
- * @author 王永吉
+ * @author WangYongJi
  * @date 2020-01-19
  */
 @Data

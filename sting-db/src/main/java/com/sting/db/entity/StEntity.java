@@ -3,7 +3,7 @@ package com.sting.db.entity;
 /**
  * 泛型检查
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 public interface StEntity {
 }
