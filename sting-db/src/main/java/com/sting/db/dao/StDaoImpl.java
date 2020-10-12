@@ -1,9 +1,9 @@
 package com.sting.db.dao;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.sting.db.util.MiHelp;
 import com.sting.db.entity.StEntity;
 import com.sting.db.mapper.StMapper;
+import com.sting.db.util.MiHelp;
+import com.sting.db.wrapper.StWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +53,15 @@ public class StDaoImpl implements StDao {
 
     @Override
     public <P extends StEntity> long insertOrUpdate(P entity) {
+        Object idValue = MiHelp.getIdValue(entity);
+        if (idValue == null || miMapper._count_by_id_(MiHelp.getTableName(entity.getClass()), MiHelp.getTableId(entity), idValue) <= 0) {
+            return insert(entity);
+        }
         return 0;
     }
 
     @Override
-    public <P extends StEntity> long insertOrUpdate(P entity, Wrapper<P> miWrapper) {
+    public <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> miWrapper) {
         return 0;
     }
 
@@ -80,4 +84,5 @@ public class StDaoImpl implements StDao {
     public long insert(String tableName, Map<String, Object> map) {
         return miMapper._insert_by_map_(tableName, map);
     }
+
 }

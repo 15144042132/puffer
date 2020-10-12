@@ -1,7 +1,7 @@
 package com.sting.db.dao;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.sting.db.entity.StEntity;
+import com.sting.db.wrapper.StWrapper;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public interface StDao {
 
     <P extends StEntity> long insertOrUpdate(P entity);
 
-    <P extends StEntity> long insertOrUpdate(P entity, Wrapper<P> miWrapper);
+    <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> miWrapper);
 
     <P extends StEntity> long insertOrUpdateBatch(List<P> entityList);
 
@@ -36,9 +36,9 @@ public interface StDao {
     long insert(String tableName, Map<String, Object> map);
 
 //
-//    <P extends StEntity> long delete(Wrapper<P> wrapper);
+//    <P extends StEntity> long delete(StWrapper<P> wrapper);
 //
-//    <P extends StEntity> long delete(List<Class<P>> pClassList, Wrapper<P> wrapper);
+//    <P extends StEntity> long delete(List<Class<P>> pClassList, StWrapper<P> wrapper);
 //
 //    <P extends StEntity> long deleteById(Class<P> pClass, Serializable id);
 //
@@ -47,9 +47,9 @@ public interface StDao {
 //    <P extends StEntity, MP extends Map<?, ?>> long deleteByMap(Class<P> pClass, MP columnMap);
 //
 //
-//    <P extends StEntity> long update(Wrapper<P> wrapper);
+//    <P extends StEntity> long update(StWrapper<P> wrapper);
 //
-//    <P extends StEntity> long update(P entity, Wrapper<P> wrapper);
+//    <P extends StEntity> long update(P entity, StWrapper<P> wrapper);
 //
 //    <P extends StEntity> long updateById(P entity);
 //
@@ -60,15 +60,15 @@ public interface StDao {
 //
 //    <P extends StEntity> P selectById(Class<P> pClass, Serializable id);
 //
-//    <P extends StEntity> P selectOne(Wrapper<P> miWrapper);
+//    <P extends StEntity> P selectOne(StWrapper<P> miWrapper);
 //
-//    <P extends StEntity> Map<String, Object> selectMap(Wrapper<P> miWrapper);
+//    <P extends StEntity> Map<String, Object> selectMap(StWrapper<P> miWrapper);
 //
-//    <P extends StEntity> Object selectObj(Wrapper<P> miWrapper);
+//    <P extends StEntity> Object selectObj(StWrapper<P> miWrapper);
 //
 //    <P extends StEntity> List<P> list(Class<P> pClass);
 //
-//    <P extends StEntity> List<P> list(Wrapper<P> miWrapper);
+//    <P extends StEntity> List<P> list(StWrapper<P> miWrapper);
 //
 //    <P extends StEntity> List<P> listByIds(Class<P> pClass, List<?> idList);
 //
@@ -76,25 +76,25 @@ public interface StDao {
 //
 //    <P extends StEntity> List<Map<String, Object>> listMap(Class<P> pClass);
 //
-//    <P extends StEntity> List<Map<String, Object>> listMap(Wrapper<P> miWrapper);
+//    <P extends StEntity> List<Map<String, Object>> listMap(StWrapper<P> miWrapper);
 //
-//    <P extends StEntity> List<Object> listObj(Wrapper<P> miWrapper);
+//    <P extends StEntity> List<Object> listObj(StWrapper<P> miWrapper);
 //
-//    <P extends StEntity, T> List<T> listObj(Wrapper<P> miWrapper, Class<T> tClass);
+//    <P extends StEntity, T> List<T> listObj(StWrapper<P> miWrapper, Class<T> tClass);
 //
 //    <P extends StEntity> long count(Class<P> pClass);
 //
-//    <P extends StEntity> long count(Wrapper<P> miWrapper);
+//    <P extends StEntity> long count(StWrapper<P> miWrapper);
 //
 //    <P extends StEntity> long count(Map<String, Object> mapCondition);
 //
 //    <P extends StEntity> StPage<P> page(StPage<P> page, Class<P> pClass);
 //
-//    <P extends StEntity> StPage<P> page(StPage<P> page, Wrapper<P> miWrapper);
+//    <P extends StEntity> StPage<P> page(StPage<P> page, StWrapper<P> miWrapper);
 //
 //    <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass);
 //
-//    <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Wrapper<P> miWrapper);
+//    <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, StWrapper<P> miWrapper);
 
     /**
      * 非实体类操作

@@ -21,17 +21,18 @@ import java.util.function.Predicate;
 /**
  * 重写Wrapper条件构造器
  * 继承 AbstractWrapper 并将 QueryWrapper和 UpdateWrapper整合在一起
- * 并做出适当增强
+ * 并做实现Wrapper增强器 StBaseWrapper
  *
  * @param <T>
  */
 public class StWrapper<T>
         extends AbstractWrapper<T, String, StWrapper<T>>
-        implements Update<StWrapper<T>, String>, Query<StWrapper<T>, T, String> {
+        implements Update<StWrapper<T>, String>, Query<StWrapper<T>, T, String>, StJoin {
     /**
      * SQL 更新字段内容，例如：name='1', age=2
      */
     private final List<String> sqlSet;
+
 
     /**
      * 查询字段
@@ -109,7 +110,6 @@ public class StWrapper<T>
 
     @Override
     public StWrapper<T> select(Class<T> entityClass, Predicate<TableFieldInfo> predicate) {
-
         this.setEntityClass(entityClass);
         this.sqlSelect.setStringValue(TableInfoHelper.getTableInfo(getEntityClass()).chooseSelect(predicate));
         return typedThis;
@@ -134,4 +134,73 @@ public class StWrapper<T>
         sqlSelect.toNull();
         sqlSet.clear();
     }
+
+
+    private List<String> joinCondition = new ArrayList<>();
+    private List<String> sqlJoin = new ArrayList<>();
+
+    private String joinString = "";
+
+    @Override
+    public Object leftJoin(String tableName) {
+        if (!joinString.isEmpty()) {
+            sqlJoin.add(joinString + getJoinSqlCondition());
+            joinCondition.clear();
+        }
+        joinString = WrapperConst.LEFT_JOIN + tableName + WrapperConst.ON;
+        return typedThis;
+
+    }
+
+    @Override
+    public Object rightJoin(String tableName) {
+        if (!joinString.isEmpty()) {
+            sqlJoin.add(joinString + getJoinSqlCondition());
+            joinCondition.clear();
+        }
+        joinString = WrapperConst.RIGHT_JOIN + tableName + WrapperConst.ON;
+        return typedThis;
+    }
+
+    @Override
+    public Object join(String tableName) {
+        if (!joinString.isEmpty()) {
+            sqlJoin.add(joinString + getJoinSqlCondition());
+            joinCondition.clear();
+        }
+        joinString = WrapperConst.JOIN + tableName + WrapperConst.ON;
+        return typedThis;
+    }
+
+    @Override
+    public Object on(boolean condition, Object column, Object val) {
+        if (condition) {
+            joinCondition.add(String.format("%s=%s", column, formatSql("{0}", val)));
+        }
+        return typedThis;
+    }
+
+    @Override
+    public Object onSql(boolean condition, String sql) {
+        if (condition && StringUtils.isNotBlank(sql)) {
+            joinCondition.add(sql);
+        }
+        return typedThis;
+    }
+
+    @Override
+    public String getSqlJoin() {
+        if (CollectionUtils.isEmpty(sqlJoin)) {
+            return null;
+        }
+        return String.join(" ", sqlJoin);
+    }
+
+    private String getJoinSqlCondition() {
+        if (CollectionUtils.isEmpty(joinCondition)) {
+            return null;
+        }
+        return String.join(StringPool.COMMA, joinCondition);
+    }
+
 }
