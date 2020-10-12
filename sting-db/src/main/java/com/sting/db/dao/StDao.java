@@ -1,7 +1,7 @@
 package com.sting.db.dao;
 
 import com.sting.db.entity.StEntity;
-import com.sting.db.wrapper.StWrapper;
+import com.sting.db.wrapper.StWrapper_3_4_0;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public interface StDao {
 
     <P extends StEntity> long insertOrUpdate(P entity);
 
-    <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> miWrapper);
+    <P extends StEntity> long insertOrUpdate(P entity, StWrapper_3_4_0<P> miWrapper);
 
     <P extends StEntity> long insertOrUpdateBatch(List<P> entityList);
 

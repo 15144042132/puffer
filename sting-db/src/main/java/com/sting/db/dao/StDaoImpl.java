@@ -3,7 +3,7 @@ package com.sting.db.dao;
 import com.sting.db.entity.StEntity;
 import com.sting.db.mapper.StMapper;
 import com.sting.db.util.MiHelp;
-import com.sting.db.wrapper.StWrapper;
+import com.sting.db.wrapper.StWrapper_3_4_0;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +60,7 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> miWrapper) {
+    public <P extends StEntity> long insertOrUpdate(P entity, StWrapper_3_4_0<P> miWrapper) {
         return 0;
     }
 

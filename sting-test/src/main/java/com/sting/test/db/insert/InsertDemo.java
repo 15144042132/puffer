@@ -1,7 +1,7 @@
 package com.sting.test.db.insert;
 
-import com.baomidou.mybatisplus.core.conditions.query.StWrapper;
 import com.sting.db.dao.StDao;
+import com.sting.db.wrapper.StWrapper_3_4_0;
 import com.sting.test.PufferTestApplication;
 import com.sting.test.db.SysUser;
 import org.junit.Test;
@@ -89,9 +89,9 @@ public class InsertDemo {
         SysUser user5 = new SysUser();
         user5.setId("99");
 
-        StWrapper<SysUser> sysUserQueryWrapper = new StWrapper<>(user5);
+        StWrapper_3_4_0<SysUser> sysUserQueryWrapper = new StWrapper_3_4_0<>(user5);
         SysUser entity = sysUserQueryWrapper.getEntity();
-        Class<? extends StWrapper> aClass = sysUserQueryWrapper.getClass();
+        Class<? extends StWrapper_3_4_0> aClass = sysUserQueryWrapper.getClass();
 
         long l = dao.insertOrUpdate(user5);
     }
