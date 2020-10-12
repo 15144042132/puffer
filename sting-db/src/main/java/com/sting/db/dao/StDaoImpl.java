@@ -19,7 +19,6 @@ public class StDaoImpl implements StDao {
     @Override
     public <P extends StEntity> long insert(P entity) {
         if (entity == null) return 0;
-        //Insert填充
         MiHelp.insertFill(entity);
         return miMapper._insert_by_entity_(MiHelp.getTableName(entity.getClass()), MiHelp.getNotNullColumn(entity), entity);
     }

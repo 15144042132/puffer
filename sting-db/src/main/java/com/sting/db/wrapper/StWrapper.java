@@ -25,9 +25,11 @@ import java.util.function.Predicate;
  *
  * @param <T>
  */
-public class StWrapper<T>
-        extends AbstractWrapper<T, String, StWrapper<T>>
-        implements Update<StWrapper<T>, String>, Query<StWrapper<T>, T, String>, StJoin<StWrapper<T>, String> {
+public class StWrapper<T> extends AbstractWrapper<T, String, StWrapper<T>>
+        implements
+        Update<StWrapper<T>, String>,
+        Query<StWrapper<T>, T, String>,
+        StJoin<StWrapper<T>, String> {
 
     public StWrapper(Class<T> entityClass) {
         this.setEntityClass(entityClass);
@@ -113,6 +115,7 @@ public class StWrapper<T>
 
     @Override
     public StWrapper<T> setSql(boolean condition, String sql) {
+
         if (condition && StringUtils.isNotBlank(sql)) {
             sqlSet.add(sql);
         }
@@ -149,9 +152,9 @@ public class StWrapper<T>
     /**
      * StJOIN 接口实现
      */
+    private String joinString = "";
     private List<String> joinCondition = new ArrayList<>();
     private List<String> sqlJoin = new ArrayList<>();
-    private String joinString = "";
 
     @Override
     public StWrapper<T> leftJoin(String tableName) {
@@ -200,6 +203,9 @@ public class StWrapper<T>
         return typedThis;
     }
 
+    /**
+     * 返回完整 JOIN SQL
+     */
     @Override
     public String getSqlJoin() {
         if (CollectionUtils.isEmpty(sqlJoin)) {
@@ -208,6 +214,9 @@ public class StWrapper<T>
         return String.join(" ", sqlJoin);
     }
 
+    /**
+     * 返回当前的 JOIN ON 条件
+     */
     private String getJoinSqlCondition() {
         if (CollectionUtils.isEmpty(joinCondition)) {
             return null;

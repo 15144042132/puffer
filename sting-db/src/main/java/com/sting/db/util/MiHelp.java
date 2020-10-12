@@ -142,14 +142,16 @@ public class MiHelp {
     }
 
     /**
-     * 填充
+     * 填充 INSERT
      */
     public static <P extends StEntity> void insertFill(P entity) {
+        //所有需要填充的字段
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
         if (tableInfo == null) {
             TableInfoHelper.initTableInfo(null, entity.getClass());
         }
-        tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
+        List<TableFieldInfo> insert = TableInfoHelper.getTableInfo(entity.getClass()).getFieldList().stream().filter(TableFieldInfo::isWithInsertFill).collect(Collectors.toList());
+
 
         FillHandler handler;
         try {
@@ -157,8 +159,6 @@ public class MiHelp {
         } catch (Exception e) {
             return;
         }
-
-        List<TableFieldInfo> insert = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithInsertFill).collect(Collectors.toList());
 
         //循环遍历
         for (TableFieldInfo tableFieldInfo : insert) {
@@ -169,20 +169,21 @@ public class MiHelp {
             try {
                 setNotNullProperty(entity, property, o);
             } catch (Exception ignored) {
-
             }
         }
     }
 
     /**
-     * 填充
+     * 填充 UPDATE
      */
     public static <P extends StEntity> void updateFill(P entity) {
+        //所有需要填充的字段
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
         if (tableInfo == null) {
             TableInfoHelper.initTableInfo(null, entity.getClass());
         }
-        tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
+        List<TableFieldInfo> update = TableInfoHelper.getTableInfo(entity.getClass()).getFieldList().stream().filter(TableFieldInfo::isWithUpdateFill).collect(Collectors.toList());
+
 
         FillHandler handler;
         try {
@@ -190,9 +191,6 @@ public class MiHelp {
         } catch (Exception e) {
             return;
         }
-
-        List<TableFieldInfo> update = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithUpdateFill).collect(Collectors.toList());
-
         //循环遍历
         for (TableFieldInfo tableFieldInfo : update) {
             String property = tableFieldInfo.getProperty();
