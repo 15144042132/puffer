@@ -3,6 +3,7 @@
 <mapper namespace="com.sting.db.mapper.StMapper">
     <!--  #{entity[${key}]} 这样读取会报错-->
     <!--    keyColumn="entity.id"-->
+
     <!--  insert  -->
     <insert id="_insert_by_str_">
          ${sqlString}

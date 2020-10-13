@@ -156,12 +156,6 @@ public class DbHelp {
         return JSONObject.parseArray(s, tClass);
     }
 
-    public static <P extends StEntity> String getSqlSelect(StWrapper<P> wrapper) {
-        if (wrapper.getSqlSelect() == null || wrapper.getSqlSelect().equals("")) {
-            wrapper.select("*");
-        }
-        return wrapper.getSqlSelect();
-    }
 
     /**
      * 填充
@@ -171,8 +165,14 @@ public class DbHelp {
         if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
         tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
 
-        com.sting.db.util.FillHandler handler = ContextKit.getBean(com.sting.db.util.FillHandler.class);
         List<TableFieldInfo> insert = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithInsertFill).collect(Collectors.toList());
+
+        FillHandler handler = null;
+        try {
+            handler = ContextKit.getBean(FillHandler.class);
+        } catch (Exception ignored) {
+            return;
+        }
 
         //循环遍历
         for (TableFieldInfo tableFieldInfo : insert) {
@@ -195,9 +195,14 @@ public class DbHelp {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
         if (tableInfo == null) TableInfoHelper.initTableInfo(null, entity.getClass());
         tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-
-        com.sting.db.util.FillHandler handler = ContextKit.getBean(FillHandler.class);
         List<TableFieldInfo> update = tableInfo.getFieldList().stream().filter(TableFieldInfo::isWithUpdateFill).collect(Collectors.toList());
+
+        FillHandler handler;
+        try {
+            handler = ContextKit.getBean(FillHandler.class);
+        } catch (Exception ignored) {
+            return;
+        }
 
         //循环遍历
         for (TableFieldInfo tableFieldInfo : update) {

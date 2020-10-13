@@ -30,7 +30,7 @@ public interface StMapper extends StBaseMapper {
 
     long _insert_by_str_(@Param(SQL_STRING) String sqlString);
 
-    long _insert_by_map_(@Param(TABLE_NAME) String tableName, @Param(ENTITY) Map<?, ?> entity);
+    long _insert_by_map_(@Param(TABLE_NAME) String tableName, @Param(ENTITY) Map entity);
 
     long _update_by_str_(@Param(SQL_STRING) String sqlString);
 

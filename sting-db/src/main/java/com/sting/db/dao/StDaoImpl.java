@@ -1,6 +1,5 @@
 package com.sting.db.dao;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.sting.db.entity.StEntity;
 import com.sting.db.entity.StPage;
 import com.sting.db.mapper.StMapper;
@@ -71,11 +70,11 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> long insertOrUpdate(P entity, Wrapper<P> miWrapper) {
-        if (miMapper._count_by_wrapper_(((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), 1, ((StWrapper<P>) miWrapper)) <= 0) {
+    public <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> stWrapper) {
+        if (miMapper._count_by_wrapper_((stWrapper).getFromTable(), (stWrapper).getSqlJoin(), 1, (stWrapper)) <= 0) {
             return insert(entity);
         }
-        return miMapper._update_by_wrapper_(DbHelp.getTableName(entity), DbHelp.getNotNullColumn(entity), entity, ((StWrapper<P>) miWrapper));
+        return miMapper._update_by_wrapper_(DbHelp.getTableName(entity), DbHelp.getNotNullColumn(entity), entity, (stWrapper));
     }
 
     @Override
@@ -114,8 +113,8 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> long delete(Wrapper<P> miWrapper) {
-        return miMapper._delete_by_wrapper_(((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper));
+    public <P extends StEntity> long delete(StWrapper<P> stWrapper) {
+        return miMapper._delete_by_wrapper_((stWrapper).getFromTable(), (stWrapper));
     }
 
     @Override
@@ -135,19 +134,19 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> long update(Wrapper<P> miWrapper) {
+    public <P extends StEntity> long update(StWrapper<P> stWrapper) {
 
-        if (((StWrapper<P>) miWrapper).getSqlSet() == null) return 0;
+        if ((stWrapper).getSqlSet() == null) return 0;
 
-        return miMapper._update_by_wrapper_sql_set_(((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlSet(), ((StWrapper<P>) miWrapper));
+        return miMapper._update_by_wrapper_sql_set_((stWrapper).getFromTable(), (stWrapper).getSqlSet(), (stWrapper));
     }
 
     @Override
-    public <P extends StEntity> long update(P entity, Wrapper<P> miWrapper) {
+    public <P extends StEntity> long update(P entity, StWrapper<P> stWrapper) {
         if (entity == null) return 0;
 
         DbHelp.updateFill(entity);
-        return miMapper._update_by_wrapper_(DbHelp.getTableName(entity), DbHelp.getNotNullColumn(entity), entity, ((StWrapper<P>) miWrapper));
+        return miMapper._update_by_wrapper_(DbHelp.getTableName(entity), DbHelp.getNotNullColumn(entity), entity, (stWrapper));
     }
 
     @Override
@@ -191,19 +190,19 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> P selectOne(Wrapper<P> miWrapper) {
-        Map<?, ?> map = miMapper._select_one_map_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
-        return DbHelp.parsObj(map, ((StWrapper<P>) miWrapper).tClass());
+    public <P extends StEntity> P selectOne(StWrapper<P> stWrapper) {
+        Map<?, ?> map = miMapper._select_one_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+        return DbHelp.parsObj(map, (stWrapper).getEntityClass());
     }
 
     @Override
-    public <P extends StEntity> Map<String, Object> selectMap(Wrapper<P> miWrapper) {
-        return miMapper._select_one_map_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
+    public <P extends StEntity> Map<String, Object> selectMap(StWrapper<P> stWrapper) {
+        return miMapper._select_one_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
     }
 
     @Override
-    public <P extends StEntity> Object selectObj(Wrapper<P> miWrapper) {
-        return miMapper._select_one_obj_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
+    public <P extends StEntity> Object selectObj(StWrapper<P> stWrapper) {
+        return miMapper._select_one_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
     }
 
     @Override
@@ -213,19 +212,19 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> List<P> list(Wrapper<P> miWrapper) {
-        List<Map<String, Object>> maps = miMapper._select_list_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
-        return DbHelp.parsArray(maps, ((StWrapper<P>) miWrapper).tClass());
+    public <P extends StEntity> List<P> list(StWrapper<P> stWrapper) {
+        List<Map<String, Object>> maps = miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), stWrapper);
+        return DbHelp.parsArray(maps, stWrapper.getEntityClass());
     }
 
     @Override
     public <P extends StEntity> List<P> listByIds(Class<P> pClass, List<?> idList) {
         if (idList == null || idList.size() == 0) return new ArrayList<>();
 
-        Wrapper<P> miWrapper = new StWrapper<>(pClass);
-        ((StWrapper<P>) miWrapper).in(DbHelp.getTableId(pClass), idList);
-        List<Map<String, Object>> maps = miMapper._select_list_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
-        return DbHelp.parsArray(maps, ((StWrapper<P>) miWrapper).tClass());
+        StWrapper<P> stWrapper = new StWrapper<>(pClass);
+        (stWrapper).in(DbHelp.getTableId(pClass), idList);
+        List<Map<String, Object>> maps = miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
+        return DbHelp.parsArray(maps, (stWrapper).getEntityClass());
     }
 
     @Override
@@ -240,18 +239,18 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> List<Map<String, Object>> listMap(Wrapper<P> miWrapper) {
-        return miMapper._select_list_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
+    public <P extends StEntity> List<Map<String, Object>> listMap(StWrapper<P> stWrapper) {
+        return miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
     }
 
     @Override
-    public <P extends StEntity> List<Object> listObj(Wrapper<P> miWrapper) {
-        return miMapper._select_list_obj_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
+    public <P extends StEntity> List<Object> listObj(StWrapper<P> stWrapper) {
+        return miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
     }
 
     @Override
-    public <P extends StEntity, T> List<T> listObj(Wrapper<P> miWrapper, Class<T> tClass) {
-        List<Object> objects = miMapper._select_list_obj_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((StWrapper<P>) miWrapper));
+    public <P extends StEntity, T> List<T> listObj(StWrapper<P> stWrapper, Class<T> tClass) {
+        List<Object> objects = miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
         return DbHelp.parsArray(objects, tClass);
     }
 
@@ -262,47 +261,47 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> long count(Wrapper<P> miWrapper) {
-        return list(miWrapper).size();
-//         miMapper._count_by_wrapper_(((MiWrapper<P>) miWrapper).getFromTable(), ((MiWrapper<P>) miWrapper).getSqlJoin(), 1, ((MiWrapper<P>) miWrapper));
+    public <P extends StEntity> long count(StWrapper<P> stWrapper) {
+        return list(stWrapper).size();
+//         miMapper._count_by_wrapper_(( stWrapper).getFromTable(), ( stWrapper).getSqlJoin(), 1, ( stWrapper));
     }
 
     @Override
     public <P extends StEntity> StPage<P> page(StPage<P> page, Class<P> pClass) {
-        StWrapper<P> miWrapper = new StWrapper<P>(pClass);
-        miWrapper.eq("1", 1);
-        return page(page, miWrapper);
+        StWrapper<P> stWrapper = new StWrapper<P>(pClass);
+        stWrapper.eq("1", 1);
+        return page(page, stWrapper);
     }
 
     @Override
-    public <P extends StEntity> StPage<P> page(StPage<P> page, Wrapper<P> miWrapper) {
+    public <P extends StEntity> StPage<P> page(StPage<P> page, StWrapper<P> stWrapper) {
         long current = page.getCurrent();
         long size = page.getSize();
-        page.setTotal(count(miWrapper));
+        page.setTotal(count(stWrapper));
         long pages = (page.getTotal() + size - 1) / size;
         page.setPages(pages);
-        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((current - 1) * size), size, ((StWrapper<P>) miWrapper));
+        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), ((current - 1) * size), size, (stWrapper));
         page.setFirst(current == 1);
         page.setLast(current == page.getPages());
-        page.setRecords(DbHelp.parsArray(maps, ((StWrapper<P>) miWrapper).tClass()));
+        page.setRecords(DbHelp.parsArray(maps, (stWrapper).getEntityClass()));
         return page;
     }
 
     @Override
     public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass) {
-        Wrapper<P> miWrapper = new StWrapper<>(pClass);
-        ((StWrapper<P>) miWrapper).eq("1", 1);
-        return pageMap(page, ((StWrapper<P>) miWrapper));
+        StWrapper<P> stWrapper = new StWrapper<>(pClass);
+        (stWrapper).eq("1", 1);
+        return pageMap(page, (stWrapper));
     }
 
     @Override
-    public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Wrapper<P> miWrapper) {
+    public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, StWrapper<P> stWrapper) {
         long current = page.getCurrent();
         long size = page.getSize();
-        page.setTotal(count(miWrapper));
+        page.setTotal(count(stWrapper));
         long pages = (page.getTotal() + size - 1) / size;
         page.setPages(pages);
-        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(DbHelp.getSqlSelect(((StWrapper<P>) miWrapper)), ((StWrapper<P>) miWrapper).getFromTable(), ((StWrapper<P>) miWrapper).getSqlJoin(), ((current - 1) * size), size, ((StWrapper<P>) miWrapper));
+        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), ((current - 1) * size), size, (stWrapper));
         page.setFirst(current == 1);
         page.setLast(current == page.getPages());
         page.setRecords(maps);

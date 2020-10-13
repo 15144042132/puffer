@@ -35,10 +35,6 @@ public class StWrapper<T>
         Query<StWrapper<T>, T, String>,
         StJoin<StWrapper<T>, String> {
 
-
-    //实现了MiEntity接口的实体列
-    private Class<T> mipClass;
-
     //fromTable=null时，表名从typeClass读取
     private String fromTable = null;
 
@@ -52,8 +48,8 @@ public class StWrapper<T>
         return typedThis;
     }
 
-    public Class<T> tClass() {
-        return mipClass;
+    public Class<T> getEntityClass() {
+        return entityClass;
     }
 
     public String getFromTable() {
@@ -87,16 +83,13 @@ public class StWrapper<T>
 
 
     public StWrapper(Class<T> entityClass) {
-        boolean assignableFrom = StEntity.class.isAssignableFrom(mipClass);
+        boolean assignableFrom = StEntity.class.isAssignableFrom(entityClass);
         if (assignableFrom) {
-            TableName annotation = AnnotationUtils.findAnnotation(mipClass, TableName.class);
+            TableName annotation = AnnotationUtils.findAnnotation(entityClass, TableName.class);
             if (annotation != null) {
                 this.fromTable = annotation.value();
             }
         }
-        this.mipClass = mipClass;
-
-
         this.entityClass = entityClass;
         this.sqlSet = new ArrayList<>();
         super.initNeed();
@@ -190,6 +183,14 @@ public class StWrapper<T>
         }
         return typedThis;
     }
+
+    public String getSqlSelect() {
+        if (sqlSelect.getStringValue() == null || sqlSelect.getStringValue().isEmpty()) {
+            return " * ";
+        }
+        return sqlSelect.getStringValue();
+    }
+
 
     @Override
     public StWrapper<T> select(Predicate<TableFieldInfo> predicate) {
