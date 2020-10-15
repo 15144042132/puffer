@@ -1,4 +1,4 @@
-package com.sting.test.db;
+package com.sting.test.db.entity;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -11,30 +11,31 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 关联表（角色-菜单） 实体
+ * 关联表（角色-资源） 实体
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sys_link_role_user")
-public class SysLinkRoleUser extends Model<SysLinkRoleUser> implements StEntity {
+@TableName("sys_link_role_resource")
+public class SysLinkRoleResource extends Model<SysLinkRoleResource> implements StEntity {
 
-    public static final String TABLE_NAME = "sys_link_role_user";
+    public static final String TABLE_NAME = "sys_link_role_resource";
 
     private static final long serialVersionUID = 1L;
-
+    @TableField(exist = false)
+    private String resourceUrl;
 
     @TableId("role_id")
     private String roleId;
 
-    @TableField("user_id")
-    private String userId;
+    @TableField("resource_id")
+    private String resourceId;
 
 
     public static final String ROLE_ID = "role_id";
     public static final String ROLE_ID_TF = "roleId";
-    public static final String USER_ID = "user_id";
-    public static final String USER_ID_TF = "userId";
+    public static final String RESOURCE_ID = "resource_id";
+    public static final String RESOURCE_ID_TF = "resourceId";
 
     /**
      * 返回当前对象的JSON字符串

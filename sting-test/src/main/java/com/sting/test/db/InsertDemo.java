@@ -1,10 +1,10 @@
-package com.sting.test.db.insert;
+package com.sting.test.db;
 
 import com.alibaba.fastjson.JSON;
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
 import com.sting.test.PufferTestApplication;
-import com.sting.test.db.SysUser;
+import com.sting.test.db.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

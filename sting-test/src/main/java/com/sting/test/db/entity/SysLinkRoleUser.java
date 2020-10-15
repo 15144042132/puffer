@@ -1,7 +1,6 @@
-package com.sting.test.db;
+package com.sting.test.db.entity;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,42 +10,31 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDateTime;
-
 /**
- * 登录日志 实体
+ * 关联表（角色-菜单） 实体
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sys_log_login")
-public class SysLogLogin extends Model<SysLogLogin> implements StEntity {
+@TableName("sys_link_role_user")
+public class SysLinkRoleUser extends Model<SysLinkRoleUser> implements StEntity {
 
-    public static final String TABLE_NAME = "sys_log_login";
+    public static final String TABLE_NAME = "sys_link_role_user";
 
     private static final long serialVersionUID = 1L;
 
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    @TableId("role_id")
+    private String roleId;
 
-    /**
-     * 原文件名
-     */
     @TableField("user_id")
     private String userId;
 
-    /**
-     * 时间
-     */
-    @TableField("time")
-    private LocalDateTime time;
 
-    /**
-     * IP
-     */
-    @TableField("ip")
-    private String ip;
+    public static final String ROLE_ID = "role_id";
+    public static final String ROLE_ID_TF = "roleId";
+    public static final String USER_ID = "user_id";
+    public static final String USER_ID_TF = "userId";
 
     /**
      * 返回当前对象的JSON字符串

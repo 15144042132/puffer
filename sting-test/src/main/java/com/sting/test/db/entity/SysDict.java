@@ -1,4 +1,4 @@
-package com.sting.test.db;
+package com.sting.test.db.entity;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.*;
