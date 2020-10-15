@@ -80,13 +80,14 @@ public interface StDao {
 
     <P extends StEntity> List<P> list(String sqlString, Class<P> tClass);
 
+    <P extends StEntity> List<P> list(Class<P> pClass, Map<String, Object> mapCondition);
+
     List<Object> listObj(String sqlString);
 
     <T> List<T> listObj(String sqlString, Class<T> tClass);
 
     <P extends StEntity> List<P> listByIds(Class<P> pClass, List<?> idList);
 
-    <P extends StEntity> List<P> listMap(Class<P> pClass, Map<String, Object> mapCondition);
 
     List<Map<String, Object>> listMap(String sqlString);
 
@@ -108,9 +109,9 @@ public interface StDao {
 
     <P extends StEntity> StPage<P> page(StPage<P> page, StWrapper<P> stWrapper);
 
-    <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass);
-
-    <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, StWrapper<P> stWrapper);
+//    <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass);
+//
+//    <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, StWrapper<P> stWrapper);
 
 
     long delete(String sqlString);

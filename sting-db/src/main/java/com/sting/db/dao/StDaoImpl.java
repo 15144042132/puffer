@@ -262,7 +262,7 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> List<P> listMap(Class<P> pClass, Map<String, Object> mapCondition) {
+    public <P extends StEntity> List<P> list(Class<P> pClass, Map<String, Object> mapCondition) {
         List<Map> maps = miMapper._select_list_by_map_(DbHelp.getTableName(pClass), mapCondition);
         return DbHelp.parsArray(maps, pClass);
     }
@@ -321,26 +321,26 @@ public class StDaoImpl implements StDao {
         return page;
     }
 
-    @Override
-    public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass) {
-        StWrapper<P> stWrapper = new StWrapper<>(pClass);
-        (stWrapper).eq("1", 1);
-        return pageMap(page, (stWrapper));
-    }
+//    @Override
+//    public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass) {
+//        StWrapper<P> stWrapper = new StWrapper<>(pClass);
+//        (stWrapper).eq("1", 1);
+//        return pageMap(page, (stWrapper));
+//    }
 
-    @Override
-    public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, StWrapper<P> stWrapper) {
-        long current = page.getCurrent();
-        long size = page.getSize();
-        page.setTotal(count(stWrapper));
-        long pages = (page.getTotal() + size - 1) / size;
-        page.setPages(pages);
-        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), ((current - 1) * size), size, (stWrapper));
-        page.setFirst(current == 1);
-        page.setLast(current == page.getPages());
-        page.setRecords(maps);
-        return page;
-    }
+//    @Override
+//    public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, StWrapper<P> stWrapper) {
+//        long current = page.getCurrent();
+//        long size = page.getSize();
+//        page.setTotal(count(stWrapper));
+//        long pages = (page.getTotal() + size - 1) / size;
+//        page.setPages(pages);
+//        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), ((current - 1) * size), size, (stWrapper));
+//        page.setFirst(current == 1);
+//        page.setLast(current == page.getPages());
+//        page.setRecords(maps);
+//        return page;
+//    }
 
 
     @Override

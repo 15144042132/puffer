@@ -82,10 +82,7 @@ public class SelectDemo {
     public void list() {
         //只查询ID字段
         StWrapper<SysUser> wrapper = new StWrapper<>(SysUser.class).select("id").ne("id", 0);
-        Map<String, Object> stringObjectMap = dao.list(wrapper);
         SysUser sysUser = dao.selectById(SysUser.class, 1);
-        log.info("stringObjectMap " + JSON.toJSONString(stringObjectMap));
-        log.info("sysUser " + JSON.toJSONString(sysUser));
     }
 
 
