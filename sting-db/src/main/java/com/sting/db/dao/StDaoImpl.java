@@ -34,6 +34,39 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
+    public <P extends StEntity> long insert(P... entity) {
+        int count = 0;
+        for (P e : entity) {
+            count += insert(e);
+        }
+        return count;
+    }
+
+    @Override
+    public long insert(String sqlString) {
+        return miMapper._insert_by_str_(sqlString);
+    }
+
+    @Override
+    public long insert(String... sqlString) {
+        int count = 0;
+        for (String sql : sqlString) {
+            count += insert(sql);
+        }
+        return count;
+    }
+
+    @Override
+    public long insert(String tableName, Map map) {
+        return miMapper._insert_by_map_(tableName, map);
+    }
+
+    @Override
+    public <P extends StEntity> long insert(Class<P> pClass, Map map) {
+        return insert(DbHelp.getTableName(pClass), map);
+    }
+
+    @Override
     public <P extends StEntity> long insertBatch(List<P> entityList) {
         return insertBatch(entityList, 1000);
     }
@@ -111,6 +144,7 @@ public class StDaoImpl implements StDao {
         long l1 = updateBatchById(listUpdate, batchSize);
         return (l + l1);
     }
+
 
     @Override
     public <P extends StEntity> long delete(StWrapper<P> stWrapper) {
@@ -308,15 +342,6 @@ public class StDaoImpl implements StDao {
         return page;
     }
 
-    @Override
-    public long insert(String sqlString) {
-        return miMapper._insert_by_str_(sqlString);
-    }
-
-    @Override
-    public long insert(String tableName, Map map) {
-        return miMapper._insert_by_map_(tableName, map);
-    }
 
     @Override
     public long delete(String sqlString) {

@@ -17,66 +17,115 @@ import java.util.Map;
  */
 public interface StDao {
     long insert(String sqlString);
-    long insert(String tableName, Map map);
-    <P extends StEntity> long insert(P entity);
-    <P extends StEntity> long insertBatch(List<P> entityList);
-    <P extends StEntity> long insertBatch(List<P> entityList, int batchSize);
-    <P extends StEntity> long insertOrUpdate(P entity);
-    <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> stWrapper);
-    <P extends StEntity> long insertOrUpdateBatch(List<P> entityList);
-    <P extends StEntity> long insertOrUpdateBatch(List<P> entityList, int batchSize);
 
+    long insert(String... sqlString);
+
+    long insert(String tableName, Map map);
+
+    <P extends StEntity> long insert(Class<P> pClass, Map map);
+
+    <P extends StEntity> long insert(P entity);
+
+    <P extends StEntity> long insert(P... entity);
+
+    <P extends StEntity> long insertBatch(List<P> entityList);
+
+    <P extends StEntity> long insertBatch(List<P> entityList, int batchSize);
+
+    <P extends StEntity> long insertOrUpdate(P entity);
+
+    <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> stWrapper);
+
+    <P extends StEntity> long insertOrUpdateBatch(List<P> entityList);
+
+    <P extends StEntity> long insertOrUpdateBatch(List<P> entityList, int batchSize);
 
     // 根据 entity 条件，删除记录
     <P extends StEntity> long delete(StWrapper<P> stWrapper);
+
     <P extends StEntity> long deleteById(Class<P> pClass, Serializable id);
+
     <P extends StEntity, MP extends Map<?, ?>> long deleteByMap(Class<P> pClass, MP columnMap);
+
     <P extends StEntity> long deleteByIds(Class<P> pClass, List<?> idList);
 
     <P extends StEntity> long update(StWrapper<P> stWrapper);
+
     <P extends StEntity> long update(P entity, StWrapper<P> stWrapper);
+
     <P extends StEntity> long update(P entity);
+
     <P extends StEntity> long updateBatchById(List<P> entityList);
+
     <P extends StEntity> long updateBatchById(List<P> entityList, int batchSize);
+
     <P extends StEntity> P selectById(Class<P> pClass, Serializable id);
 
     long count(String sqlString);
+
     <P extends StEntity> P selectOne(StWrapper<P> stWrapper);
+
     <P extends StEntity> Map<String, Object> selectMap(StWrapper<P> stWrapper);
 
 
     <P extends StEntity> Object selectObj(StWrapper<P> stWrapper);
+
     <P extends StEntity> List<P> list(Class<P> pClass);
+
     <P extends StEntity> List<P> list(StWrapper<P> stWrapper);
+
     <P extends StEntity> List<P> listByIds(Class<P> pClass, List<?> idList);
+
     <P extends StEntity> List<P> listMap(Class<P> pClass, Map<String, Object> mapCondition);
+
     <P extends StEntity> List<Map<String, Object>> listMap(Class<P> pClass);
+
     <P extends StEntity> List<Map<String, Object>> listMap(StWrapper<P> stWrapper);
+
     <P extends StEntity> List<Object> listObj(StWrapper<P> stWrapper);
+
     <P extends StEntity, T> List<T> listObj(StWrapper<P> stWrapper, Class<T> tClass);
+
     <P extends StEntity> long count(Class<P> pClass);
+
     <P extends StEntity> long count(StWrapper<P> stWrapper);
+
     <P extends StEntity> StPage<P> page(StPage<P> page, Class<P> pClass);
+
     <P extends StEntity> StPage<P> page(StPage<P> page, StWrapper<P> stWrapper);
+
     <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass);
+
     <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, StWrapper<P> stWrapper);
 
 
     long delete(String sqlString);
+
     long deleteById(String tableName, Serializable id);
+
     long deleteByIds(String tableName, List<?> idList);
+
     long update(String sqlString);
+
     long update(String tableName, Map map, Serializable id);
+
     long updateByIds(String tableName, Map map, List<Serializable> ids);
 
 
     Object selectObj(String sqlString);
+
     Map<String, Object> selectOne(String sqlString);
+
     <P extends StEntity> P selectOne(String sqlString, Class<P> tClass);
+
     List<Object> listObj(String sqlString);
-     <T> List<T> listObj(String sqlString, Class<T> tClass);
+
+    <T> List<T> listObj(String sqlString, Class<T> tClass);
+
     List<Map<String, Object>> list(String sqlString);
+
     <P extends StEntity> List<P> list(String sqlString, Class<P> tClass);
+
     <P extends StEntity> StPage<P> page(StPage page, Class<P> pClass, String sqlString);
 
 }
