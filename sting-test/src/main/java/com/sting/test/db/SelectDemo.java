@@ -36,11 +36,6 @@ public class SelectDemo {
         StWrapper<SysUser> wrapper = new StWrapper<>(SysUser.class).ne("id", 0);
         SysUser sysUser = dao.selectOne(wrapper);
         sysUser.print();
-
-        //字符串查询
-        Map<String, Object> stringObjectMap = dao.selectOne("select * from sys_user where id!=0");
-        log.info(JSON.toJSONString(stringObjectMap));
-
     }
 
     /**
@@ -59,24 +54,27 @@ public class SelectDemo {
         log.info("o " + o);
     }
 
-  /**
+    /**
      * 3. selectMap 和 selectById
      * 两种用法
      */
     @Test
     public void selectMap_selectById() {
-        //        只查询ID字段
+
+        // 只查询ID字段
+        Map<String, Object> stringObjectMap1 = dao.selectMap("select id from sys_user where id!=0");
         StWrapper<SysUser> wrapper = new StWrapper<>(SysUser.class).select("id").ne("id", 0);
         Map<String, Object> stringObjectMap = dao.selectMap(wrapper);
+        log.info(JSON.toJSONString(stringObjectMap1));
+        log.info(JSON.toJSONString(stringObjectMap));
+
         SysUser sysUser = dao.selectById(SysUser.class, 1);
-        log.info("stringObjectMap " +JSON.toJSONString(stringObjectMap) );
-        log.info("sysUser " +JSON.toJSONString(sysUser) );
+        log.info("stringObjectMap " + JSON.toJSONString(stringObjectMap));
+        log.info("sysUser " + JSON.toJSONString(sysUser));
     }
 
 
-
-
-  /**
+    /**
      * 4. list
      * 两种用法
      */
@@ -84,14 +82,11 @@ public class SelectDemo {
     public void list() {
         //只查询ID字段
         StWrapper<SysUser> wrapper = new StWrapper<>(SysUser.class).select("id").ne("id", 0);
-        Map<String, Object> stringObjectMap = dao.selectMap(wrapper);
+        Map<String, Object> stringObjectMap = dao.list(wrapper);
         SysUser sysUser = dao.selectById(SysUser.class, 1);
-        log.info("stringObjectMap " +JSON.toJSONString(stringObjectMap) );
-        log.info("sysUser " +JSON.toJSONString(sysUser) );
+        log.info("stringObjectMap " + JSON.toJSONString(stringObjectMap));
+        log.info("sysUser " + JSON.toJSONString(sysUser));
     }
-
-
-
 
 
     public void clearDb() {

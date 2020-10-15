@@ -378,7 +378,7 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public Map<String, Object> selectOne(String sqlString) {
+    public Map<String, Object> selectMap(String sqlString) {
         return miMapper._select_one_map_by_str_(sqlString);
     }
 
@@ -399,7 +399,7 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public List<Map<String, Object>> list(String sqlString) {
+    public List<Map<String, Object>> listMap(String sqlString) {
         return miMapper._select_list_map_by_str_(sqlString);
     }
 
