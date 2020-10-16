@@ -218,7 +218,7 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> P selectById(Class<P> pClass, Serializable id) {
+    public <P extends StEntity> P selectOne(Class<P> pClass, Serializable id) {
         Map<?, ?> map = miMapper._select_one_map_by_id_(DbHelp.getTableName(pClass), DbHelp.getTableId(pClass), id);
         return DbHelp.parsObj(map, pClass);
     }
@@ -232,6 +232,11 @@ public class StDaoImpl implements StDao {
     @Override
     public <P extends StEntity> Map<String, Object> selectMap(StWrapper<P> stWrapper) {
         return miMapper._select_one_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+    }
+
+    @Override
+    public <P extends StEntity> Map<String, Object> selectMap(Class<P> pClass, Serializable id) {
+        return miMapper._select_one_map_by_id_(DbHelp.getTableName(pClass), DbHelp.getTableId(pClass), id);
     }
 
     @Override
@@ -252,7 +257,7 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> List<P> listByIds(Class<P> pClass, List<?> idList) {
+    public <P extends StEntity> List<P> list(Class<P> pClass, List<Serializable> idList) {
         if (idList == null || idList.size() == 0) return new ArrayList<>();
 
         StWrapper<P> stWrapper = new StWrapper<>(pClass);
@@ -261,11 +266,12 @@ public class StDaoImpl implements StDao {
         return DbHelp.parsArray(maps, (stWrapper).getEntityClass());
     }
 
-    @Override
-    public <P extends StEntity> List<P> list(Class<P> pClass, Map<String, Object> mapCondition) {
-        List<Map> maps = miMapper._select_list_by_map_(DbHelp.getTableName(pClass), mapCondition);
-        return DbHelp.parsArray(maps, pClass);
-    }
+
+//    @Override
+//    public <P extends StEntity> List<P> list(Class<P> pClass, Map<String, Object> mapCondition) {
+//        List<Map> maps = miMapper._select_list_by_map_(DbHelp.getTableName(pClass), mapCondition);
+//        return DbHelp.parsArray(maps, pClass);
+//    }
 
     @Override
     public <P extends StEntity> List<Map<String, Object>> listMap(Class<P> pClass) {
@@ -282,11 +288,12 @@ public class StDaoImpl implements StDao {
         return miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
     }
 
-    @Override
-    public <P extends StEntity, T> List<T> listObj(StWrapper<P> stWrapper, Class<T> tClass) {
-        List<Object> objects = miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
-        return DbHelp.parsArray(objects, tClass);
-    }
+
+//    @Override
+//    public <P extends StEntity, T> List<T> listObj(StWrapper<P> stWrapper, Class<T> tClass) {
+//        List<Object> objects = miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+//        return DbHelp.parsArray(objects, tClass);
+//    }
 
     @Override
     public <P extends StEntity> long count(Class<P> pClass) {
@@ -403,14 +410,14 @@ public class StDaoImpl implements StDao {
         return miMapper._select_list_map_by_str_(sqlString);
     }
 
-    @Override
-    public <T> List<T> listObj(String sqlString, Class<T> tClass) {
-        List<Object> objects = miMapper._select_list_obj_by_str_(sqlString);
-        return DbHelp.parsArray(objects, tClass);
-    }
+//    @Override
+//    public <T> List<T> listObj(String sqlString, Class<T> tClass) {
+//        List<Object> objects = miMapper._select_list_obj_by_str_(sqlString);
+//        return DbHelp.parsArray(objects, tClass);
+//    }
 
     @Override
-    public <P extends StEntity> List<P> list(String sqlString, Class<P> tClass) {
+    public <P extends StEntity> List<P> list(Class<P> tClass,String sqlString ) {
         List<Map<String, Object>> maps = miMapper._select_list_map_by_str_(sqlString);
         return DbHelp.parsArray(maps, tClass);
     }

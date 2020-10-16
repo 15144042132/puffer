@@ -139,6 +139,13 @@ public interface StMapper extends StBaseMapper {
             @Param(EW) StWrapper<?> wrapper
     );
 
+    List<Object> _select_list_obj_by_ids_(
+            @Param(COLUMN) String column,
+            @Param(TABLE_NAME) String tableName,
+            @Param("join") String join,
+            @Param(EW) StWrapper<?> wrapper
+    );
+
     List<Map> _select_list_by_map_(
             @Param(TABLE_NAME) String tableName,
             @Param(COLUMN) Map column

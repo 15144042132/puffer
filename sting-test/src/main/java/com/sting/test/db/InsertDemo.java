@@ -38,7 +38,7 @@ public class InsertDemo {
         long insert = dao.insert(sysUser);
         sysUser.print();
 
-        SysUser sysUser1 = dao.selectById(SysUser.class, sysUser.getId());
+        SysUser sysUser1 = dao.selectOne(SysUser.class, sysUser.getId());
         sysUser1.print();
 
 
