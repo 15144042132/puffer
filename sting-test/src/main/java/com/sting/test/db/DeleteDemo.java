@@ -22,7 +22,7 @@ public class DeleteDemo {
     private StDao dao;
 
     /**
-     * 1.delete
+     * delete 操作
      * ...字符串操作
      * ...条件构造器
      * ...按照ID删除
@@ -30,7 +30,7 @@ public class DeleteDemo {
      * ...按照Map条件删除
      */
     @Test
-    public void selectOne() {
+    public void delete() {
         //字符串操作
         dao.delete("delete from sys_user where id=9999");
 
@@ -50,6 +50,7 @@ public class DeleteDemo {
         mapCondition.put("id", 9999);
         dao.deleteByMap("sys_user", mapCondition);
         dao.deleteByMap(SysUser.class, mapCondition);
+
 
     }
 
