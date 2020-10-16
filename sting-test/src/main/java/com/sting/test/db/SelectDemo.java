@@ -20,6 +20,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 1.查询单条数据
+ * 2.查询集合数据
+ * 3.分页查询
+ * 4.join查询与实体类映射
+ * <p>
+ * 不推荐在项目中使用 dao的字符串操作方法
+ *
+ * @author WangYongJi
+ */
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PufferTestApplication.class)
@@ -196,15 +206,15 @@ public class SelectDemo {
 
         //leftJoin
         wrapper.leftJoin(SysRole.class);
-        wrapper.on("1","1");
+        wrapper.on("1", "1");
 
         //leftJoin
         wrapper.leftJoin(SysLinkRoleUser.class);
-        wrapper.on("1","1");
+        wrapper.on("1", "1");
 
         //leftJoin
         wrapper.leftJoin("sys_log_login");
-        wrapper.on("1","1");
+        wrapper.on("1", "1");
 
         List<SysUserJoin> list = dao.list(wrapper);
         log.info("join 操作          " + JSON.toJSONString(list));

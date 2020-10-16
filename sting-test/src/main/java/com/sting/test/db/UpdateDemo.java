@@ -14,6 +14,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * * 1...字符串操作
+ * * 2...实体类，根据ID修改
+ * * 3...条件构造器 +实体类
+ * * 4...纯条件构造器，修改
+ * * 5...Map 修改
+ * * 6...Map 批量修改
+ * * 7...实体类 批量修改
+ * <p>
+ * 不推荐在项目中使用 dao的字符串操作方法
+ *
+ * @author WangYongJi
+ */
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PufferTestApplication.class)
