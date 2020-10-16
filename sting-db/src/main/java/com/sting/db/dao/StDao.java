@@ -71,6 +71,7 @@ public interface StDao {
     Map<String, Object> selectMap(String sqlString);
 
     <P extends StEntity> Map<String, Object> selectMap(StWrapper<P> stWrapper);
+
     <P extends StEntity> Map<String, Object> selectMap(Class<P> pClass, Serializable id);
 
     <P extends StEntity> Object selectObj(StWrapper<P> stWrapper);

@@ -2,9 +2,13 @@ package com.sting.test.db;
 
 import com.alibaba.fastjson.JSON;
 import com.sting.db.dao.StDao;
+import com.sting.db.entity.StPage;
 import com.sting.db.wrapper.StWrapper;
 import com.sting.test.PufferTestApplication;
+import com.sting.test.db.entity.SysLinkRoleUser;
+import com.sting.test.db.entity.SysRole;
 import com.sting.test.db.entity.SysUser;
+import com.sting.test.db.entity.SysUserJoin;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,7 +89,6 @@ public class SelectDemo {
         log.info("查询name字段--返回Object " + JSON.toJSONString(obj2));
     }
 
-
     /**
      * 2. 查询集合数据
      * ... 返回实体类
@@ -94,6 +97,12 @@ public class SelectDemo {
      */
     @Test
     public void list() {
+        /**
+         * 1.返回实体类
+         */
+        //ByIds
+        List<SysUser> list3 = dao.list(SysUser.class, Arrays.asList(1, 2, 3, 4));
+
         //字符串查询
         List<SysUser> list = dao.list(SysUser.class, "select * from sys_user where id != 0");
 
@@ -107,26 +116,9 @@ public class SelectDemo {
                         .ne("id", 0);
         List<SysUser> list2 = dao.list(wrapper);
 
-        //ByIds
-        List<SysUser> list3 = dao.list(SysUser.class, Arrays.asList(1, 2, 3, 4));
-
-        //输出测试结果
-        log.info("字符串查询 " + JSON.toJSONString(list));
-        log.info("实体类查询 " + JSON.toJSONString(list1));
-        log.info("条件构造器查询 " + JSON.toJSONString(list2));
-        log.info("ByIds " + JSON.toJSONString(list3));
-    }
-
-
-    /**
-     * 4. listMap~~~三种用法
-     * <p>
-     * 5.1字符串查询
-     * 5.2实体类查询
-     * 5.3条件构造器查询
-     */
-    @Test
-    public void listMap() {
+        /**
+         * 2.返回Map
+         */
         //字符串查询
         List<Map<String, Object>> maps1 = dao.listMap("select * from sys_user where id != 0");
 
@@ -134,41 +126,89 @@ public class SelectDemo {
         List<Map<String, Object>> maps2 = dao.listMap(SysUser.class);
 
         //条件构造器查询
-        StWrapper<SysUser> wrapper =
+        StWrapper<SysUser> wrapper2 =
                 new StWrapper<>(SysUser.class)
                         .select("id")
                         .ne("id", 0);
-        List<Map<String, Object>> maps3 = dao.listMap(wrapper);
+        List<Map<String, Object>> maps3 = dao.listMap(wrapper2);
 
-        //输出测试结果
-        log.info("字符串查询 " + JSON.toJSONString(maps1));
-        log.info("实体类查询 " + JSON.toJSONString(maps2));
-        log.info("条件构造器查询 " + JSON.toJSONString(maps3));
-    }
-
-    /**
-     * 6. listObject~~~查询一个字段，返回Object
-     * <p>
-     * 6.字符串查询
-     * 6.条件构造器查询
-     */
-    @Test
-    public void listObj() {
+        /**
+         * 3.返回Object,只能查询一个字段
+         */
         //字符串查询
         List<Object> objects1 = dao.listObj("select name from sys_user where id != 0");
 
         //条件构造器查询
-        StWrapper<SysUser> wrapper =
+        StWrapper<SysUser> wrapper3 =
                 new StWrapper<>(SysUser.class)
                         .select("name")
                         .ne("id", 0);
-        List<Object> objects3 = dao.listObj(wrapper);
+        List<Object> objects3 = dao.listObj(wrapper3);
+
 
         //输出测试结果
-        log.info("字符串查询   " + JSON.toJSONString(objects1));
-        log.info("条件构造器查询   " + JSON.toJSONString(objects3));
+        log.info("字符串查询--返回实体类 " + JSON.toJSONString(list));
+        log.info("泛型查询--返回实体类 " + JSON.toJSONString(list1));
+        log.info("条件构造器查询--返回实体类 " + JSON.toJSONString(list2));
+        log.info("ByIds--返回实体类 " + JSON.toJSONString(list3));
+
+        log.info("字符串查询--返回Map " + JSON.toJSONString(maps1));
+        log.info("泛型查询--返回Map " + JSON.toJSONString(maps2));
+        log.info("条件构造器查询--返回Map " + JSON.toJSONString(maps3));
+
+        log.info("字符串查询-返回Object,只能查询一个字段   " + JSON.toJSONString(objects1));
+        log.info("条件构造器查询-返回Object,只能查询一个字段   " + JSON.toJSONString(objects3));
     }
 
+    /**
+     * 3. 分页 Page，默认第1页，查询10条数据
+     */
+    @Test
+    public void page() {
+        StPage<SysUser> page1 = dao.page(new StPage<>(), SysUser.class);
+        StPage<SysUser> page2 = dao.page(new StPage<>(1, 10), SysUser.class);
+
+        StPage<SysUser> page3 = dao.page(
+                new StPage<>(1, 10),
+                new StWrapper<>(SysUser.class).ne("id", 0)
+        );
+
+        StPage<SysUser> page4 = dao.page(
+                new StPage<>(1, 10),
+                SysUser.class,
+                "select * from sys_user where id !=0"
+        );
+
+
+        //输出测试结果
+        log.info("默认第一页，无条件--page1 " + JSON.toJSONString(page1));
+        log.info("第一页，无条件--page2    " + JSON.toJSONString(page2));
+        log.info("条件构造器--page3       " + JSON.toJSONString(page3));
+        log.info("字符串--page4          " + JSON.toJSONString(page4));
+    }
+
+    /**
+     * 4. join 操作
+     */
+    @Test
+    public void join() {
+        StWrapper<SysUserJoin> wrapper = new StWrapper<>(SysUserJoin.class);
+
+        //leftJoin
+        wrapper.leftJoin(SysRole.class);
+        wrapper.on("1","1");
+
+        //leftJoin
+        wrapper.leftJoin(SysLinkRoleUser.class);
+        wrapper.on("1","1");
+
+        //leftJoin
+        wrapper.leftJoin("sys_log_login");
+        wrapper.on("1","1");
+
+        List<SysUserJoin> list = dao.list(wrapper);
+        log.info("join 操作          " + JSON.toJSONString(list));
+    }
 
     public void clearDb() {
         dao.delete("delete  from sys_user where 1=1");

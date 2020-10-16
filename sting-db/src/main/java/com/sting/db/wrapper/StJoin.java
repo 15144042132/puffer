@@ -1,9 +1,11 @@
 package com.sting.db.wrapper;
 
+import com.sting.db.entity.StEntity;
+
 import java.io.Serializable;
 
 /**
- * 多表联查
+ * 单表 Join 多表
  * join
  * left join
  * right join
@@ -21,6 +23,8 @@ public interface StJoin<Children, R> extends Serializable {
      */
     Children leftJoin(String tableName);
 
+    <P extends StEntity> Children leftJoin(Class<P> tClass);
+
     /**
      * 设置 RIGHT_JOIN 联查表名
      *
@@ -29,6 +33,8 @@ public interface StJoin<Children, R> extends Serializable {
      */
     Children rightJoin(String tableName);
 
+    <P extends StEntity> Children rightJoin(Class<P> tClass);
+
     /**
      * 设置 JOIN 联查表名
      *
@@ -36,6 +42,8 @@ public interface StJoin<Children, R> extends Serializable {
      * @return children
      */
     Children join(String tableName);
+
+    <P extends StEntity> Children join(Class<P> tClass);
 
 
     /**

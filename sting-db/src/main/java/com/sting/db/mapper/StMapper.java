@@ -42,6 +42,8 @@ public interface StMapper extends StBaseMapper {
 
     List<Map<String, Object>> _select_list_map_by_str_(@Param(SQL_STRING) String sqlString);
 
+    List<Object> _select_count_by_str_(@Param(SQL_STRING) String sqlString);
+
     List<Object> _select_list_obj_by_str_(@Param(SQL_STRING) String sqlString);
 
     long _update_by_map_id_(@Param(TABLE_NAME) Object tableName, @Param(ENTITY) Map<?, ?> entity, @Param(ID) Object id);
@@ -100,28 +102,29 @@ public interface StMapper extends StBaseMapper {
             @Param(EW) StWrapper<?> wrapper
     );
 
+    long _select_count_by_table_(@Param(TABLE_NAME) String tableName);
+
     long _update_batch_by_id_(
             @Param(TABLE_NAME) String tableName,
             @Param(COLUMN) Map column,
             @Param(ENTITY_LIST) List<?> entityList
     );
 
-    long _count_by_id_(
+    long _select_count_by_id_(
             @Param(TABLE_NAME) String tableName,
             @Param(COLUMN) Object column,
             @Param(ID) Object id
     );
 
-    long _count_(@Param(TABLE_NAME) String tableName);
-
-    long _count_by_wrapper_(
+    long _select_count_by_wrapper_(
             @Param(TABLE_NAME) String tableName,
-            @Param(JOIN) String join,
             @Param(COLUMN) Object column,
+            @Param(JOIN) String join,
             @Param(EW) StWrapper<?> wrapper
     );
 
     List<Map<String, Object>> _select_list_map_(@Param(TABLE_NAME) String tableName);
+
 
     List<Object> _select_list_obj_(@Param(TABLE_NAME) String tableName);
 

@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.sting.db.entity.StEntity;
+import com.sting.db.util.DbHelp;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.ArrayList;
@@ -224,6 +225,11 @@ public class StWrapper<T>
     }
 
     @Override
+    public <P extends StEntity> StWrapper<T> leftJoin(Class<P> tClass) {
+        return join(DbHelp.getTableName(tClass));
+    }
+
+    @Override
     public StWrapper<T> rightJoin(String tableName) {
         if (!joinString.isEmpty()) {
             sqlJoin.add(joinString + getJoinSqlCondition());
@@ -234,6 +240,11 @@ public class StWrapper<T>
     }
 
     @Override
+    public <P extends StEntity> StWrapper<T> rightJoin(Class<P> tClass) {
+        return join(DbHelp.getTableName(tClass));
+    }
+
+    @Override
     public StWrapper<T> join(String tableName) {
         if (!joinString.isEmpty()) {
             sqlJoin.add(joinString + getJoinSqlCondition());
@@ -241,6 +252,11 @@ public class StWrapper<T>
         }
         joinString = WrapperConst.JOIN + tableName + WrapperConst.ON;
         return typedThis;
+    }
+
+    @Override
+    public <P extends StEntity> StWrapper<T> join(Class<P> tClass) {
+        return join(DbHelp.getTableName(tClass));
     }
 
     @Override
@@ -280,5 +296,13 @@ public class StWrapper<T>
         return String.join(StringPool.COMMA, joinCondition);
     }
 
-
+    /**
+     * 二次处理 null 条件问题
+     */
+    public String getSqlSegmentHandler() {
+        if (this.getSqlSegment() == null || this.getSqlSegment().isEmpty()) {
+            this.eq("1", "1");
+        }
+        return getSqlSegment();
+    }
 }

@@ -96,7 +96,7 @@ public class StDaoImpl implements StDao {
     @Override
     public <P extends StEntity> long insertOrUpdate(P entity) {
         Object idValue = DbHelp.getIdValue(entity);
-        if (idValue == null || miMapper._count_by_id_(DbHelp.getTableName(entity.getClass()), DbHelp.getTableId(entity), idValue) <= 0) {
+        if (idValue == null || miMapper._select_count_by_id_(DbHelp.getTableName(entity.getClass()), DbHelp.getTableId(entity), idValue) <= 0) {
             return insert(entity);
         }
         return update(entity);
@@ -104,7 +104,7 @@ public class StDaoImpl implements StDao {
 
     @Override
     public <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> stWrapper) {
-        if (miMapper._count_by_wrapper_((stWrapper).getFromTable(), (stWrapper).getSqlJoin(), 1, (stWrapper)) <= 0) {
+        if (miMapper._select_count_by_wrapper_((stWrapper).getFromTable(), 1, (stWrapper).getSqlJoin(), (stWrapper)) <= 0) {
             return insert(entity);
         }
         return miMapper._update_by_wrapper_(DbHelp.getTableName(entity), DbHelp.getNotNullColumn(entity), entity, (stWrapper));
@@ -126,7 +126,7 @@ public class StDaoImpl implements StDao {
         for (P p : listEntity) {
             Object idValue = DbHelp.getIdValue(p);
             if (idValue != null) {
-                long count = miMapper._count_by_id_(tableName, tableId, idValue);
+                long count = miMapper._select_count_by_id_(tableName, tableId, idValue);
                 if (count <= 0) {
                     listAdd.add(p);
                 } else {
@@ -262,7 +262,7 @@ public class StDaoImpl implements StDao {
 
         StWrapper<P> stWrapper = new StWrapper<>(pClass);
         (stWrapper).in(DbHelp.getTableId(pClass), idList);
-        List<Map<String, Object>> maps = miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
+        List<Map<String, Object>> maps = miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), stWrapper);
         return DbHelp.parsArray(maps, (stWrapper).getEntityClass());
     }
 
@@ -295,17 +295,6 @@ public class StDaoImpl implements StDao {
 //        return DbHelp.parsArray(objects, tClass);
 //    }
 
-    @Override
-    public <P extends StEntity> long count(Class<P> pClass) {
-        return list(pClass).size();
-//        return miMapper._count_(MiHelp.getTableName(pClass));
-    }
-
-    @Override
-    public <P extends StEntity> long count(StWrapper<P> stWrapper) {
-        return list(stWrapper).size();
-//         miMapper._count_by_wrapper_(( stWrapper).getFromTable(), ( stWrapper).getSqlJoin(), 1, ( stWrapper));
-    }
 
     @Override
     public <P extends StEntity> StPage<P> page(StPage<P> page, Class<P> pClass) {
@@ -363,7 +352,6 @@ public class StDaoImpl implements StDao {
     @Override
     public long deleteByIds(String tableName, List<?> idList) {
         if (idList == null || idList.size() == 0) return 0;
-
         return miMapper._delete_by_ids_(tableName, idList);
     }
 
@@ -380,7 +368,6 @@ public class StDaoImpl implements StDao {
     @Override
     public long updateByIds(String tableName, Map map, List<Serializable> ids) {
         if (ids == null || ids.size() == 0) return 0;
-
         return miMapper._update_by_map_ids_(tableName, map, ids);
     }
 
@@ -417,15 +404,24 @@ public class StDaoImpl implements StDao {
 //    }
 
     @Override
-    public <P extends StEntity> List<P> list(Class<P> tClass,String sqlString ) {
+    public <P extends StEntity> List<P> list(Class<P> tClass, String sqlString) {
         List<Map<String, Object>> maps = miMapper._select_list_map_by_str_(sqlString);
         return DbHelp.parsArray(maps, tClass);
     }
 
     @Override
     public long count(String sqlString) {
-        return miMapper._select_list_map_(sqlString).size();
-//        return miMapper._count_by_str_(sqlString);
+        return miMapper._select_count_by_str_(sqlString).size();
+    }
+
+    @Override
+    public <P extends StEntity> long count(Class<P> pClass) {
+        return miMapper._select_count_by_table_(DbHelp.getTableName(pClass));
+    }
+
+    @Override
+    public <P extends StEntity> long count(StWrapper<P> stWrapper) {
+        return miMapper._select_count_by_wrapper_(stWrapper.getFromTable(), stWrapper.getSqlSelect(), stWrapper.getSqlJoin(), stWrapper);
     }
 
     @Override

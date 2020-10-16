@@ -17,6 +17,10 @@ public class StPage<T> extends Page<T> {
     //是否为最后一页
     boolean isLast;
 
+    public StPage() {
+        this(1, 10);
+    }
+
     /**
      * current 页数（默认1）
      * pageSize 分页大小（默认10）

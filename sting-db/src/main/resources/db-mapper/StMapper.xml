@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//com.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sting.db.mapper.StMapper">
-    <!--  #{entity[${key}]} 这样读取会报错-->
-    <!--    keyColumn="entity.id"-->
+    <!--  #{entity[${key}]} 报错-->
+    <!--  #{entity.${key}}  应该这样读-->
+    <!--    keyColumn="entity.id"  -->
 
     <!--  insert  -->
     <insert id="_insert_by_str_">
@@ -62,7 +63,7 @@
         </foreach>
     </delete>
     <delete id="_delete_by_wrapper_">
-        DELETE  FROM  ${tableName} WHERE ${ew.sqlSegment}
+        DELETE  FROM  ${tableName} WHERE ${ew.getSqlSegmentHandler}
     </delete>
 
 
@@ -99,10 +100,10 @@
         <foreach item='key' index='index' collection='column.keys' separator=','>
             `${column[key]}`=#{entity.${key}}
         </foreach>
-        WHERE ${ew.sqlSegment}
+        WHERE ${ew.getSqlSegmentHandler}
     </update>
     <update id="_update_by_wrapper_sql_set_">
-        UPDATE ${tableName} SET ${sqlSet} WHERE ${ew.sqlSegment}
+        UPDATE ${tableName} SET ${sqlSet} WHERE ${ew.getSqlSegmentHandler}
     </update>
     <update id="_update_batch_by_id_" useGeneratedKeys="true" keyProperty="entityList.id">
         update ${tableName} set
@@ -123,17 +124,17 @@
 
 
     <!--  select  -->
-    <select id="_count_" resultType="java.lang.Long">
-        SELECT count(1)  FROM  ${tableName} where 1=1
-    </select>
-    <select id="_count_by_str_" resultType="java.lang.Long">
-              ${sqlString}
-    </select>
-    <select id="_count_by_id_" resultType="java.lang.Long">
+    <select id="_select_count_by_id_" resultType="java.lang.Long">
         SELECT count(1)  FROM  ${tableName} WHERE ${column}=#{id}
     </select>
-    <select id="_count_by_wrapper_" resultType="java.lang.Long">
-        SELECT count(${column})  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment}
+    <select id="_select_count_by_wrapper_" resultType="java.lang.Long">
+        SELECT count(${column})  FROM  ${tableName} ${join} WHERE ${ew.getSqlSegmentHandler}
+    </select>
+    <select id="_select_count_by_str_" resultType="java.lang.Long">
+        ${sqlString}
+    </select>
+    <select id="_select_count_by_table_" resultType="java.lang.Long">
+        SELECT *  FROM  ${tableName}
     </select>
 
     <select id="_select_one_map_by_id_" resultType="map">
@@ -146,32 +147,32 @@
      ${sqlString} limit 1
     </select>
     <select id="_select_one_map_by_wrapper_" resultType="map">
-        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment} limit 1
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.getSqlSegmentHandler} limit 1
     </select>
     <select id="_select_one_obj_by_wrapper_" resultType="object">
-        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment} limit 1
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.getSqlSegmentHandler} limit 1
     </select>
 
-    <select id="_select_list_map_" resultType="map">
-        SELECT *  FROM  ${tableName}
-    </select>
     <select id="_select_list_obj_" resultType="object">
         SELECT *  FROM  ${tableName}
     </select>
     <select id="_select_list_obj_by_wrapper_" resultType="object">
-        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment}
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.getSqlSegmentHandler}
     </select>
     <select id="_select_list_obj_by_str_" resultType="object">
      ${sqlString}
     </select>
     <select id="_select_list_by_wrapper_" resultType="map">
-        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.sqlSegment}
+        SELECT ${column}  FROM  ${tableName} ${join} WHERE ${ew.getSqlSegmentHandler}
     </select>
     <select id="_select_list_by_map_" resultType="map">
         SELECT * FROM ${tableName} WHERE
         <foreach item='key' index='index' collection='column.keys' separator=' and '>
             `${key}`=#{column.${key}}
         </foreach>
+    </select>
+    <select id="_select_list_map_" resultType="map">
+        SELECT *  FROM  ${tableName}
     </select>
     <select id="_select_list_map_by_str_" resultType="map">
      ${sqlString}
@@ -181,7 +182,7 @@
       ${sqlString} limit ${limit},#{offset}
     </select>
     <select id="_page_map_by_wrapper_" resultType="map">
-        SELECT ${column} FROM ${tableName} ${join} WHERE ${ew.sqlSegment} limit ${limit},#{offset}
+        SELECT ${column} FROM ${tableName} ${join} WHERE ${ew.getSqlSegmentHandler} limit ${limit},#{offset}
     </select>
 
 </mapper>
