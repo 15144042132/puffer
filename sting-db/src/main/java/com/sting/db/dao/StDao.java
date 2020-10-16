@@ -49,15 +49,25 @@ public interface StDao {
 
     <P extends StEntity> long deleteByIds(Class<P> pClass, List<?> idList);
 
+    long update(String sqlString);
+
     <P extends StEntity> long update(StWrapper<P> stWrapper);
 
     <P extends StEntity> long update(P entity, StWrapper<P> stWrapper);
 
-    <P extends StEntity> long update(P entity);
+    long update(String tableName, Serializable id, Map map);
+
+    <P extends StEntity> long update(Class<P> pClass, Serializable id, Map map);
+
+    <P extends StEntity> long updateById(P entity);
 
     <P extends StEntity> long updateBatchById(List<P> entityList);
 
     <P extends StEntity> long updateBatchById(List<P> entityList, int batchSize);
+
+    long updateByIds(String tableName, List<Serializable> ids, Map map);
+
+    <P extends StEntity> long updateByIds(Class<P> pClass, List<Serializable> ids, Map map);
 
 
     <P extends StEntity> P selectOne(Class<P> pClass, Serializable id);
@@ -118,12 +128,6 @@ public interface StDao {
     long deleteById(String tableName, Serializable id);
 
     long deleteByIds(String tableName, List<?> idList);
-
-    long update(String sqlString);
-
-    long update(String tableName, Map map, Serializable id);
-
-    long updateByIds(String tableName, Map map, List<Serializable> ids);
 
 
     <P extends StEntity> StPage<P> page(StPage page, Class<P> pClass, String sqlString);

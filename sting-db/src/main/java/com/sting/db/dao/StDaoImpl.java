@@ -99,7 +99,7 @@ public class StDaoImpl implements StDao {
         if (idValue == null || miMapper._select_count_by_id_(DbHelp.getTableName(entity.getClass()), DbHelp.getTableId(entity), idValue) <= 0) {
             return insert(entity);
         }
-        return update(entity);
+        return updateById(entity);
     }
 
     @Override
@@ -184,8 +184,12 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> long update(P entity) {
+    public <P extends StEntity> long updateById(P entity) {
         if (entity == null) return 0;
+        Object idValue = DbHelp.getIdValue(entity);
+        if (idValue == null || idValue.toString().trim().isEmpty()) {
+            return 0;
+        }
         DbHelp.updateFill(entity);
         return miMapper._update_by_id_(DbHelp.getTableName(entity), DbHelp.getNotNullColumn(entity), entity, DbHelp.getTableId(entity), DbHelp.getIdValue(entity));
     }
@@ -361,14 +365,24 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public long update(String tableName, Map map, Serializable id) {
+    public long update(String tableName, Serializable id, Map map) {
         return miMapper._update_by_map_id_(tableName, map, id);
     }
 
     @Override
-    public long updateByIds(String tableName, Map map, List<Serializable> ids) {
+    public <P extends StEntity> long update(Class<P> pClass, Serializable id, Map map) {
+        return update(DbHelp.getTableName(pClass), id, map);
+    }
+
+    @Override
+    public long updateByIds(String tableName, List<Serializable> ids, Map map) {
         if (ids == null || ids.size() == 0) return 0;
         return miMapper._update_by_map_ids_(tableName, map, ids);
+    }
+
+    @Override
+    public <P extends StEntity> long updateByIds(Class<P> pClass, List<Serializable> ids, Map map) {
+        return updateByIds(DbHelp.getTableName(pClass), ids, map);
     }
 
     @Override
