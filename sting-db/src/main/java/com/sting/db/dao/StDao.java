@@ -45,7 +45,9 @@ public interface StDao {
 
     <P extends StEntity> long deleteById(Class<P> pClass, Serializable id);
 
-    <P extends StEntity, MP extends Map<?, ?>> long deleteByMap(Class<P> pClass, MP columnMap);
+    <MP extends Map<?, ?>> long deleteByMap(String tableName, MP mapCondition);
+
+    <P extends StEntity, MP extends Map<?, ?>> long deleteByMap(Class<P> pClass, MP mapCondition);
 
     <P extends StEntity> long deleteByIds(Class<P> pClass, List<?> idList);
 
@@ -128,7 +130,6 @@ public interface StDao {
     long deleteById(String tableName, Serializable id);
 
     long deleteByIds(String tableName, List<?> idList);
-
 
     <P extends StEntity> StPage<P> page(StPage page, Class<P> pClass, String sqlString);
 

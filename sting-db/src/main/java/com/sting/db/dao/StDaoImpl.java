@@ -157,10 +157,14 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity, MP extends Map<?, ?>> long deleteByMap(Class<P> pClass, MP columnMap) {
-        return miMapper._delete_by_map_(DbHelp.getTableName(pClass), columnMap);
+    public <MP extends Map<?, ?>> long deleteByMap(String tableName, MP mapCondition) {
+        return miMapper._delete_by_map_(tableName, mapCondition);
     }
 
+    @Override
+    public <P extends StEntity, MP extends Map<?, ?>> long deleteByMap(Class<P> pClass, MP mapCondition) {
+        return deleteByMap(DbHelp.getTableName(pClass), mapCondition);
+    }
     @Override
     public <P extends StEntity> long deleteByIds(Class<P> pClass, List<?> idList) {
         if (idList == null || idList.size() == 0) return 0;
