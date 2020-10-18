@@ -42,8 +42,6 @@ public interface StMapper extends StBaseMapper {
 
     List<Map<String, Object>> _select_list_map_by_str_(@Param(SQL_STRING) String sqlString);
 
-    List<Object> _select_count_by_str_(@Param(SQL_STRING) String sqlString);
-
     List<Object> _select_list_obj_by_str_(@Param(SQL_STRING) String sqlString);
 
     long _update_by_map_id_(@Param(TABLE_NAME) Object tableName, @Param(ENTITY) Map<?, ?> entity, @Param(ID) Object id);
@@ -115,6 +113,8 @@ public interface StMapper extends StBaseMapper {
             @Param(COLUMN) Object column,
             @Param(ID) Object id
     );
+
+    long _select_count_by_str_(@Param(SQL_STRING) String sqlString);
 
     long _select_count_by_wrapper_(
             @Param(TABLE_NAME) String tableName,

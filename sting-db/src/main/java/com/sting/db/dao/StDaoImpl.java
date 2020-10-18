@@ -429,7 +429,7 @@ public class StDaoImpl implements StDao {
 
     @Override
     public long count(String sqlString) {
-        return miMapper._select_count_by_str_(sqlString).size();
+        return miMapper._select_count_by_str_(sqlString);
     }
 
     @Override
@@ -446,7 +446,7 @@ public class StDaoImpl implements StDao {
     public <P extends StEntity> StPage<P> page(StPage page, Class<P> pClass, String sqlString) {
         long current = page.getCurrent();
         long size = page.getSize();
-        page.setTotal(count(sqlString));
+        page.setTotal(listObj(sqlString).size());
         long pages = (page.getTotal() + size - 1) / size;
         page.setPages(pages);
         List<Map<String, Object>> maps = miMapper._page_map_by_str_(sqlString, ((current - 1) * size), size);

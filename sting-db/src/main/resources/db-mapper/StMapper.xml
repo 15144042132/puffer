@@ -134,7 +134,7 @@
         ${sqlString}
     </select>
     <select id="_select_count_by_table_" resultType="java.lang.Long">
-        SELECT *  FROM  ${tableName}
+        SELECT count(1)  FROM  ${tableName}
     </select>
 
     <select id="_select_one_map_by_id_" resultType="map">
