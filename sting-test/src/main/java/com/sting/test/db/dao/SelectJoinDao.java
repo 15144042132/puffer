@@ -16,8 +16,9 @@ import java.util.List;
 public interface SelectJoinDao {
 
     /**
-     * 关联查询
-     * 对返回的结果进行级联对象映射复制
+     * 查询ID=137的用户
+     * 关联查询用户的角色信息
+     * 对返回的结果 进行级联对象 映射复制
      */
     @Select(" SELECT sys_user.id,sys_role.name as roleName FROM sys_user " +
             " LEFT JOIN sys_link_role_user ON sys_user.id=sys_link_role_user.user_id " +
@@ -28,7 +29,7 @@ public interface SelectJoinDao {
 
 
     /**
-     * 查询所有用户，
+     * 查询ID=137的用户
      * 1.关联查询用户的角色信息
      * 2.关联查询用户的全部角色集合
      */
