@@ -1,4 +1,4 @@
-package com.sting.test.db;
+package com.sting.test.db.module;
 
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
@@ -45,7 +45,7 @@ public class UpdateDemo {
      * 7...实体类 批量修改
      */
     @Test
-    public void selectOne() {
+    public void update() {
 
         //字符串操作
         long update1 = dao.update("update sys_user set  name='9999999' where id!=0");

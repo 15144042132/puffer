@@ -57,32 +57,6 @@ public class StWrapper<T>
         return fromTable;
     }
 
-    public StWrapper<T> setFromTable(String fromTable) {
-        this.fromTable = fromTable;
-        return typedThis;
-    }
-
-
-    /**
-     * FIND_IN_SET
-     *
-     * @param condition 是否使用条件
-     * @param column    字段
-     * @param value     数据
-     */
-    public StWrapper<T> findInSet(boolean condition, String column, Object value) {
-        if (condition) {
-            this.findInSet(column, value);
-        }
-        return typedThis;
-    }
-
-    public StWrapper<T> findInSet(String column, Object value) {
-        this.apply(" FIND_IN_SET (" + value + " , " + column + ") ");
-        return typedThis;
-    }
-
-
     public StWrapper(Class<T> entityClass) {
         boolean assignableFrom = StEntity.class.isAssignableFrom(entityClass);
         if (assignableFrom) {
@@ -90,6 +64,8 @@ public class StWrapper<T>
             if (annotation != null) {
                 this.fromTable = annotation.value();
             }
+
+            String simpleName = entityClass.getSimpleName();
         }
         this.entityClass = entityClass;
         this.sqlSet = new ArrayList<>();
@@ -226,7 +202,7 @@ public class StWrapper<T>
 
     @Override
     public <P extends StEntity> StWrapper<T> leftJoin(Class<P> tClass) {
-        return join(DbHelp.getTableName(tClass));
+        return leftJoin(DbHelp.getTableName(tClass));
     }
 
     @Override
@@ -241,7 +217,7 @@ public class StWrapper<T>
 
     @Override
     public <P extends StEntity> StWrapper<T> rightJoin(Class<P> tClass) {
-        return join(DbHelp.getTableName(tClass));
+        return rightJoin(DbHelp.getTableName(tClass));
     }
 
     @Override
@@ -280,6 +256,10 @@ public class StWrapper<T>
      */
     @Override
     public String getSqlJoin() {
+        if (!joinString.isEmpty()) {
+            sqlJoin.add(joinString + getJoinSqlCondition());
+            joinCondition.clear();
+        }
         if (CollectionUtils.isEmpty(sqlJoin)) {
             return null;
         }
@@ -305,4 +285,6 @@ public class StWrapper<T>
         }
         return getSqlSegment();
     }
+
+
 }

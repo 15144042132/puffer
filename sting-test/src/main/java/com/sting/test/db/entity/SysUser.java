@@ -24,27 +24,17 @@ public class SysUser extends Model<SysUser> implements StEntity {
 
     private static final long serialVersionUID = 1L;
 
-    //接收参数
+    //角色对象信息
     @TableField(exist = false)
-    private List paramRoleIds;
+    private SysRole sysRole;
 
-    //角色数组-分页查询使用
+    //角色名
     @TableField(exist = false)
-    private Object roleIds;
-
-    public String[] getRoleIds() {
-        if (roleIds == null) return null;
-        return roleIds.toString().split(",");
-    }
-
-    //角色数组-分页查询使用
+    private String roleName;
+    //角色Ids
     @TableField(exist = false)
-    private Object roleNames;
+    private List<String> roleIds;
 
-    public String[] getRoleNames() {
-        if (roleNames == null) return null;
-        return roleNames.toString().split(",");
-    }
 
     /**
      * PK

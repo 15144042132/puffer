@@ -1,14 +1,14 @@
-package com.sting.test.db;
+package com.sting.test.db.module;
 
 import com.alibaba.fastjson.JSON;
 import com.sting.db.dao.StDao;
 import com.sting.db.entity.StPage;
 import com.sting.db.wrapper.StWrapper;
 import com.sting.test.PufferTestApplication;
+import com.sting.test.db.dao.SelectJoinDao;
 import com.sting.test.db.entity.SysLinkRoleUser;
 import com.sting.test.db.entity.SysRole;
 import com.sting.test.db.entity.SysUser;
-import com.sting.test.db.entity.SysUserJoin;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -202,7 +202,7 @@ public class SelectDemo {
      */
     @Test
     public void join() {
-        StWrapper<SysUserJoin> wrapper = new StWrapper<>(SysUserJoin.class);
+        StWrapper<SysUser> wrapper = new StWrapper<>(SysUser.class);
 
         //leftJoin
         wrapper.leftJoin(SysRole.class);
@@ -216,9 +216,90 @@ public class SelectDemo {
         wrapper.leftJoin("sys_log_login");
         wrapper.on("1", "1");
 
-        List<SysUserJoin> list = dao.list(wrapper);
+        List<SysUser> list = dao.list(wrapper);
         log.info("join 操作          " + JSON.toJSONString(list));
     }
+
+
+    /**
+     * 5. 多表联查,实体类映射,具体实现Demo
+     * 5.1.级联属性赋值
+     * 5.2.级联对象赋值
+     * 5.3.级联数组赋值
+     */
+
+    /**
+     * 5.1.级联属性赋值
+     */
+    @Test
+    public void complexJoin5_1() {
+        /**
+         * 5.1.级联属性赋值
+         *
+         * 使用说明：
+         * 通过在映射实体类中添加，属性+@TableField(exist = false)注解
+         * 实现查询后的属性映射
+         *
+         * 例：用user表，关联link_role_user表，再关联sys_role表，查询用户的角色名
+         */
+        StWrapper<SysUser> wrapper = new StWrapper<>(SysUser.class);
+        //查询数据
+        wrapper.select("sys_user.*", "sys_role.name as roleName");
+
+        //leftJoin
+        wrapper.leftJoin(SysLinkRoleUser.class);
+        wrapper.onSql("sys_user.id=sys_link_role_user.user_id");
+
+        //leftJoin
+        wrapper.leftJoin(SysRole.class);
+        wrapper.onSql("sys_link_role_user.role_id=sys_role.id");
+
+        //条件
+        wrapper.eq("sys_user.id", "137");
+        SysUser sysUser = dao.selectOne(wrapper);
+        log.info(JSON.toJSONString(sysUser));
+
+    }
+
+
+    /**
+     * 5.1.级联对象赋值
+     * * 使用说明：
+     * * （1）通过在映射实体类中添加对象
+     * * （2）在Mapper映射接口中添加实体类的解析
+     * *
+     * * 例：用user表，关联link_role_user表，再关联sys_role表，查询用户的角色信息
+     */
+    @Autowired
+    SelectJoinDao selectJoinDao;
+
+    @Test
+    public void complexJoin5_2() {
+        StWrapper<SysUser> wrapper = new StWrapper<>(SysUser.class);
+        wrapper.eq("sys_user.id", "137");
+        List<SysUser> sysUsers = selectJoinDao.complexJoin5_2(wrapper);
+        log.info(JSON.toJSONString(sysUsers));
+
+    }
+
+    /**
+     * 5.2.级联对象赋值
+     *
+     ** @One使用方式
+     ** @May使用方式
+     */
+    @Test
+    public void complexJoin5_3() {
+        List<SysUser> sysUsers = selectJoinDao.complexJoin5_3();
+        log.info(JSON.toJSONString(sysUsers));
+//        [
+//        {"id":"137","name":"6666666666","roleIds":["1","2","99"],"sysRole":{"id":"1","name":"系统管理员"}},
+//        {"id":"137","name":"6666666666","roleIds":["1","2","99"],"sysRole":{"id":"2","name":"企业管理员"}},
+//        {"id":"137","name":"6666666666","roleIds":["1","2","99"]}
+//        ]
+
+    }
+
 
     public void clearDb() {
         dao.delete("delete  from sys_user where 1=1");

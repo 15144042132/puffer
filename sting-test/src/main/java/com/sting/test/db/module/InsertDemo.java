@@ -1,4 +1,4 @@
-package com.sting.test.db;
+package com.sting.test.db.module;
 
 import com.alibaba.fastjson.JSON;
 import com.sting.db.dao.StDao;

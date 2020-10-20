@@ -104,7 +104,7 @@ public class StDaoImpl implements StDao {
 
     @Override
     public <P extends StEntity> long insertOrUpdate(P entity, StWrapper<P> stWrapper) {
-        if (miMapper._select_count_by_wrapper_((stWrapper).getFromTable(), 1, (stWrapper).getSqlJoin(), (stWrapper)) <= 0) {
+        if (miMapper._select_count_by_wrapper_(stWrapper.getFromTable(), 1, stWrapper.getSqlJoin(), (stWrapper)) <= 0) {
             return insert(entity);
         }
         return miMapper._update_by_wrapper_(DbHelp.getTableName(entity), DbHelp.getNotNullColumn(entity), entity, (stWrapper));
@@ -148,7 +148,7 @@ public class StDaoImpl implements StDao {
 
     @Override
     public <P extends StEntity> long delete(StWrapper<P> stWrapper) {
-        return miMapper._delete_by_wrapper_((stWrapper).getFromTable(), (stWrapper));
+        return miMapper._delete_by_wrapper_(stWrapper.getFromTable(), (stWrapper));
     }
 
     @Override
@@ -165,6 +165,7 @@ public class StDaoImpl implements StDao {
     public <P extends StEntity, MP extends Map<?, ?>> long deleteByMap(Class<P> pClass, MP mapCondition) {
         return deleteByMap(DbHelp.getTableName(pClass), mapCondition);
     }
+
     @Override
     public <P extends StEntity> long deleteByIds(Class<P> pClass, List<?> idList) {
         if (idList == null || idList.size() == 0) return 0;
@@ -174,9 +175,9 @@ public class StDaoImpl implements StDao {
     @Override
     public <P extends StEntity> long update(StWrapper<P> stWrapper) {
 
-        if ((stWrapper).getSqlSet() == null) return 0;
+        if (stWrapper.getSqlSet() == null) return 0;
 
-        return miMapper._update_by_wrapper_sql_set_((stWrapper).getFromTable(), (stWrapper).getSqlSet(), (stWrapper));
+        return miMapper._update_by_wrapper_sql_set_(stWrapper.getFromTable(), stWrapper.getSqlSet(), (stWrapper));
     }
 
     @Override
@@ -233,13 +234,13 @@ public class StDaoImpl implements StDao {
 
     @Override
     public <P extends StEntity> P selectOne(StWrapper<P> stWrapper) {
-        Map<?, ?> map = miMapper._select_one_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
-        return DbHelp.parsObj(map, (stWrapper).getEntityClass());
+        Map<?, ?> map = miMapper._select_one_map_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
+        return DbHelp.parsObj(map, stWrapper.getEntityClass());
     }
 
     @Override
     public <P extends StEntity> Map<String, Object> selectMap(StWrapper<P> stWrapper) {
-        return miMapper._select_one_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+        return miMapper._select_one_map_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
     }
 
     @Override
@@ -249,7 +250,7 @@ public class StDaoImpl implements StDao {
 
     @Override
     public <P extends StEntity> Object selectObj(StWrapper<P> stWrapper) {
-        return miMapper._select_one_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+        return miMapper._select_one_obj_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
     }
 
     @Override
@@ -269,9 +270,9 @@ public class StDaoImpl implements StDao {
         if (idList == null || idList.size() == 0) return new ArrayList<>();
 
         StWrapper<P> stWrapper = new StWrapper<>(pClass);
-        (stWrapper).in(DbHelp.getTableId(pClass), idList);
+        stWrapper.in(DbHelp.getTableId(pClass), idList);
         List<Map<String, Object>> maps = miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), stWrapper);
-        return DbHelp.parsArray(maps, (stWrapper).getEntityClass());
+        return DbHelp.parsArray(maps, stWrapper.getEntityClass());
     }
 
 
@@ -288,18 +289,18 @@ public class StDaoImpl implements StDao {
 
     @Override
     public <P extends StEntity> List<Map<String, Object>> listMap(StWrapper<P> stWrapper) {
-        return miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+        return miMapper._select_list_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
     }
 
     @Override
     public <P extends StEntity> List<Object> listObj(StWrapper<P> stWrapper) {
-        return miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+        return miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
     }
 
 
 //    @Override
 //    public <P extends StEntity, T> List<T> listObj(StWrapper<P> stWrapper, Class<T> tClass) {
-//        List<Object> objects = miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), (stWrapper));
+//        List<Object> objects = miMapper._select_list_obj_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), (stWrapper));
 //        return DbHelp.parsArray(objects, tClass);
 //    }
 
@@ -318,17 +319,17 @@ public class StDaoImpl implements StDao {
         page.setTotal(count(stWrapper));
         long pages = (page.getTotal() + size - 1) / size;
         page.setPages(pages);
-        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), ((current - 1) * size), size, (stWrapper));
+        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), ((current - 1) * size), size, (stWrapper));
         page.setFirst(current == 1);
         page.setLast(current == page.getPages());
-        page.setRecords(DbHelp.parsArray(maps, (stWrapper).getEntityClass()));
+        page.setRecords(DbHelp.parsArray(maps, stWrapper.getEntityClass()));
         return page;
     }
 
 //    @Override
 //    public <P extends StEntity> StPage<Map<String, Object>> pageMap(StPage page, Class<P> pClass) {
 //        StWrapper<P> stWrapper = new StWrapper<>(pClass);
-//        (stWrapper).eq("1", 1);
+//        stWrapper.eq("1", 1);
 //        return pageMap(page, (stWrapper));
 //    }
 
@@ -339,7 +340,7 @@ public class StDaoImpl implements StDao {
 //        page.setTotal(count(stWrapper));
 //        long pages = (page.getTotal() + size - 1) / size;
 //        page.setPages(pages);
-//        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), (stWrapper).getFromTable(), (stWrapper).getSqlJoin(), ((current - 1) * size), size, (stWrapper));
+//        List<Map<String, Object>> maps = miMapper._page_map_by_wrapper_(stWrapper.getSqlSelect(), stWrapper.getFromTable(), stWrapper.getSqlJoin(), ((current - 1) * size), size, (stWrapper));
 //        page.setFirst(current == 1);
 //        page.setLast(current == page.getPages());
 //        page.setRecords(maps);
