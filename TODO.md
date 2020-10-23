@@ -11,6 +11,7 @@ DB模块
 
 ..Security模块
 ..Security-Oauth
+..Security-SM2国密标准
 ..Security-账号密码登录
 ..Security-手机短信登录
 ..Security-QQ、微信 登录
