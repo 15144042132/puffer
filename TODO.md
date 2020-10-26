@@ -19,6 +19,7 @@ DB模块
 ..Security-验证码-分层封装，创建，保存，发送，
 ..Security-条件查找
 ..Security-条件注入
+..Security-属性可配置
 ~~~
 
 
