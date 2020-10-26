@@ -16,7 +16,9 @@ DB模块
 ..Security-手机短信登录
 ..Security-QQ、微信 登录
 ..Security-自定义 角色、权限、资源、组织、机构
-..验证码-分层封装，创建，保存，发送，
+..Security-验证码-分层封装，创建，保存，发送，
+..Security-条件查找
+..Security-条件注入
 ~~~
 
 
