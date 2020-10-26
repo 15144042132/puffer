@@ -21,8 +21,7 @@ DB模块
 ..Security-条件注入
 ..Security-属性可配置
 ..Security-链表-拦截器-顺序注册
-..Security-第三方账号，绑定与解绑
-
+..Security-第三方账号，查询绑定信息，绑定与解绑
 
 ~~~
 
