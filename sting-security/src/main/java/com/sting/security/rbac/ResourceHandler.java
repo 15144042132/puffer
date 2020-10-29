@@ -38,6 +38,7 @@ public class ResourceHandler implements ApplicationContextAware {
         handler.intiRes();
         handler.createTable();
         handler.refreshResource();
+        handler.refreshRoleResource();
 
         System.out.println("  ");
         System.out.println(JSON.toJSONString(cList));
@@ -102,9 +103,14 @@ public class ResourceHandler implements ApplicationContextAware {
         dao.insert(sys_link_role_resource);
     }
 
-    //更新数据库
+    //更新数据库中的资源
     private synchronized void refreshResource() {
+        //        查询数据库中的资源
+        //        修改后更新资源
+    }
 
+    //更新代码中所配置的角色资源情况
+    private synchronized void refreshRoleResource() {
     }
 
 
