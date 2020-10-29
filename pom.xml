@@ -27,6 +27,7 @@
         <module>sting-websocket</module>
         <module>sting-cache</module>
         <module>sting-timer</module>
+        <module>sting-security</module>
     </modules>
 
     <!--整体项目依赖管理-->
@@ -66,6 +67,11 @@
                 <groupId>com.puffer</groupId>
                 <artifactId>sting-websocket</artifactId>
                 <version>${sting.websocket}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>sting-security</artifactId>
+                <version>${sting.security}</version>
             </dependency>
             <dependency>
                 <groupId>com.puffer</groupId>
@@ -166,6 +172,7 @@
         <sting.websocket>0.0.1</sting.websocket>
         <sting.cache>0.0.1</sting.cache>
         <sting.timer>0.0.1</sting.timer>
+        <sting.security>0.0.1</sting.security>
 
         <!--    第三方依赖    -->
         <p6spy>3.8.0</p6spy>
@@ -177,7 +184,7 @@
         <commons-io>2.6</commons-io>
         <easyexcel>2.1.7</easyexcel>
         <freemarker>2.3.30</freemarker>
-        <commons-lang3>3.10</commons-lang3>
+        <commons-lang3>3.11</commons-lang3>
         <aliyun-sdk-oss>3.8.0</aliyun-sdk-oss>
         <fastdfs-client>1.26.6</fastdfs-client>
         <dynamic-datasource>2.5.8</dynamic-datasource>
