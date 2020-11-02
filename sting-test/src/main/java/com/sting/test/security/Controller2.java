@@ -1,26 +1,24 @@
 package com.sting.test.security;
 
-import com.sting.security.rbac.resource.ResC;
-import com.sting.security.rbac.resource.ResM;
+import com.sting.security.rbac.resource.Res;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@ResC
+@Res("Controller2")
 @RestController
 @RequestMapping("/testB")
 public class Controller2 {
 
-    @ResM
+    @Res("Controller2")
     @RequestMapping("/b1")
     public String b1() {
         return "";
     }
 
-    @ResM
+    @Res("Controller2")
     @RequestMapping("/b2")
     public String b2() {
         return "";
     }
-
 
 }

@@ -8,12 +8,10 @@ import java.lang.annotation.*;
  * @author WangYongJi
  */
 @Documented
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ResC {
+public @interface Res {
     //模块
     String value() default "";
 
-    //模块
-    String parent() default "";
 }

@@ -59,10 +59,10 @@ public class ResHandler implements ApplicationContextAware {
     synchronized void intiRes() {
         ArrayList<ResEntity> moduleList = new ArrayList<>();
         ArrayList<ResEntity> resList = new ArrayList<>();
-        Collection<Object> values = context.getBeansWithAnnotation(ResC.class).values();
+        Collection<Object> values = context.getBeansWithAnnotation(Res.class).values();
         for (Object bean : values) {
             Class<?> aClass = bean.getClass();
-            ResC resC = AnnotationUtils.findAnnotation(aClass, ResC.class);
+            Res resC = AnnotationUtils.findAnnotation(aClass, Res.class);
             RequestMapping controllerMapping = AnnotationUtils.findAnnotation(aClass, RequestMapping.class);
             if (resC == null || controllerMapping == null) continue;
 
@@ -73,12 +73,7 @@ public class ResHandler implements ApplicationContextAware {
                 String controllerPath = EnvKit.contextPath() + controllerValue;
                 ResEntity moduleEntity = new ResEntity();
                 moduleEntity.setName(rescValue);
-//                moduleEntity.setName(resC.value());
-                moduleEntity.setParentName(resC.parent());
-                if (StringUtils.isBlank(resC.parent())) {
-                    moduleEntity.setParentName(rescValue);
-//                    moduleEntity.setParentName(resC.value());
-                }
+                moduleEntity.setPName(rescValue);
                 moduleEntity.setUrl(controllerPath);
                 moduleList.add(moduleEntity);
 
@@ -86,7 +81,7 @@ public class ResHandler implements ApplicationContextAware {
                 Method[] declaredMethods = aClass.getDeclaredMethods();
                 for (Method method : declaredMethods) {
                     RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-                    ResM resMethod = AnnotationUtils.findAnnotation(method, ResM.class);
+                    Res resMethod = AnnotationUtils.findAnnotation(method, Res.class);
                     if (requestMapping == null || resMethod == null) continue;
                     //遍历所有资源
                     for (String methodValue : requestMapping.value()) {
@@ -95,7 +90,7 @@ public class ResHandler implements ApplicationContextAware {
                         resEntity.setUrl(methodPath);
                         resEntity.setName(StringUtils.isBlank(resMethod.value()) ? method.getName() : resMethod.value());
 //                        resEntity.setParentName(resC.value());
-                        resEntity.setParentName(rescValue);
+                        resEntity.setPName(rescValue);
                         resList.add(resEntity);
                     }
                 }
@@ -143,7 +138,7 @@ public class ResHandler implements ApplicationContextAware {
             if (!dbUrlList.contains(resEntity.getUrl())) {
                 SysResource sysResource = new SysResource();
                 sysResource.setName(resEntity.getName());
-                sysResource.setParentName(resEntity.getParentName());
+                sysResource.setParentName(resEntity.getPName());
                 sysResource.setUrl(resEntity.getUrl());
                 sysResource.setPid("0");//初始为0后面会做修改
                 insertResCList.add(sysResource);
@@ -159,7 +154,7 @@ public class ResHandler implements ApplicationContextAware {
                 List<ResEntity> collect = resList.stream().filter(it -> it.getUrl().equals(dbUrl)).collect(Collectors.toList());
                 ResEntity resEntity = collect.get(0);
                 sysResource.setName(resEntity.getName());
-                sysResource.setParentName(resEntity.getParentName());
+                sysResource.setParentName(resEntity.getPName());
                 updateResCList.add(sysResource);
             }
 
@@ -178,7 +173,9 @@ public class ResHandler implements ApplicationContextAware {
         allResC.addAll(updateResCList);
         //更新PID
         for (SysResource insertRes : allResC) {
-            if (!insertRes.getName().equals(insertRes.getParentName())) {
+            if (insertRes.getName().equals(insertRes.getParentName())) {
+                insertRes.setPid("0");
+            } else {
                 for (SysResource sysResource : allResC) {
                     if (sysResource.getName().equals(insertRes.getParentName())) {
                         insertRes.setPid(sysResource.getId());

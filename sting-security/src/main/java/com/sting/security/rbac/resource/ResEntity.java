@@ -13,6 +13,6 @@ public class ResEntity {
     String url = "";
     //资源名
     String name = "";
-    //父级
-    String parentName = "";
+    //父类
+    String pName = "";
 }
