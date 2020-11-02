@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 遍历树结构 根据 key parentKey
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 public class TreeKit {
 

@@ -3,7 +3,7 @@ package com.sting.db.mapper;
 import org.springframework.stereotype.Component;
 
 /**
- * @author 王永吉
+ * @author WangYongJi
  */
 @Component
 public interface StBaseMapper {

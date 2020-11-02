@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * 增强Dao实现类
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 @Service
 public class StDaoImpl implements StDao {

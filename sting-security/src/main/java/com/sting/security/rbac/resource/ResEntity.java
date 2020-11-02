@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 资源实体
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 @Data
 public class ResEntity {

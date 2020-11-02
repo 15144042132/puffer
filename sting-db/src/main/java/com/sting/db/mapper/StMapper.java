@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 王永吉
+ * @author WangYongJi
  */
 @Component
 public interface StMapper extends StBaseMapper {

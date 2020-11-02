@@ -18,7 +18,7 @@
 // * 资源表 服务实现类
 // * </p>
 // *
-// * @author 王永吉
+// * @author WangYongJi
 // */
 //@Slf4j
 //@Service

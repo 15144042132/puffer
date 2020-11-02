@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  * 实现这个接口,证明自己是实体类
  * <p>
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 public interface StEntity {
     /**

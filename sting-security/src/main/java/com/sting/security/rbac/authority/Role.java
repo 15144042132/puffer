@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 权限注解
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})

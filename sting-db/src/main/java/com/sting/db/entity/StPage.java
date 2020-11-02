@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 分页工具
  *
- * @author 王永吉
+ * @author WangYongJi
  */
 @Data
 public class StPage<T> extends Page<T> {
