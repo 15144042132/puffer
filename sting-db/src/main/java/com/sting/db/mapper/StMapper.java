@@ -78,7 +78,6 @@ public interface StMapper extends StBaseMapper {
 
     long _delete_by_wrapper_(@Param(TABLE_NAME) String tableName, @Param(EW) StWrapper<?> wrapper);
 
-
     long _update_by_id_(
             @Param(TABLE_NAME) String tableName,
             @Param(COLUMN) Map column,

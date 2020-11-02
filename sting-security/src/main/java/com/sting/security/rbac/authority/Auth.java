@@ -1,4 +1,4 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.authority;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

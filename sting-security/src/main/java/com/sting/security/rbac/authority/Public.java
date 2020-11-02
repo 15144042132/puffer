@@ -1,19 +1,16 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.authority;
 
 import java.lang.annotation.*;
 
 /**
- * 权限注解
+ * 放行注解
  *
  * @author 王永吉
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Role {
-    //权限数组
-    String[] value() default {};
-
+public @interface Public {
     //描述信息
-    String desc() default "";
+    String value() default "";
 }

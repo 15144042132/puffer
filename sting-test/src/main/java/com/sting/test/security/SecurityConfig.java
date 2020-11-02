@@ -16,5 +16,6 @@ public class SecurityConfig extends PuffSecurityConfig {
                 .addPublic("")
                 .addRequired("", "")
                 .addRequired("", Arrays.asList("", "", ""));
+
     }
 }

@@ -1,4 +1,4 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.resource;
 
 import java.lang.annotation.*;
 

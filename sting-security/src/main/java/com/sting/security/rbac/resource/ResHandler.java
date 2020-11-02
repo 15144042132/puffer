@@ -1,8 +1,12 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.resource;
 
 import com.alibaba.fastjson.JSON;
 import com.sting.core.spring.EnvKit;
 import com.sting.db.dao.StDao;
+import com.sting.db.wrapper.StWrapper;
+import com.sting.security.rbac.entity.SysLinkRoleResource;
+import com.sting.security.rbac.entity.SysResource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +14,27 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 资源处理器
  */
+@Slf4j
 @Configuration
 @RestControllerAdvice
-public class ResourceHandler implements ApplicationContextAware {
+public class ResHandler implements ApplicationContextAware {
     @Autowired
     private StDao dao;
     @Autowired
-    private ResourceHandler handler;
+    private ResHandler handler;
 
     private ApplicationContext context;
     private ArrayList<ResEntity> cList = null;
@@ -48,7 +56,7 @@ public class ResourceHandler implements ApplicationContextAware {
     }
 
     //扫描所有资源
-    private synchronized void intiRes() {
+    synchronized void intiRes() {
         ArrayList<ResEntity> moduleList = new ArrayList<>();
         ArrayList<ResEntity> resList = new ArrayList<>();
         Collection<Object> values = context.getBeansWithAnnotation(ResC.class).values();
@@ -61,12 +69,15 @@ public class ResourceHandler implements ApplicationContextAware {
             //遍历所有资源
             for (String controllerValue : controllerMapping.value()) {
                 //class
+                String rescValue = StringUtils.isBlank(resC.value()) ? aClass.getName() : resC.value();
                 String controllerPath = EnvKit.contextPath() + controllerValue;
                 ResEntity moduleEntity = new ResEntity();
-                moduleEntity.setName(resC.value());
+                moduleEntity.setName(rescValue);
+//                moduleEntity.setName(resC.value());
                 moduleEntity.setParentName(resC.parent());
                 if (StringUtils.isBlank(resC.parent())) {
-                    moduleEntity.setParentName(resC.value());
+                    moduleEntity.setParentName(rescValue);
+//                    moduleEntity.setParentName(resC.value());
                 }
                 moduleEntity.setUrl(controllerPath);
                 moduleList.add(moduleEntity);
@@ -77,14 +88,14 @@ public class ResourceHandler implements ApplicationContextAware {
                     RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
                     ResM resMethod = AnnotationUtils.findAnnotation(method, ResM.class);
                     if (requestMapping == null || resMethod == null) continue;
-
                     //遍历所有资源
                     for (String methodValue : requestMapping.value()) {
                         String methodPath = controllerPath + methodValue;
                         ResEntity resEntity = new ResEntity();
                         resEntity.setUrl(methodPath);
-                        resEntity.setName(resMethod.value());
-                        resEntity.setParentName(resC.value());
+                        resEntity.setName(StringUtils.isBlank(resMethod.value()) ? method.getName() : resMethod.value());
+//                        resEntity.setParentName(resC.value());
+                        resEntity.setParentName(rescValue);
                         resList.add(resEntity);
                     }
                 }
@@ -95,7 +106,8 @@ public class ResourceHandler implements ApplicationContextAware {
     }
 
     //建表
-    private synchronized void createTable() {
+    @Transactional(rollbackFor = Exception.class)
+    synchronized void createTable() {
         dao.insert(sys_role);
         dao.insert(sys_user);
         dao.insert(sys_resource);
@@ -104,13 +116,106 @@ public class ResourceHandler implements ApplicationContextAware {
     }
 
     //更新数据库中的资源
-    private synchronized void refreshResource() {
-        //        查询数据库中的资源
+    @Transactional(rollbackFor = Exception.class)
+    synchronized void refreshResource() {
+        /*项目中的全部资源*/
+        ArrayList<ResEntity> resList = new ArrayList<>();
+        resList.addAll(cList);
+        resList.addAll(mList);
+        List<String> resUrlList = resList.stream().map(ResEntity::getUrl).collect(Collectors.toList());
+
+        /*数据库中的全部资源*/
+        List<SysResource> dbResList = dao.list(SysResource.class);
+        List<String> dbUrlList = dbResList.stream().map(SysResource::getUrl).collect(Collectors.toList());
+
+        /*
+         *筛选资源
+         *删除 -- deleteResCIds
+         *新增 -- insertResC -- 项目中存在，数据库中不存在
+         *更新 -- updateResC
+         */
+        ArrayList<SysResource> insertResCList = new ArrayList<>();
+        ArrayList<String> deleteResCIds = new ArrayList<>();
+        ArrayList<SysResource> updateResCList = new ArrayList<>();
+
+        //筛选新增资源--项目中存在，数据库中不存在
+        for (ResEntity resEntity : resList) {
+            if (!dbUrlList.contains(resEntity.getUrl())) {
+                SysResource sysResource = new SysResource();
+                sysResource.setName(resEntity.getName());
+                sysResource.setParentName(resEntity.getParentName());
+                sysResource.setUrl(resEntity.getUrl());
+                sysResource.setPid("0");//初始为0后面会做修改
+                insertResCList.add(sysResource);
+            }
+        }
+
+        //筛选，更新和删除
+        for (SysResource sysResource : dbResList) {
+            String dbUrl = sysResource.getUrl();
+
+            //待更新 -- 数据库中存在，项目中存在
+            if (resUrlList.contains(dbUrl)) {
+                List<ResEntity> collect = resList.stream().filter(it -> it.getUrl().equals(dbUrl)).collect(Collectors.toList());
+                ResEntity resEntity = collect.get(0);
+                sysResource.setName(resEntity.getName());
+                sysResource.setParentName(resEntity.getParentName());
+                updateResCList.add(sysResource);
+            }
+
+            //待删除 -- 数据库中存在，项目中不存在
+            if (!resUrlList.contains(dbUrl)) {
+                deleteResCIds.add(sysResource.getId());
+            }
+        }
+
+        //添加新资源
+        dao.insertBatch(insertResCList);
+
+        //更新资源
+        ArrayList<SysResource> allResC = new ArrayList<>();
+        allResC.addAll(insertResCList);
+        allResC.addAll(updateResCList);
+        //更新PID
+        for (SysResource insertRes : allResC) {
+            if (!insertRes.getName().equals(insertRes.getParentName())) {
+                for (SysResource sysResource : allResC) {
+                    if (sysResource.getName().equals(insertRes.getParentName())) {
+                        insertRes.setPid(sysResource.getId());
+                        break;
+                    }
+                }
+            }
+        }
+        dao.updateBatchById(allResC);
+
+
+        //删除失效资源和角色资源关联表
+        long l = dao.deleteByIds(SysResource.class, deleteResCIds);
+
+        if (deleteResCIds.size() > 0) {
+            dao.delete(new StWrapper<>(SysLinkRoleResource.class).in("role_id", deleteResCIds));
+        }
+
+
+        //TODO 这里注释
+//        List<SysResource> list = dao.list(SysResource.class);
+//        List<SysResource> gen = list.stream().filter(it -> it.getPid().equals("0")).collect(Collectors.toList());
+//        List<SysResource> notGen = list.stream().filter(it -> !it.getPid().equals("0")).collect(Collectors.toList());
+
+//        log.info("list     {}", JSON.toJSONString(list));
+//        log.info("gen     {}", JSON.toJSONString(gen));
+//        log.info("notGen  {}", JSON.toJSONString(notGen));
+
+//        ArrayList<JSONObject> arrayList = TreeKit.listToTree(gen, notGen);
+//        log.info("全部资源树化结果      {}", JSON.toJSONString(arrayList));
         //        修改后更新资源
+
     }
 
     //更新代码中所配置的角色资源情况
     private synchronized void refreshRoleResource() {
+
     }
 
 

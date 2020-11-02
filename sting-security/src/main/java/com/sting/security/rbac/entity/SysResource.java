@@ -22,9 +22,17 @@ public class SysResource extends Model<SysResource> implements StEntity {
 
     private static final long serialVersionUID = 1L;
 
+
+    @TableField(exist = false)
+    private String parentName;
+
     /*PK*/
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
+
+    /*PK*/
+    @TableField("pid")
+    private String pid;
 
     /*资源名称*/
     @TableField("name")

@@ -1,5 +1,6 @@
 package com.sting.security.rbac;
 
+import com.sting.security.rbac.authority.Auth;
 import com.sting.security.rbac.config.PuffSecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
