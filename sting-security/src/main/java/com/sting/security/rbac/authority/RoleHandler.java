@@ -1,9 +1,11 @@
-package com.sting.security.rbac.resource;
+package com.sting.security.rbac.authority;
 
 import com.alibaba.fastjson.JSON;
 import com.sting.core.spring.EnvKit;
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
+import com.sting.security.rbac.resource.Res;
+import com.sting.security.rbac.resource.ResEntity;
 import com.sting.security.rbac.table_entity.SysLinkRoleResource;
 import com.sting.security.rbac.table_entity.SysResource;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +30,11 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Configuration
-public class ResHandler implements ApplicationContextAware {
+public class RoleHandler implements ApplicationContextAware {
     @Autowired
     private StDao dao;
     @Autowired
-    private ResHandler handler;
+    private RoleHandler handler;
 
     private ApplicationContext context;
     private ArrayList<ResEntity> cList = null;

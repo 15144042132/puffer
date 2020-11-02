@@ -3,8 +3,8 @@ package com.sting.security.rbac.authority;
 import java.lang.annotation.*;
 
 /**
- * Role
- * 角色注解--注明当前资源数，属于哪些角色
+ * RoleExclude
+ * 排除注解--注明当前资源数，不属于哪些角色
  * <p>
  * Role 小于 RoleExclude
  *
@@ -13,8 +13,8 @@ import java.lang.annotation.*;
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Role {
-    //需要当前资源的角色数据
+public @interface RoleExclude {
+    //需要排除当前资源的角色数组
     String[] value() default {};
 
     //描述信息

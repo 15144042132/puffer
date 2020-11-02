@@ -14,4 +14,6 @@ public @interface Res {
     //模块
     String value() default "";
 
+    //描述信息
+    String desc() default "";
 }

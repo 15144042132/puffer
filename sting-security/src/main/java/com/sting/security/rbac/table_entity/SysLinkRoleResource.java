@@ -1,4 +1,4 @@
-package com.sting.security.rbac.entity;
+package com.sting.security.rbac.table_entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,22 +10,23 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 关联表（角色-菜单） 实体
+ * 关联表（角色-资源） 实体
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sys_link_role_user")
-public class SysLinkRoleUser extends Model<SysLinkRoleUser> implements StEntity {
+@TableName("sys_link_role_resource")
+public class SysLinkRoleResource extends Model<SysLinkRoleResource> implements StEntity {
 
-    public static final String TABLE_NAME = "sys_link_role_user";
+    public static final String TABLE_NAME = "sys_link_role_resource";
 
     private static final long serialVersionUID = 1L;
 
     @TableId("role_id")
     private String roleId;
 
-    @TableField("user_id")
-    private String userId;
+    @TableField("resource_id")
+    private String resourceId;
+
 
 }
