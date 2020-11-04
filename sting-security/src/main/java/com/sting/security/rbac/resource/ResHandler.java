@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 /**
  * 资源处理器
+ * 读取全部资源，更新数据库
  */
 @Slf4j
 @Configuration

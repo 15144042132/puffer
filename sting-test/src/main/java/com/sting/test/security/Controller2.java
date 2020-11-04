@@ -1,10 +1,12 @@
 package com.sting.test.security;
 
+import com.sting.security.rbac.authority.Role;
 import com.sting.security.rbac.resource.Res;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Res("Controller2")
+@Res("测试B")
+@Role({"admin_company"})
 @RestController
 @RequestMapping("/testB")
 public class Controller2 {

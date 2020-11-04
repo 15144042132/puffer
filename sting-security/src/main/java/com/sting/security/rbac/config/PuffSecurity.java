@@ -32,4 +32,8 @@ public class PuffSecurity {
         return this;
     }
 
+    public PuffSecurity excludeRes(List<String> role, List<String> urls) {
+        return this;
+    }
+
 }
