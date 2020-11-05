@@ -1,4 +1,4 @@
-package com.sting.security.rbac.table_entity;
+package com.sting.security.rbac.table;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -11,39 +11,32 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 资源表 实体
+ * <p>
+ * 角色表 实体
+ * </p>
+ *
+ * @author WangYongJi
+ * @date 2020-01-19
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sys_resource")
-public class SysResource extends Model<SysResource> implements StEntity {
-    public static final String TABLE_NAME = "sys_resource";
+@TableName("sys_role")
+public class SysRole extends Model<SysRole> implements StEntity {
+    public static final String TABLE_NAME = "sys_role";
 
     private static final long serialVersionUID = 1L;
-
-
-    @TableField(exist = false)
-    private String parentName;
 
     /*PK*/
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
 
-    /*PK*/
-    @TableField("pid")
-    private String pid;
-
-    /*资源名称*/
+    /*角色名*/
     @TableField("name")
     private String name;
 
-    /*url*/
-    @TableField("url")
-    private String url;
-
-    /*资源描述*/
-    @TableField("details")
-    private String details;
+    /*识别Key*/
+    @TableField("role_key")
+    private String roleKey;
 
 }

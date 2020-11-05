@@ -3,11 +3,13 @@ package com.sting.core.spring;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 /**
  * 环境变量
  */
+@Order(1)
 @Slf4j
 @Configuration
 public class EnvKit implements EnvironmentAware {
