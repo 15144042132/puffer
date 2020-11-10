@@ -3,13 +3,11 @@ package com.sting.security.rbac.table;
 import com.sting.db.dao.StDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Order(999)
 @Slf4j
-@Configuration
+@Component
 public class TableHandler {
 
     @Autowired

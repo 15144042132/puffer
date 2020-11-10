@@ -9,9 +9,8 @@ import com.sting.security.rbac.table.SysResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,9 +24,8 @@ import java.util.stream.Collectors;
  * 资源处理器
  * 读取全部资源，更新数据库
  */
-@Order(998)
 @Slf4j
-@Configuration
+@Component
 public class ResHandler {
     @Autowired
     private StDao dao;

@@ -3,9 +3,8 @@ package com.sting.security.rbac.authority;
 import com.sting.core.spring.ContextKit;
 import com.sting.core.spring.EnvKit;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.Method;
@@ -17,9 +16,8 @@ import java.util.HashSet;
  * 资源处理器
  * 读取全部资源，更新数据库
  */
-@Order(999)
 @Slf4j
-@Configuration
+@Component
 public class RoleHandler {
     public HashMap<String, HashSet<String>> roleResourceMap = new HashMap<>();
 
