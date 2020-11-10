@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Res {
-    //模块
+    //资源名
     String value() default "";
 
     //描述信息

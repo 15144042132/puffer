@@ -4,8 +4,8 @@ import com.sting.core.spring.ContextKit;
 import com.sting.core.spring.EnvKit;
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
-import com.sting.security.rbac.table.SysLinkRoleResource;
-import com.sting.security.rbac.table.SysResource;
+import com.sting.security.rbac.table.StLinkRoleResource;
+import com.sting.security.rbac.table.StResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +88,8 @@ public class ResHandler {
         List<String> resUrlList = resList.stream().map(ResEntity::getUrl).collect(Collectors.toList());
 
         /*数据库中的全部资源*/
-        List<SysResource> dbResList = dao.list(SysResource.class);
-        List<String> dbUrlList = dbResList.stream().map(SysResource::getUrl).collect(Collectors.toList());
+        List<StResource> dbResList = dao.list(StResource.class);
+        List<String> dbUrlList = dbResList.stream().map(StResource::getUrl).collect(Collectors.toList());
 
         /*
          *筛选资源
@@ -97,38 +97,38 @@ public class ResHandler {
          *新增 -- insertResC -- 项目中存在，数据库中不存在
          *更新 -- updateResC
          */
-        ArrayList<SysResource> insertResCList = new ArrayList<>();
+        ArrayList<StResource> insertResCList = new ArrayList<>();
         ArrayList<String> deleteResCIds = new ArrayList<>();
-        ArrayList<SysResource> updateResCList = new ArrayList<>();
+        ArrayList<StResource> updateResCList = new ArrayList<>();
 
         //筛选新增资源--项目中存在，数据库中不存在
         for (ResEntity resEntity : resList) {
             if (!dbUrlList.contains(resEntity.getUrl())) {
-                SysResource sysResource = new SysResource();
-                sysResource.setName(resEntity.getName());
-                sysResource.setParentName(resEntity.getPName());
-                sysResource.setUrl(resEntity.getUrl());
-                sysResource.setPid("0");//初始为0后面会做修改
-                insertResCList.add(sysResource);
+                StResource StResource = new StResource();
+                StResource.setName(resEntity.getName());
+                StResource.setParentName(resEntity.getPName());
+                StResource.setUrl(resEntity.getUrl());
+                StResource.setPid("0");//初始为0后面会做修改
+                insertResCList.add(StResource);
             }
         }
 
         //筛选，更新和删除
-        for (SysResource sysResource : dbResList) {
-            String dbUrl = sysResource.getUrl();
+        for (StResource StResource : dbResList) {
+            String dbUrl = StResource.getUrl();
 
             //待更新 -- 数据库中存在，项目中存在
             if (resUrlList.contains(dbUrl)) {
                 List<ResEntity> collect = resList.stream().filter(it -> it.getUrl().equals(dbUrl)).collect(Collectors.toList());
                 ResEntity resEntity = collect.get(0);
-                sysResource.setName(resEntity.getName());
-                sysResource.setParentName(resEntity.getPName());
-                updateResCList.add(sysResource);
+                StResource.setName(resEntity.getName());
+                StResource.setParentName(resEntity.getPName());
+                updateResCList.add(StResource);
             }
 
             //待删除 -- 数据库中存在，项目中不存在
             if (!resUrlList.contains(dbUrl)) {
-                deleteResCIds.add(sysResource.getId());
+                deleteResCIds.add(StResource.getId());
             }
         }
 
@@ -136,17 +136,17 @@ public class ResHandler {
         dao.insertBatch(insertResCList);
 
         //更新资源
-        ArrayList<SysResource> allResC = new ArrayList<>();
+        ArrayList<StResource> allResC = new ArrayList<>();
         allResC.addAll(insertResCList);
         allResC.addAll(updateResCList);
         //更新PID
-        for (SysResource insertRes : allResC) {
+        for (StResource insertRes : allResC) {
             if (insertRes.getName().equals(insertRes.getParentName())) {
                 insertRes.setPid("0");
             } else {
-                for (SysResource sysResource : allResC) {
-                    if (sysResource.getName().equals(insertRes.getParentName())) {
-                        insertRes.setPid(sysResource.getId());
+                for (StResource StResource : allResC) {
+                    if (StResource.getName().equals(insertRes.getParentName())) {
+                        insertRes.setPid(StResource.getId());
                         break;
                     }
                 }
@@ -156,17 +156,17 @@ public class ResHandler {
 
 
         //删除失效资源和角色资源关联表
-        long l = dao.deleteByIds(SysResource.class, deleteResCIds);
+        long l = dao.deleteByIds(StResource.class, deleteResCIds);
 
         if (deleteResCIds.size() > 0) {
-            dao.delete(new StWrapper<>(SysLinkRoleResource.class).in("role_id", deleteResCIds));
+            dao.delete(new StWrapper<>(StLinkRoleResource.class).in("role_id", deleteResCIds));
         }
 
 
         //TODO 这里注释
-//        List<SysResource> list = dao.list(SysResource.class);
-//        List<SysResource> gen = list.stream().filter(it -> it.getPid().equals("0")).collect(Collectors.toList());
-//        List<SysResource> notGen = list.stream().filter(it -> !it.getPid().equals("0")).collect(Collectors.toList());
+//        List<StResource> list = dao.list(StResource.class);
+//        List<StResource> gen = list.stream().filter(it -> it.getPid().equals("0")).collect(Collectors.toList());
+//        List<StResource> notGen = list.stream().filter(it -> !it.getPid().equals("0")).collect(Collectors.toList());
 
 //        log.info("list     {}", JSON.toJSONString(list));
 //        log.info("gen     {}", JSON.toJSONString(gen));
@@ -178,4 +178,36 @@ public class ResHandler {
 
     }
 
+    static class ResEntity {
+        //地址
+        private String url = "";
+        //资源名
+        private String name = "";
+        //父类
+        private String pName = "";
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPName() {
+            return pName;
+        }
+
+        public void setPName(String pName) {
+            this.pName = pName;
+        }
+    }
 }

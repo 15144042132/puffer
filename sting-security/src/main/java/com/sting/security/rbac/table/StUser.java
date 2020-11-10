@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("sys_user")
-public class SysUser extends Model<SysUser> implements StEntity {
+public class StUser extends Model<StUser> implements StEntity {
     public static final String TABLE_NAME = "sys_user";
 
     private static final long serialVersionUID = 1L;

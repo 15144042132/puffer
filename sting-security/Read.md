@@ -10,10 +10,15 @@
     角色<n-n>用户 关联表，必备字段 role_id、user_id
 
     角色<n-n>资源 关联表，必备字段 role_id、resource_id
+
 2.流程
-    项目启动后，扫描所有Res注解，根据URL增量更新资源表
-    读取SecurityConfig的配置项，配置拦截权限规则  
- 
+    RBACInitialize
+    扫描所有资源，更新数据库
+    扫描所有角色注解，配置角色资源            
+    读取SecurityConfig的配置项，配置权限和拦截规则
+    
+
+
 ~~~
 
 ###SSO

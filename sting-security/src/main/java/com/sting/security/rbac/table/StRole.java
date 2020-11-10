@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("sys_role")
-public class SysRole extends Model<SysRole> implements StEntity {
+public class StRole extends Model<StRole> implements StEntity {
     public static final String TABLE_NAME = "sys_role";
 
     private static final long serialVersionUID = 1L;
