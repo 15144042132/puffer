@@ -1,4 +1,4 @@
-package com.sting.security.rbac.table;
+package com.sting.security.rbac.handler;
 
 import com.sting.db.dao.StDao;
 import lombok.extern.slf4j.Slf4j;
@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 创建必须存在的数据库表
+ */
 @Slf4j
 @Component
 public class TableHandler {

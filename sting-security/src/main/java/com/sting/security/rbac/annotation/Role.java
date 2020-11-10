@@ -1,12 +1,12 @@
-package com.sting.security.rbac.authority;
+package com.sting.security.rbac.annotation;
 
 import java.lang.annotation.*;
 
 /**
- * Role
- * 角色注解--注明当前资源数，属于哪些角色
+ * Role -- 角色注解
+ * 作用于类和方法，注明当前资源数，属于哪些角色
  * <p>
- * Role 小于 RoleExclude
+ * Role的权限 小于RoleExclude
  *
  * @author WangYongJi
  */

@@ -1,7 +1,7 @@
 package com.sting.test.security;
 
 import com.sting.db.dao.StDao;
-import com.sting.security.rbac.config.PuffSecurityConfig;
+import com.sting.security.rbac.PufferSecurityConfig;
 import com.sting.test.PufferTestApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class TestSecurity {
     @Autowired
     private StDao dao;
     @Autowired
-    private PuffSecurityConfig puffSecurityConfig;
+    private PufferSecurityConfig puffSecurityConfig;
 
     /**
      * Count 操作

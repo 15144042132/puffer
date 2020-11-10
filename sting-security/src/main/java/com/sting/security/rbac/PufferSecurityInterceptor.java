@@ -1,5 +1,6 @@
-package com.sting.security.rbac.authority;
+package com.sting.security.rbac;
 
+import com.sting.security.rbac.annotation.Public;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -16,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author WangYongJi
  */
 @Slf4j
-@Component
-public class Auth implements HandlerInterceptor {
+@Component()
+public class PufferSecurityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request,

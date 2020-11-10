@@ -18,3 +18,8 @@ mybatis-plus:
     lazy-loading-enabled: true
     call-setters-on-nulls: true
   mapper-locations: classpath*:/db-mapper/*.xml
+
+puffer:
+  security:
+    web:
+      login-page:

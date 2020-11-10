@@ -1,7 +1,9 @@
-package com.sting.security.rbac.authority;
+package com.sting.security.rbac.handler;
 
 import com.sting.core.spring.ContextKit;
 import com.sting.core.spring.EnvKit;
+import com.sting.security.rbac.annotation.Role;
+import com.sting.security.rbac.annotation.RoleExclude;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
@@ -13,8 +15,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * 资源处理器
- * 读取全部资源，更新数据库
+ * 角色注解处理器
+ * 扫描角色对应资源权限
  */
 @Slf4j
 @Component

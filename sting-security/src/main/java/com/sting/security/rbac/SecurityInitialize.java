@@ -1,10 +1,8 @@
 package com.sting.security.rbac;
 
-import com.sting.security.rbac.authority.Auth;
-import com.sting.security.rbac.authority.RoleHandler;
-import com.sting.security.rbac.config.PuffSecurityConfig;
-import com.sting.security.rbac.resource.ResHandler;
-import com.sting.security.rbac.table.TableHandler;
+import com.sting.security.rbac.handler.ResHandler;
+import com.sting.security.rbac.handler.RoleHandler;
+import com.sting.security.rbac.handler.TableHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +16,9 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Configuration
-public class RBACInitialize implements WebMvcConfigurer {
+public class SecurityInitialize implements WebMvcConfigurer {
 
-    public RBACInitialize(TableHandler tableHandler, RoleHandler roleHandler, ResHandler resHandler) {
+    public SecurityInitialize(TableHandler tableHandler, RoleHandler roleHandler, ResHandler resHandler) {
         //创建数据库表结构
         tableHandler.createTable();
 
@@ -34,9 +32,9 @@ public class RBACInitialize implements WebMvcConfigurer {
 
     //全局拦截器
     @Resource
-    private Auth authInterceptor;
+    private PufferSecurityInterceptor authInterceptor;
     @Autowired
-    private PuffSecurityConfig securityConfig;
+    private PufferSecurityConfig securityConfig;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -1,19 +1,15 @@
-package com.sting.security.rbac.resource;
+package com.sting.security.rbac.annotation;
 
 import java.lang.annotation.*;
 
 /**
- * 资源注解
+ * 放行注解--声明当前资源不需要权限控制
  *
  * @author WangYongJi
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Res {
-    //资源名
+public @interface Public {
     String value() default "";
-
-    //描述信息
-    String desc() default "";
 }

@@ -1,7 +1,7 @@
 package com.sting.test.security;
 
-import com.sting.security.rbac.authority.Role;
-import com.sting.security.rbac.resource.Res;
+import com.sting.security.rbac.annotation.Role;
+import com.sting.security.rbac.annotation.Res;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

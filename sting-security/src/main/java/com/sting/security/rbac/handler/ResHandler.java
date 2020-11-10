@@ -1,9 +1,10 @@
-package com.sting.security.rbac.resource;
+package com.sting.security.rbac.handler;
 
 import com.sting.core.spring.ContextKit;
 import com.sting.core.spring.EnvKit;
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
+import com.sting.security.rbac.annotation.Res;
 import com.sting.security.rbac.table.StLinkRoleResource;
 import com.sting.security.rbac.table.StResource;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 资源处理器
+ * 资源注解处理器
  * 读取全部资源，更新数据库
  */
 @Slf4j
