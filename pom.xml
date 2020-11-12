@@ -159,9 +159,8 @@
         <java.encoding>UTF-8</java.encoding>
         <java.source>1.8</java.source>
         <java.target>1.8</java.target>
-        <maven-compiler-plugin>3.1</maven-compiler-plugin>
-        <maven-source-plugin>2.4</maven-source-plugin>
-
+        <maven-compiler-plugin>3.8.1</maven-compiler-plugin>
+        <maven-source-plugin>3.2.1</maven-source-plugin>
         <!--    内部包    -->
         <sting.core>0.0.1</sting.core>
         <sting.db>0.0.1</sting.db>

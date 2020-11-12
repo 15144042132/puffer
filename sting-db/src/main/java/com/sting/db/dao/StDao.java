@@ -71,7 +71,6 @@ public interface StDao {
 
     <P extends StEntity> long updateByIds(Class<P> pClass, List<Serializable> ids, Map map);
 
-
     <P extends StEntity> P selectOne(Class<P> pClass, Serializable id);
 
     Object selectObj(String sqlString);
