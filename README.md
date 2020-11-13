@@ -1,5 +1,8 @@
 # 更新日志
 
+### 实现思路
+接口、抽象类 + 默认实现 + 条件判断注入
+
 ### [v0.0.1]
 ~~~
 1.重写Wrapper条件构造器,继承 AbstractWrapper 并将 QueryWrapper和 UpdateWrapper整合在一起,,并做出适当增强

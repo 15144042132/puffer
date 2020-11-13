@@ -14,13 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class PufferSecurityConfig {
     public PuffSecurity puffSecurity;
 
-    public PufferSecurityConfig() {
-        puffSecurity = new PuffSecurity();
-        security(puffSecurity);
-    }
-
-    public abstract void security(PuffSecurity puffSecurity);
-
     public static class PuffSecurity {
         public int a = 10;
 
@@ -55,5 +48,13 @@ public abstract class PufferSecurityConfig {
         }
 
     }
+
+
+    public PufferSecurityConfig() {
+        puffSecurity = new PuffSecurity();
+        security(puffSecurity);
+    }
+
+    public abstract void security(PuffSecurity puffSecurity);
 
 }
