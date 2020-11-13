@@ -6,23 +6,23 @@ import com.sting.security.rbac.annotation.Res;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Res("测试C")
+@Res("用户管理")
 @Role({"system", "admin_company"})
 @RestController
-@RequestMapping("/test")
-public class Controller3 {
+@RequestMapping("/user")
+public class UserController {
 
-    @Res("eeee")
+    @Res("添加用户")
     @RoleExclude("admin_company")
-    @RequestMapping("/eeee")
-    public String a1() {
+    @RequestMapping("/insert")
+    public String insertUser() {
         return "";
     }
 
-    @Res("rrrr")
+    @Res("删除用户")
     @RoleExclude("admin_company")
-    @RequestMapping("/rrrr")
-    public String a2() {
+    @RequestMapping("/delete")
+    public String deleteUser() {
         return "";
     }
 
