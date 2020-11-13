@@ -1,18 +1,24 @@
 package com.sting.security.rbac.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.sting.core.spring.ContextKit;
 import com.sting.core.spring.EnvKit;
+import com.sting.db.dao.StDao;
+import com.sting.db.wrapper.StWrapper;
 import com.sting.security.rbac.annotation.Role;
 import com.sting.security.rbac.annotation.RoleExclude;
+import com.sting.security.rbac.table.StLinkRoleResource;
+import com.sting.security.rbac.table.StResource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 角色注解处理器
@@ -21,6 +27,9 @@ import java.util.HashSet;
 @Slf4j
 @Component
 public class RoleHandler {
+    @Autowired
+    private StDao dao;
+
     public HashMap<String, HashSet<String>> roleResourceMap = new HashMap<>();
 
     //扫描所有角色资源
@@ -89,4 +98,52 @@ public class RoleHandler {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void refreshRoleResource() {
+        //全部资源
+        List<StResource> list = dao.list(StResource.class);
+        Set<String> roleIds = new HashSet<>();
+        ArrayList<StLinkRoleResource> stLinkRoleResources = new ArrayList<>();
+
+        /* 1.类上的注解处理
+         * 填充 roleIds 需要更新的角色ID
+         * 填充 stLinkRoleResources 角色关联表资源列表
+         */
+        for (String roleCode : roleResourceMap.keySet()) {
+            Object roleId = dao.selectObj("select id from sys_role where code='" + roleCode + "'");
+            roleIds.add(roleId + "");
+            HashSet<String> resources = roleResourceMap.get(roleCode);
+            Set<String> ids = list.stream().filter(it -> resources.contains(it.getUrl())).map(StResource::getId).collect(Collectors.toSet());
+            for (String resId : ids) {
+                StLinkRoleResource stLinkRoleResource = new StLinkRoleResource();
+                stLinkRoleResource.setRoleId(roleId + "");
+                stLinkRoleResource.setResourceId(resId);
+                stLinkRoleResources.add(stLinkRoleResource);
+            }
+        }
+
+
+
+        /* TODO 2.配置类处理
+         * 填充 roleIds 需要更新的角色ID
+         * 填充 stLinkRoleResources 角色关联表资源列表
+         */
+
+
+
+
+
+
+
+
+        /*2.更新数据库关联
+         *
+         */
+        long deleteCount = dao.delete(new StWrapper<>(StLinkRoleResource.class).in("role_id", roleIds));
+        long insertCount = dao.insertBatch(stLinkRoleResources);
+        log.info(deleteCount + "");
+        log.info(insertCount + "");
+        //roleIds
+        log.info(JSON.toJSONString(roleResourceMap));
+    }
 }

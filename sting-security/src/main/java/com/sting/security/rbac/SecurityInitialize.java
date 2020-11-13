@@ -28,6 +28,7 @@ public class SecurityInitialize implements WebMvcConfigurer {
 
         //扫描角色资源，更新数据库
         roleHandler.scanRole();
+        roleHandler.refreshRoleResource();
     }
 
     //全局拦截器
