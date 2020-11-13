@@ -1,6 +1,5 @@
 package com.sting.security.rbac.handler;
 
-import com.alibaba.fastjson.JSON;
 import com.sting.core.spring.ContextKit;
 import com.sting.core.spring.EnvKit;
 import com.sting.db.dao.StDao;
@@ -143,7 +142,5 @@ public class RoleHandler {
         long insertCount = dao.insertBatch(stLinkRoleResources);
         log.info(deleteCount + "");
         log.info(insertCount + "");
-        //roleIds
-        log.info(JSON.toJSONString(roleResourceMap));
     }
 }
