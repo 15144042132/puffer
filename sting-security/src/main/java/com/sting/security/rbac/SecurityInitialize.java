@@ -1,7 +1,6 @@
 package com.sting.security.rbac;
 
 import com.sting.security.rbac.handler.ResHandler;
-import com.sting.security.rbac.handler.RoleHandler;
 import com.sting.security.rbac.handler.TableHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import javax.annotation.Resource;
 @Configuration
 public class SecurityInitialize implements WebMvcConfigurer {
 
-    public SecurityInitialize(TableHandler tableHandler, RoleHandler roleHandler, ResHandler resHandler) {
+    public SecurityInitialize(TableHandler tableHandler, ResHandler resHandler) {
         //创建数据库表结构
         tableHandler.createTable();
 
@@ -26,9 +25,6 @@ public class SecurityInitialize implements WebMvcConfigurer {
         resHandler.scanResource();
         resHandler.refreshDbResource();
 
-        //扫描角色资源，更新数据库
-        roleHandler.scanRole();
-        roleHandler.refreshRoleResource();
     }
 
     //全局拦截器

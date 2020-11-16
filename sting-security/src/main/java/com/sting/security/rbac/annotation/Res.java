@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 资源注解
- * 声明当前路由为资源，项目启动时扫描并更新到数据库中
+ * 声明当前类为资源，项目启动时，会被扫描更新到数据库中
  *
  * @author WangYongJi
  */

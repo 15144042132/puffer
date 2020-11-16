@@ -1,6 +1,5 @@
 package com.sting.security.rbac;
 
-import com.sting.security.rbac.annotation.Public;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -40,27 +39,16 @@ public class PufferSecurityInterceptor implements HandlerInterceptor {
         if (isHandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) object;
             String requestURI = request.getRequestURI();
-
-            //检查放行
-            Public isPublic = handlerMethod.getMethod().getAnnotation(Public.class);
-            if (isPublic != null) {
-                log.info("访问资源:{} , 存在@Public注解{},直接放行", requestURI, isPublic.value());
-                return true;
-            }
-
-
             //路由符合放行条件
             if (requestURI.contains("/public/") || requestURI.contains("static/") || requestURI.contains("/static/")) {
                 log.info("{} 路由符合放行条件，直接放行", requestURI);
                 return true;
             }
 
-
             //报错了
             if (requestURI.equals("/error")) {
                 return true;
             }
-
 
             //权限校验
 
