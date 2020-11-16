@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author WangYongJi
  */
 @Slf4j
-@Component()
+@Component
 public class PufferSecurityInterceptor implements HandlerInterceptor {
 
     @Override

@@ -1,9 +1,8 @@
 package com.sting.security.rbac;
 
-import com.sting.security.rbac.handler.ResHandler;
-import com.sting.security.rbac.handler.TableHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -30,8 +29,6 @@ public class SecurityInitialize implements WebMvcConfigurer {
     //全局拦截器
     @Resource
     private PufferSecurityInterceptor authInterceptor;
-    @Autowired
-    private PufferSecurityConfig securityConfig;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -41,4 +38,9 @@ public class SecurityInitialize implements WebMvcConfigurer {
                 .addPathPatterns("/**");
     }
 
+    @Bean
+    @ConditionalOnMissingBean(SecurityConfig.class)
+    public SecurityConfig SecurityConfig() {
+        return new SecurityConfigDefaultImpl();
+    }
 }

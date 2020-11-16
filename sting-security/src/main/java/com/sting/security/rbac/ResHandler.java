@@ -1,12 +1,9 @@
-package com.sting.security.rbac.handler;
+package com.sting.security.rbac;
 
 import com.sting.core.spring.ContextKit;
 import com.sting.core.spring.EnvKit;
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
-import com.sting.security.rbac.annotation.Res;
-import com.sting.security.rbac.table.StLinkRoleResource;
-import com.sting.security.rbac.table.StResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
