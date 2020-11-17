@@ -1,4 +1,4 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -11,39 +11,39 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 资源表 实体
+ * 安全配置类
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("sys_resource")
-public class StResource extends Model<StResource> implements StEntity {
-    public static final String TABLE_NAME = "sys_resource";
+@TableName("sys_security_config")
+public class StConfig extends Model<StConfig> implements StEntity {
+    public static final String TABLE_NAME = "sys_security_config";
 
     private static final long serialVersionUID = 1L;
-
-
-    @TableField(exist = false)
-    private String parentName;
 
     /*PK*/
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
 
-    /*PK*/
-    @TableField("pid")
-    private String pid;
-
-    /*资源名称*/
+    /*配置名称*/
     @TableField("name")
     private String name;
 
-    /*url*/
-    @TableField("url")
-    private String url;
+    /*键*/
+    @TableField("code")
+    private String code;
 
-    /*资源描述*/
-    @TableField("details")
-    private String details;
+    /*值*/
+    @TableField("value")
+    private String value;
+
+    /*描述*/
+    @TableField("des")
+    private String des;
+
+    /*排序(默认=100)*/
+    @TableField("sort")
+    private String sort;
 
 }

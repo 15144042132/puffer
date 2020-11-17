@@ -1,7 +1,7 @@
 package com.sting.test.security;
 
 import com.sting.db.dao.StDao;
-import com.sting.security.rbac.SecurityConfig;
+import com.sting.security.rbac.config.SecurityConfig;
 import com.sting.test.PufferTestApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

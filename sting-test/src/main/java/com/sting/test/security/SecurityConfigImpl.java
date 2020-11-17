@@ -1,6 +1,6 @@
 //package com.sting.test.security;
 //
-//import com.sting.security.rbac.SecurityConfig;
+//import com.sting.security.rbac.config.SecurityConfig;
 //import org.springframework.stereotype.Component;
 //
 //@Component

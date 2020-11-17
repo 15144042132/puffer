@@ -1,7 +1,8 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.config;
 
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
+import com.sting.security.rbac.entity.StConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

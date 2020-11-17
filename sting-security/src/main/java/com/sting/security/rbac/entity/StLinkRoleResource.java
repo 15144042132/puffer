@@ -1,4 +1,4 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

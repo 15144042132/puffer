@@ -1,6 +1,6 @@
 package com.sting.security.rbac.interceptor;
 
-import com.sting.security.rbac.SecurityConfig;
+import com.sting.security.rbac.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

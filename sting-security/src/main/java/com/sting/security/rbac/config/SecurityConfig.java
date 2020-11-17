@@ -1,4 +1,6 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.config;
+
+import com.sting.security.rbac.entity.StConfig;
 
 /**
  * 配置接口
