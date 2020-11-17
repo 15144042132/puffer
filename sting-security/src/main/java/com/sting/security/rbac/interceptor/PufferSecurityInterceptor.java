@@ -1,6 +1,8 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.interceptor;
 
+import com.sting.security.rbac.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,17 +20,20 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Component
 public class PufferSecurityInterceptor implements HandlerInterceptor {
-
+    @Autowired
+    SecurityConfig config;
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object object) throws Exception {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Headers", "authorization,Authorization,Token,token,Auth,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type");
-        //response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-        if (request.getMethod().equals("OPTIONS")) return true;
-
+        response.setHeader("Access-Control-Allow-Origin", config.accessControlAllowOrigin());
+        response.setHeader("Access-Control-Allow-Headers", config.accessControlAllowHeaders());
+        response.setHeader("Access-Control-Allow-Methods", config.accessControlAllowMethods());
+        response.setHeader("Access-Control-Max-Age", config.accessControlMaxAge());
+        response.setHeader("Access-Control-Allow-Credentials", config.accessControlAllowCredentials());
+        if (request.getMethod().equals("OPTIONS")){
+            return true;
+        }
         //检查权限
         return hasResource(request, object);
     }

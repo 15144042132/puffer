@@ -11,9 +11,30 @@
 
     角色<n-n>资源 关联表，必备字段 role_id、resource_id
 
-2.流程
-    
-    1.项目首次启动，存在默认超级用户，root    
+
+~~~
+
+
+### 启动流程
+
+* 1.检查并建表
+~~~
+角色表 sys_role，必备字段 id、name、role_key
+用户表 sys_user，必备字段 id、account、password、phone、email、status
+资源表 sys_resource，必备字段 id、name、url、details
+关联表 角色n<->n用户，必备字段 role_id、user_id
+关联表 角色<n-n>资源，必备字段 role_id、resource_id
+
+~~~
+* 1.检查并初始化配置
+~~~
+项目首次启动，存在默认超级用户，root   
+鸽子拦截器 顺序处理
+检查跨域
+检查Token
+检查权限
+~~~
+    1. 
     
     1.创建必须存在的几张系统表
     2.扫描全部资源，保存到数据库
@@ -28,7 +49,6 @@
 
 
 ~~~
-
 ###SSO
 ~~~
 五张表和表中必须存在的字段

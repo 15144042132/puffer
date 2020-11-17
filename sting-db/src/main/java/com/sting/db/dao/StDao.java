@@ -108,7 +108,6 @@ public interface StDao {
 
     <P extends StEntity> List<Object> listObj(StWrapper<P> stWrapper);
 
-
     long count(String sqlString);
 
     <P extends StEntity> long count(Class<P> pClass);

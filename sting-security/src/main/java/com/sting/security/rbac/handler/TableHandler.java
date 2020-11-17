@@ -1,8 +1,7 @@
-package com.sting.security.rbac;
+package com.sting.security.rbac.handler;
 
 import com.sting.db.dao.StDao;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,12 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Component
 public class TableHandler {
+    //数据库操作对象
+    private final StDao dao;
+    //安全框架初始化状态
+    private final Object init_status;
 
-    @Autowired
-    private StDao dao;
+    TableHandler(StDao dao) {
+        this.dao = dao;
+        init_status = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
+    }
+
 
     /**
-     * 建表
+     * 检查并建表
      * sys_role 角色表
      * sys_user 用户表
      * sys_resource 资源表
@@ -26,13 +32,16 @@ public class TableHandler {
      * sys_security_config 配置表
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createTable() {
-        dao.insert(sys_role);
-        dao.insert(sys_user);
-        dao.insert(sys_resource);
-        dao.insert(sys_link_role_user);
-        dao.insert(sys_link_role_resource);
-        dao.insert(sys_security_config);
+    public void checkAndCreateTable() {
+        if (init_status == null) {
+            dao.insert(sys_role);
+            dao.insert(sys_user);
+            dao.insert(sys_resource);
+            dao.insert(sys_link_role_user);
+            dao.insert(sys_link_role_resource);
+            dao.insert(sys_security_config);
+        }
+
     }
 
 
@@ -43,6 +52,7 @@ public class TableHandler {
                     "  PRIMARY KEY (`role_id`, `resource_id`) USING BTREE,\n" +
                     "  UNIQUE INDEX `role_id`(`role_id`, `resource_id`) USING BTREE COMMENT '联合唯一索引'\n" +
                     ") COMMENT = '关联表（角色-资源）';\n";
+
 
     private static final String sys_link_role_user =
             "CREATE TABLE IF NOT EXISTS `sys_link_role_user`  (\n" +
@@ -126,4 +136,5 @@ public class TableHandler {
                     "  `sort` int unsigned DEFAULT '100' COMMENT '排序(默认=100)',\n" +
                     "  PRIMARY KEY (`id`) USING BTREE\n" +
                     ") COMMENT='字典表';";
+
 }
