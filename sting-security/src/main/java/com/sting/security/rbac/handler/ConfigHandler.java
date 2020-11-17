@@ -13,11 +13,11 @@ public class ConfigHandler {
     //数据库操作对象
     private final StDao dao;
     //安全框架初始化状态
-    private final Object init_status;
+    private final Object initStatus;
 
     ConfigHandler(StDao dao) {
         this.dao = dao;
-        init_status = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
+        initStatus = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
     }
 
 
@@ -25,7 +25,7 @@ public class ConfigHandler {
      * 检查并初始化配置
      */
     public void checkAndInitConfig() {
-        if (init_status == null) {
+        if (initStatus == null) {
             //删除所有数据
             dao.delete("delete from sys_security_config where id<1000");
             //删除所有数据

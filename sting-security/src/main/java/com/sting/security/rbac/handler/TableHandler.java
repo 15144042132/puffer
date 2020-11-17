@@ -14,11 +14,11 @@ public class TableHandler {
     //数据库操作对象
     private final StDao dao;
     //安全框架初始化状态
-    private final Object init_status;
+    private final Object initStatus;
 
     TableHandler(StDao dao) {
         this.dao = dao;
-        init_status = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
+        initStatus = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
     }
 
 
@@ -33,7 +33,7 @@ public class TableHandler {
      */
     @Transactional(rollbackFor = Exception.class)
     public void checkAndCreateTable() {
-        if (init_status == null) {
+        if (initStatus == null) {
             dao.insert(sys_role);
             dao.insert(sys_user);
             dao.insert(sys_resource);
