@@ -26,17 +26,20 @@ public class PufferInterceptor1 implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object object) throws Exception {
+        log.info("PufferInterceptor1--preHandle");
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object object,
                                 Exception exception) {
+        log.info("PufferInterceptor1--afterCompletion");
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object,
                            ModelAndView modelAndView) {
+        log.info("PufferInterceptor1--postHandle");
     }
 
 

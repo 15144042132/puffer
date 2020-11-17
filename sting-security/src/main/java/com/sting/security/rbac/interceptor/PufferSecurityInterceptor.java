@@ -22,16 +22,18 @@ import javax.servlet.http.HttpServletResponse;
 public class PufferSecurityInterceptor implements HandlerInterceptor {
     @Autowired
     SecurityConfig config;
+
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object object) throws Exception {
-        response.setHeader("Access-Control-Allow-Origin", config.accessControlAllowOrigin());
-        response.setHeader("Access-Control-Allow-Headers", config.accessControlAllowHeaders());
-        response.setHeader("Access-Control-Allow-Methods", config.accessControlAllowMethods());
-        response.setHeader("Access-Control-Max-Age", config.accessControlMaxAge());
-        response.setHeader("Access-Control-Allow-Credentials", config.accessControlAllowCredentials());
-        if (request.getMethod().equals("OPTIONS")){
+        log.info("PufferSecurityInterceptor--preHandle");
+        response.setHeader("Access-Control-Allow-Origin", config.accessControlAllowOrigin().getValue());
+        response.setHeader("Access-Control-Allow-Headers", config.accessControlAllowHeaders().getValue());
+        response.setHeader("Access-Control-Allow-Methods", config.accessControlAllowMethods().getValue());
+        response.setHeader("Access-Control-Max-Age", config.accessControlMaxAge().getValue());
+        response.setHeader("Access-Control-Allow-Credentials", config.accessControlAllowCredentials().getValue());
+        if (request.getMethod().equals("OPTIONS")) {
             return true;
         }
         //检查权限
@@ -66,11 +68,13 @@ public class PufferSecurityInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object object,
                                 Exception exception) {
+        log.info("PufferSecurityInterceptor--afterCompletion");
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object,
                            ModelAndView modelAndView) {
+        log.info("PufferSecurityInterceptor--postHandle");
     }
 
 

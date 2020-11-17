@@ -1,5 +1,15 @@
 ###权限管理系统基础
 ~~~
+拦截器执行顺序
+先添加的先执行，
+return true会执行下一个
+return false；则直接退出
+pre执行循序   1 2 3
+post执行循序  3 2 1
+after执行循序 3 2 1
+~~~
+
+~~~
 1.基础表 (src/resource/sql/security.sql)
     角色表 sys_role，必备字段 id、name、role_key
                           

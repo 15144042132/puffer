@@ -14,7 +14,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     # 注释 log-impl 停止查询结果SQL日志
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     lazy-loading-enabled: true
     call-setters-on-nulls: true
   mapper-locations: classpath*:/db-mapper/*.xml

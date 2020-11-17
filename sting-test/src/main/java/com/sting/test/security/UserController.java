@@ -12,13 +12,13 @@ public class UserController {
     @Res("添加用户")
     @RequestMapping("/insert")
     public String insertUser() {
-        return "";
+        return "123";
     }
 
     @Res("删除用户")
     @RequestMapping("/delete")
     public String deleteUser() {
-        return "";
+        return "123";
     }
 
 

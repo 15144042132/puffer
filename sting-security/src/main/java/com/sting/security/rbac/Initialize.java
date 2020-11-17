@@ -3,15 +3,16 @@ package com.sting.security.rbac;
 import com.sting.security.rbac.handler.ConfigHandler;
 import com.sting.security.rbac.handler.ResHandler;
 import com.sting.security.rbac.handler.TableHandler;
+import com.sting.security.rbac.interceptor.PufferInterceptor1;
+import com.sting.security.rbac.interceptor.PufferInterceptor2;
 import com.sting.security.rbac.interceptor.PufferSecurityInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.annotation.Resource;
 
 /**
  * 启动类
@@ -33,8 +34,14 @@ public class Initialize implements WebMvcConfigurer {
     }
 
     //全局拦截器
-    @Resource
+    @Autowired
     private PufferSecurityInterceptor authInterceptor;
+    //全局拦截器
+    @Autowired
+    private PufferInterceptor1 pufferInterceptor1;
+    //全局拦截器
+    @Autowired
+    private PufferInterceptor2 pufferInterceptor2;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -59,10 +66,17 @@ public class Initialize implements WebMvcConfigurer {
          * 上下浮动：至少2万
          *
          */
-
         log.info("addInterceptors");
         registry
+                .addInterceptor(pufferInterceptor1)
+                .addPathPatterns("/**");
+
+        registry
                 .addInterceptor(authInterceptor)
+                .addPathPatterns("/**");
+
+        registry
+                .addInterceptor(pufferInterceptor2)
                 .addPathPatterns("/**");
     }
 
