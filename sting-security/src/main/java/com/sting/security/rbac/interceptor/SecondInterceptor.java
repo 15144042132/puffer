@@ -31,23 +31,27 @@ public class SecondInterceptor implements HandlerInterceptor {
                              HttpServletResponse response,
                              Object object) throws Exception {
         log.info("SecondInterceptor---preHandle");
+
         if (request.getMethod().equals("OPTIONS")) {
             return true;
         }
+
         boolean isHandlerMethod = object instanceof HandlerMethod;
         if (isHandlerMethod) {
             String requestURI = request.getRequestURI();
-            //路由符合放行条件
-            if (requestURI.contains("/public/") || requestURI.contains("static/") || requestURI.contains("/static/") || requestURI.equals("/error")) {
-                log.info("{}  直接放行", requestURI);
-                return true;
+            for (String url : config.publicUrl().getValue().split(",")) {
+                if (requestURI.contains(url)) {
+                    return true;
+                }
             }
+
             //权限校验
             String token = request.getHeader("token");
             if (!JwtKit.check(token)) {
                 log.info("{} 身份认证失败，Token不存在或已失效  Token: {}", requestURI, token);
                 throw new StException(StMsg.ERROR_401);
             }
+
             return true;
         }
         return true;

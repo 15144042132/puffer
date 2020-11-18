@@ -59,4 +59,5 @@ public interface SecurityConfig {
      */
     StConfig accessControlAllowCredentials();
 
+    StConfig publicUrl();
 }

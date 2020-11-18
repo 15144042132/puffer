@@ -66,6 +66,11 @@ public class SecurityConfigDefaultImpl implements SecurityConfig {
         return getStConfig("access_control_allow_credentials");
     }
 
+    @Override
+    public StConfig publicUrl() {
+        return getStConfig("public_url");
+    }
+
     private StConfig getStConfig(String code) {
         return stDao.selectOne(new StWrapper<>(StConfig.class).eq("code", code));
     }
