@@ -12,34 +12,39 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * 权限认证
+ * 请求拦截器
  *
  * @author WangYongJi
  */
 @Slf4j
 @Component
-public class PufferInterceptor1 implements HandlerInterceptor {
+public class OriginInterceptor implements HandlerInterceptor {
     @Autowired
-    SecurityConfig config;
+    private SecurityConfig config;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object object) throws Exception {
-        log.info("PufferInterceptor1--preHandle");
+        log.info("OriginInterceptor---preHandle");
+        response.setHeader("Access-Control-Allow-Origin", config.accessControlAllowOrigin().getValue());
+        response.setHeader("Access-Control-Allow-Headers", config.accessControlAllowHeaders().getValue());
+        response.setHeader("Access-Control-Allow-Methods", config.accessControlAllowMethods().getValue());
+        response.setHeader("Access-Control-Max-Age", config.accessControlMaxAge().getValue());
+        response.setHeader("Access-Control-Allow-Credentials", config.accessControlAllowCredentials().getValue());
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object object,
                                 Exception exception) {
-        log.info("PufferInterceptor1--afterCompletion");
+        log.info("OriginInterceptor---afterCompletion");
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object,
                            ModelAndView modelAndView) {
-        log.info("PufferInterceptor1--postHandle");
+        log.info("OriginInterceptor---postHandle");
     }
 
 

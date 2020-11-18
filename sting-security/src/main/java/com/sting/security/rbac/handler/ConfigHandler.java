@@ -36,7 +36,6 @@ public class ConfigHandler {
     }
 
 
-    //TODO 执行初始化INSERT
     private static final String[] insert_sql = new String[]{
             "INSERT INTO `sys_security_config`(`id`, `name`, `code`, `value`, `des`, `sort`) VALUES (1, 'ID<1000为框架保留配置，不可使用', 'zero', 'zero', NULL, 100);\n",
             "INSERT INTO `sys_security_config`(`id`, `name`, `code`, `value`, `des`, `sort`) VALUES (2, '系统秘钥(可以考虑定期更换)', 'system_secret', '67c7beb18fafd77f1319739fa683bc5e', NULL, 100);\n",

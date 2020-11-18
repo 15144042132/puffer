@@ -5,9 +5,7 @@ import com.sting.security.rbac.config.SecurityConfigDefaultImpl;
 import com.sting.security.rbac.handler.ConfigHandler;
 import com.sting.security.rbac.handler.ResHandler;
 import com.sting.security.rbac.handler.TableHandler;
-import com.sting.security.rbac.interceptor.PufferInterceptor1;
-import com.sting.security.rbac.interceptor.PufferInterceptor2;
-import com.sting.security.rbac.interceptor.PufferSecurityInterceptor;
+import com.sting.security.rbac.interceptor.OriginInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,19 +29,12 @@ public class Initialize implements WebMvcConfigurer {
         //扫描资源，更新数据库
         resHandler.scanResource();
         resHandler.refreshDbResource();
-
-        //
     }
 
+
     //全局拦截器
     @Autowired
-    private PufferSecurityInterceptor authInterceptor;
-    //全局拦截器
-    @Autowired
-    private PufferInterceptor1 pufferInterceptor1;
-    //全局拦截器
-    @Autowired
-    private PufferInterceptor2 pufferInterceptor2;
+    private OriginInterceptor originInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -70,15 +61,7 @@ public class Initialize implements WebMvcConfigurer {
          */
         log.info("addInterceptors");
         registry
-                .addInterceptor(pufferInterceptor1)
-                .addPathPatterns("/**");
-
-        registry
-                .addInterceptor(authInterceptor)
-                .addPathPatterns("/**");
-
-        registry
-                .addInterceptor(pufferInterceptor2)
+                .addInterceptor(originInterceptor)
                 .addPathPatterns("/**");
     }
 

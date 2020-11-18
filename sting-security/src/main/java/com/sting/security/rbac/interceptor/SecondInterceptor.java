@@ -1,5 +1,8 @@
 package com.sting.security.rbac.interceptor;
 
+import com.sting.core.project.StException;
+import com.sting.core.project.StMsg;
+import com.sting.security.rbac.JwtKit;
 import com.sting.security.rbac.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,47 +22,32 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @Component
-public class PufferSecurityInterceptor implements HandlerInterceptor {
+public class SecondInterceptor implements HandlerInterceptor {
     @Autowired
-    SecurityConfig config;
+    private SecurityConfig config;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object object) throws Exception {
-        log.info("PufferSecurityInterceptor--preHandle");
-        response.setHeader("Access-Control-Allow-Origin", config.accessControlAllowOrigin().getValue());
-        response.setHeader("Access-Control-Allow-Headers", config.accessControlAllowHeaders().getValue());
-        response.setHeader("Access-Control-Allow-Methods", config.accessControlAllowMethods().getValue());
-        response.setHeader("Access-Control-Max-Age", config.accessControlMaxAge().getValue());
-        response.setHeader("Access-Control-Allow-Credentials", config.accessControlAllowCredentials().getValue());
+        log.info("SecondInterceptor---preHandle");
         if (request.getMethod().equals("OPTIONS")) {
             return true;
         }
-        //检查权限
-        return hasResource(request, object);
-    }
-
-    //校验权限
-    private boolean hasResource(HttpServletRequest request, Object object) throws Exception {
         boolean isHandlerMethod = object instanceof HandlerMethod;
         if (isHandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) object;
             String requestURI = request.getRequestURI();
             //路由符合放行条件
-            if (requestURI.contains("/public/") || requestURI.contains("static/") || requestURI.contains("/static/")) {
-                log.info("{} 路由符合放行条件，直接放行", requestURI);
+            if (requestURI.contains("/public/") || requestURI.contains("static/") || requestURI.contains("/static/") || requestURI.equals("/error")) {
+                log.info("{}  直接放行", requestURI);
                 return true;
             }
-
-            //报错了
-            if (requestURI.equals("/error")) {
-                return true;
-            }
-
             //权限校验
-
-            //检查通过，放行
+            String token = request.getHeader("token");
+            if (!JwtKit.check(token)) {
+                log.info("{} 身份认证失败，Token不存在或已失效  Token: {}", requestURI, token);
+                throw new StException(StMsg.ERROR_401);
+            }
             return true;
         }
         return true;
@@ -68,13 +56,13 @@ public class PufferSecurityInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object object,
                                 Exception exception) {
-        log.info("PufferSecurityInterceptor--afterCompletion");
+        log.info("AuthorityInterceptor--afterCompletion");
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object,
                            ModelAndView modelAndView) {
-        log.info("PufferSecurityInterceptor--postHandle");
+        log.info("AuthorityInterceptor--postHandle");
     }
 
 
