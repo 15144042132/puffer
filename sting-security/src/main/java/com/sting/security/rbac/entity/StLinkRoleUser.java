@@ -10,23 +10,23 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 角色<n--n>资源
+ * 角色<n--n>用户
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sys_link_role_resource")
-public class StLinkRoleResource extends Model<StLinkRoleResource> implements StEntity {
+@TableName("sys_link_role_user")
+public class StLinkRoleUser extends Model<StLinkRoleUser> implements StEntity {
 
-    public static final String TABLE_NAME = "sys_link_role_resource";
+    public static final String TABLE_NAME = "sys_link_role_user";
 
     private static final long serialVersionUID = 1L;
 
     @TableId("role_id")
     private String roleId;
 
-    @TableField("resource_id")
-    private String resourceId;
+    @TableField("user_id")
+    private String userId;
 
 
 }

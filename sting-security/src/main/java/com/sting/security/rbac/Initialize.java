@@ -6,6 +6,8 @@ import com.sting.security.rbac.handler.ConfigHandler;
 import com.sting.security.rbac.handler.ResHandler;
 import com.sting.security.rbac.handler.TableHandler;
 import com.sting.security.rbac.interceptor.OriginInterceptor;
+import com.sting.security.rbac.service.SecurityService;
+import com.sting.security.rbac.service.SecurityServiceDefaultImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,6 +30,7 @@ public class Initialize implements WebMvcConfigurer {
         configHandler.checkAndInitConfig();
         //扫描资源，更新数据库
         resHandler.scanResource();
+
         resHandler.refreshDbResource();
     }
 
@@ -67,7 +70,13 @@ public class Initialize implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnMissingBean(SecurityConfig.class)
-    public SecurityConfig SecurityConfig() {
+    public SecurityConfig securityConfig() {
         return new SecurityConfigDefaultImpl();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(SecurityService.class)
+    public SecurityService securityService() {
+        return new SecurityServiceDefaultImpl();
     }
 }

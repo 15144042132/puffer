@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 资源表 实体
+ * 资源
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

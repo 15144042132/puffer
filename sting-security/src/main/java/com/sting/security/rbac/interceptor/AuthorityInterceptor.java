@@ -32,40 +32,34 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                              Object object) throws Exception {
         log.info("AuthorityInterceptor---preHandle");
 
+        //OPTIONS 请求直接放行
         if (request.getMethod().equals("OPTIONS")) {
             return true;
         }
 
-        boolean isHandlerMethod = object instanceof HandlerMethod;
+        if (object instanceof HandlerMethod) {
 
-        if (isHandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) object;
-            String requestURI = request.getRequestURI();
-
-            //路由符合放行条件
-            if (requestURI.contains("/public/") || requestURI.contains("static/") || requestURI.contains("/static/") || requestURI.equals("/error")) {
-                log.info("{}  直接放行", requestURI);
+            //此路径不需要检查
+            if (isPublic(request.getRequestURI())) {
                 return true;
             }
 
             //权限校验
             String token = request.getHeader("token");
             if (!JwtKit.check(token)) {
-                log.info("{} 身份认证失败，Token不存在或已失效  Token: {}", requestURI, token);
+                log.info("{} 身份认证失败，Token不存在或已失效  Token: {}", request.getRequestURI(), token);
                 throw new StException(StMsg.ERROR_401);
             }
-
-            //权限不足
+            //获取用户ID
             String userId = JwtKit.getUserId(token);
-
-//            if (!resourceUrls.contains(requestURI)) {
-//                log.info("请求被截拦:{} , 原因:{} , 访问者ID:{} , 访问者账号:{}", requestURI, "权限不足", userId, userAccount);
-//                throw new MiException(ResMsg.ERROR_402);
-//            }
+            //获取用户角色
+            //获取角色资源
+            //匹配当前资源
 
 
-            return true;
+            return;
         }
+
         return true;
     }
 
@@ -81,5 +75,13 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         log.info("AuthorityInterceptor--postHandle");
     }
 
-
+    private boolean isPublic(String requestURI) {
+        for (String url : config.publicUrl().getValue().split(",")) {
+            if (requestURI.contains(url)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
