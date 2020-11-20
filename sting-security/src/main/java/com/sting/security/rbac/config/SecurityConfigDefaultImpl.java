@@ -71,6 +71,11 @@ public class SecurityConfigDefaultImpl implements SecurityConfig {
         return getStConfig("public_url");
     }
 
+    @Override
+    public StConfig rbacCheckStatus() {
+        return getStConfig("rbac_check_status");
+    }
+
     private StConfig getStConfig(String code) {
         return stDao.selectOne(new StWrapper<>(StConfig.class).eq("code", code));
     }

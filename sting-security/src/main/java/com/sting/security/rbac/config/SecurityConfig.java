@@ -59,5 +59,13 @@ public interface SecurityConfig {
      */
     StConfig accessControlAllowCredentials();
 
+    /**
+     * 不需要检查的路径，支持
+     */
     StConfig publicUrl();
+
+    /**
+     * 权限检查开关，默认开启
+     */
+    StConfig rbacCheckStatus();
 }
