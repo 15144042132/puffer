@@ -25,28 +25,17 @@ import java.util.Map;
 @Slf4j
 @Component
 public class JwtKit {
-
     //签名算法
     private static Algorithm algorithm256 = null;
     //签名验证工具
     private static JWTVerifier jwtVerifier = null;
 
-    //生成Token
-    public static String createToken(Map<String, Object> parameter) {
-        return createToken(parameter, null);
-    }
-
-    //生成Token
-    public static String createToken(Object time) {
-        return createToken(null, time);
-    }
-
     /**
      * 生成Token
      *
-     * @param parameter 携带参数，getParam方法读取参数
+     * @param parameter 携带参数
      * @param hour      失效时间(小时)
-     * @return 生成签名字符串
+     * @return 签名后的字符串
      */
     public static String createToken(Map<String, Object> parameter, Object hour) {
         //默认两小时
@@ -60,9 +49,12 @@ public class JwtKit {
             parameter = new HashMap<>(1);
         }
         return JWT.create()
-                .withClaim("parameter", JSON.toJSONString(parameter))//可读取的参数信息（别存太多）
-                .withExpiresAt(withExpiresAt)//超时时间
-                .sign(getAlgorithm256()); //signature
+                //可读取的参数信息（别存太多）
+                .withClaim("parameter", JSON.toJSONString(parameter))
+                //超时时间
+                .withExpiresAt(withExpiresAt)
+                //signature
+                .sign(getAlgorithm256());
     }
 
     //检查失效
@@ -114,7 +106,7 @@ public class JwtKit {
 
     //获取用户登录IP
     public static String getLoginIp(String token) {
-        return getParam(token, "ip").toString();
+        return getParam(token, "loginIp").toString();
     }
 
     //获取Claims
@@ -123,7 +115,7 @@ public class JwtKit {
     }
 
     private static Algorithm getAlgorithm256() {
-        if (algorithm256 == null) {
+        if (algorithm256 != null) {
             synchronized (Object.class) {
                 algorithm256 = Algorithm.HMAC256(ContextKit.getBean(SecurityConfig.class).systemSecret().getValue());
             }
