@@ -13,6 +13,7 @@ import com.sting.security.rbac.service.SecurityServiceDefaultImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * 启动类
  */
 @Slf4j
+@EnableCaching
 @Configuration("PufferSecurityInitialize")
 public class Initialize implements WebMvcConfigurer {
 
