@@ -4,7 +4,9 @@ import com.sting.security.rbac.config.SecurityConfig;
 import com.sting.security.rbac.config.SecurityConfigDefaultImpl;
 import com.sting.security.rbac.handler.ConfigHandler;
 import com.sting.security.rbac.handler.ResHandler;
+import com.sting.security.rbac.handler.RootRoleHandler;
 import com.sting.security.rbac.handler.TableHandler;
+import com.sting.security.rbac.interceptor.AuthorityInterceptor;
 import com.sting.security.rbac.interceptor.OriginInterceptor;
 import com.sting.security.rbac.service.SecurityService;
 import com.sting.security.rbac.service.SecurityServiceDefaultImpl;
@@ -23,7 +25,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration("PufferSecurityInitialize")
 public class Initialize implements WebMvcConfigurer {
 
-    public Initialize(TableHandler tableHandler, ConfigHandler configHandler, ResHandler resHandler) {
+    public Initialize(TableHandler tableHandler, ConfigHandler configHandler, ResHandler resHandler, RootRoleHandler accountHandler) {
         //建表
         tableHandler.checkAndCreateTable();
 
@@ -36,18 +38,26 @@ public class Initialize implements WebMvcConfigurer {
         //更新资源
         resHandler.refreshDbResource();
 
+        //创建ROOT角色
+        accountHandler.checkAndCreateRoot();
+
     }
 
 
     //全局拦截器
     @Autowired
     private OriginInterceptor originInterceptor;
+    @Autowired
+    private AuthorityInterceptor authorityInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         log.info("addInterceptors");
         registry
                 .addInterceptor(originInterceptor)
+                .addPathPatterns("/**");
+        registry
+                .addInterceptor(authorityInterceptor)
                 .addPathPatterns("/**");
     }
 

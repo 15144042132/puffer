@@ -2,6 +2,7 @@ package com.sting.security.rbac.handler;
 
 import com.sting.db.dao.StDao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,15 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class TableHandler {
     //数据库操作对象
-    private final StDao dao;
-    //安全框架初始化状态
-    private final Object initStatus;
-
-    TableHandler(StDao dao) {
-        this.dao = dao;
-        initStatus = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
-    }
-
+    @Autowired
+    private  StDao dao;
 
     /**
      * 检查并建表
@@ -33,13 +27,15 @@ public class TableHandler {
      */
     @Transactional(rollbackFor = Exception.class)
     public void checkAndCreateTable() {
+        dao.insert(sys_security_config);
+
+        Object initStatus = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
         if (initStatus == null) {
             dao.insert(sys_role);
             dao.insert(sys_user);
             dao.insert(sys_resource);
             dao.insert(sys_link_role_user);
             dao.insert(sys_link_role_resource);
-            dao.insert(sys_security_config);
         }
 
     }
@@ -135,6 +131,6 @@ public class TableHandler {
                     "  `des` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',\n" +
                     "  `sort` int unsigned DEFAULT '100' COMMENT '排序(默认=100)',\n" +
                     "  PRIMARY KEY (`id`) USING BTREE\n" +
-                    ") COMMENT='字典表';";
+                    ") COMMENT='安全配置';";
 
 }

@@ -37,7 +37,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         log.info("AuthorityInterceptor---preHandle");
 
         //开关检查
-        if (config.rbacCheckStatus().getValue().equals("false")) {
+        if (config.rbacIsOpen().getValue().equals("false")) {
             return true;
         }
 

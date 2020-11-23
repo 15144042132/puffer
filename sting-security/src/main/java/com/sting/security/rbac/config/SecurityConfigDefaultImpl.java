@@ -30,16 +30,9 @@ public class SecurityConfigDefaultImpl implements SecurityConfig {
     }
 
     @Override
-    public StConfig rootAccount() {
-        return getStConfig("root_account");
-
+    public StConfig rootAccountIsCreate() {
+        return null;
     }
-
-    @Override
-    public StConfig rootPassword() {
-        return getStConfig("root_password");
-    }
-
 
     @Override
     public StConfig accessControlAllowOrigin() {
@@ -72,8 +65,8 @@ public class SecurityConfigDefaultImpl implements SecurityConfig {
     }
 
     @Override
-    public StConfig rbacCheckStatus() {
-        return getStConfig("rbac_check_status");
+    public StConfig rbacIsOpen() {
+        return getStConfig("rbac_is_open");
     }
 
     private StConfig getStConfig(String code) {

@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 实现权限检查的必须的一些功能
+ */
 public class SecurityServiceDefaultImpl implements SecurityService {
     @Autowired
     private StDao stDao;

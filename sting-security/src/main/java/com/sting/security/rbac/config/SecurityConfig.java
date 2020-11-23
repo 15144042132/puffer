@@ -3,10 +3,7 @@ package com.sting.security.rbac.config;
 import com.sting.security.rbac.entity.StConfig;
 
 /**
- * 配置接口
- * 与数据库配置对应
- * 提供默认实现类 SecurityConfigDefaultImpl.class
- * 实现接口即可覆盖
+ * 配置项，与数据库配置对应
  */
 public interface SecurityConfig {
     /**
@@ -25,14 +22,9 @@ public interface SecurityConfig {
     StConfig initStatus();
 
     /**
-     * root账号，项目首次启动后，必须修改
+     * root账号，项目首次启动后，必须创建root角色
      */
-    StConfig rootAccount();
-
-    /**
-     * root密码，项目首次启动后，必须修改
-     */
-    StConfig rootPassword();
+    StConfig rootAccountIsCreate();
 
     /**
      * 请求访问来源控制
@@ -65,7 +57,7 @@ public interface SecurityConfig {
     StConfig publicUrl();
 
     /**
-     * 权限检查开关，默认开启
+     * 权限检是否开启
      */
-    StConfig rbacCheckStatus();
+    StConfig rbacIsOpen();
 }

@@ -15,6 +15,7 @@ public interface SecurityService {
      * 查询用户角色
      */
     List<String> userRoleIds(String userId);
+
     /**
      * 查询用户角色
      */

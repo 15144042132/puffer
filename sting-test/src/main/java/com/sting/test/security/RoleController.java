@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/role")
 public class RoleController {
 
+    @Res("开放路径")
+    @RequestMapping("/public/test")
+    public String publicTest() {
+        return "publicTest";
+    }
+
     @Res("添加角色")
     @RequestMapping("/insert")
     public String insert() {

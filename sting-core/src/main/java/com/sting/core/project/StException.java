@@ -5,11 +5,11 @@ package com.sting.core.project;
  */
 public class StException extends RuntimeException {
     //错误代码
-    public Integer code = 500;
+    private Integer code = 500;
     //消息内容
-    public String message = "";
+    private String message = "";
     //消息内容
-    public boolean success = false;
+    private boolean success = false;
 
     public StException(StResponseMessage miResponseMsg) {
         this.message = miResponseMsg.getMessage();
@@ -32,5 +32,30 @@ public class StException extends RuntimeException {
 
     public SRS getResponse() {
         return SRS.byError(code, message);
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }
