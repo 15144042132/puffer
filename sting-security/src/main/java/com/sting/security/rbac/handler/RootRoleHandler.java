@@ -41,6 +41,7 @@ public class RootRoleHandler {
             roleResource.setRoleId(stRole.getId());
             linkRoleResources.add(roleResource);
         }
+        dao.delete(" delete from sys_link_role_resource where role_id = " + stRole.getId());
         dao.insertBatch(linkRoleResources);
     }
 }
