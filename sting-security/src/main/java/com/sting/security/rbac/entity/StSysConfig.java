@@ -16,8 +16,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("sys_security_config")
-public class StConfig extends Model<StConfig> implements StEntity {
+@TableName("sys_config")
+public class StSysConfig extends Model<StSysConfig> implements StEntity {
     public static final String TABLE_NAME = "sys_security_config";
 
     private static final long serialVersionUID = 1L;

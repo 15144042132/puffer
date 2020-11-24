@@ -10,3 +10,15 @@ Content-Type: application/json
 {}
 
 ###
+POST http://localhost:8099/user/public/update
+Content-Type: application/json
+
+{}
+
+###
+POST http://localhost:8099/user/public/select
+Content-Type: application/json
+
+{}
+
+###

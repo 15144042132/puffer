@@ -2,9 +2,10 @@ package com.sting.security.rbac.config;
 
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
-import com.sting.security.rbac.entity.StConfig;
+import com.sting.security.rbac.entity.StSysConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
 /**
@@ -16,73 +17,146 @@ public class SecurityConfigDefaultImpl implements SecurityConfig {
     @Autowired
     private StDao stDao;
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_system_secret'")
     @Override
-    public StConfig systemSecret() {
-        return getStConfig("system_secret");
+    public StSysConfig systemSecret() {
+        return getSysConfig("security_system_secret");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_login_error_input_max_count'")
     @Override
-    public StConfig loginErrorInputMaxCount() {
-        return getStConfig("login_error_input_max_count");
+    public StSysConfig loginErrorInputMaxCount() {
+        return getSysConfig("security_login_error_input_max_count");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'init_status'")
     @Override
-    public StConfig initStatus() {
-        return getStConfig("init_status");
+    public StSysConfig initStatus() {
+        return getSysConfig("init_status");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_root_account_is_create'")
     @Override
-    public StConfig rootAccountIsCreate() {
-        return getStConfig("root_account_is_create");
+    public StSysConfig rootAccountIsCreate() {
+        return getSysConfig("security_root_account_is_create");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_access_control_allow_origin'")
     @Override
-    public StConfig accessControlAllowOrigin() {
-        return getStConfig("access_control_allow_origin");
+    public StSysConfig accessControlAllowOrigin() {
+        return getSysConfig("security_access_control_allow_origin");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_access_control_allow_headers'")
     @Override
-    public StConfig accessControlAllowHeaders() {
-        return getStConfig("access_control_allow_headers");
+    public StSysConfig accessControlAllowHeaders() {
+        return getSysConfig("security_access_control_allow_headers");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_access_control_allow_methods'")
     @Override
-    public StConfig accessControlAllowMethods() {
-        return getStConfig("access_control_allow_methods");
+    public StSysConfig accessControlAllowMethods() {
+        return getSysConfig("security_access_control_allow_methods");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_access_control_max_age'")
     @Override
-    public StConfig accessControlMaxAge() {
-        return getStConfig("access_control_max_age");
+    public StSysConfig accessControlMaxAge() {
+        return getSysConfig("security_access_control_max_age");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_access_control_allow_credentials'")
     @Override
-    public StConfig accessControlAllowCredentials() {
-        return getStConfig("access_control_allow_credentials");
+    public StSysConfig accessControlAllowCredentials() {
+        return getSysConfig("security_access_control_allow_credentials");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_public_url'")
     @Override
-    public StConfig publicUrl() {
-        return getStConfig("public_url");
+    public StSysConfig publicUrl() {
+        return getSysConfig("security_public_url");
     }
 
-    @Cacheable(key = "#root.methodName")
+    @Cacheable(key = "'security_rbac_is_open'")
     @Override
-    public StConfig rbacIsOpen() {
-        return getStConfig("rbac_is_open");
+    public StSysConfig rbacIsOpen() {
+        return getSysConfig("security_rbac_is_open");
     }
 
-    private StConfig getStConfig(String code) {
-        return stDao.selectOne(new StWrapper<>(StConfig.class).eq("code", code));
+    @CachePut(key = "'security_system_secret'")
+    @Override
+    public StSysConfig systemSecret(String value) {
+        return setSysConfig("security_system_secret", value);
+    }
+
+    @CachePut(key = "'security_login_error_input_max_count'")
+    @Override
+    public StSysConfig loginErrorInputMaxCount(String value) {
+        return setSysConfig("security_login_error_input_max_count", value);
+    }
+
+    @CachePut(key = "'init_status'")
+    @Override
+    public StSysConfig initStatus(String value) {
+        return setSysConfig("init_status", value);
+    }
+
+    @CachePut(key = "'security_root_account_is_create'")
+    @Override
+    public StSysConfig rootAccountIsCreate(String value) {
+        return setSysConfig("security_root_account_is_create", value);
+    }
+
+    @CachePut(key = "'security_access_control_allow_origin'")
+    @Override
+    public StSysConfig accessControlAllowOrigin(String value) {
+        return setSysConfig("security_access_control_allow_origin", value);
+    }
+
+    @CachePut(key = "'security_access_control_allow_headers'")
+    @Override
+    public StSysConfig accessControlAllowHeaders(String value) {
+        return setSysConfig("security_access_control_allow_headers", value);
+    }
+
+    @CachePut(key = "'security_access_control_allow_methods'")
+    @Override
+    public StSysConfig accessControlAllowMethods(String value) {
+        return setSysConfig("security_access_control_allow_methods", value);
+    }
+
+    @CachePut(key = "'security_access_control_max_age'")
+    @Override
+    public StSysConfig accessControlMaxAge(String value) {
+        return setSysConfig("security_access_control_max_age", value);
+    }
+
+    @CachePut(key = "'security_access_control_allow_credentials'")
+    @Override
+    public StSysConfig accessControlAllowCredentials(String value) {
+        return setSysConfig("security_access_control_allow_credentials", value);
+    }
+
+    @CachePut(key = "'security_public_url'")
+    @Override
+    public StSysConfig publicUrl(String value) {
+        return setSysConfig("security_public_url", value);
+    }
+
+    @CachePut(key = "'security_rbac_is_open'")
+    @Override
+    public StSysConfig rbacIsOpen(String value) {
+        return setSysConfig("security_rbac_is_open", value);
+    }
+
+    public StSysConfig getSysConfig(String code) {
+        return stDao.selectOne(new StWrapper<>(StSysConfig.class).eq("code", code));
+    }
+
+    public StSysConfig setSysConfig(String code, String value) {
+        StSysConfig stSysConfig = new StSysConfig();
+        stSysConfig.setValue(value);
+        stDao.update(stSysConfig, new StWrapper<>(StSysConfig.class).eq("code", code));
+        return stDao.selectOne(new StWrapper<>(StSysConfig.class).eq("code", code));
     }
 }
