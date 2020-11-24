@@ -192,16 +192,16 @@
         <mybatis-plus-boot-starter>3.3.0</mybatis-plus-boot-starter>
     </properties>
 
-    <!--    <distributionManagement>-->
-    <!--        <repository>-->
-    <!--            <id>releases-mi</id>-->
-    <!--            <url>http://49.235.16.209:8081/repository/maven-releases/</url>-->
-    <!--        </repository>-->
-    <!--        <snapshotRepository>-->
-    <!--            <id>snapshots-mi</id>-->
-    <!--            <url>http://49.235.16.209:8081/repository/maven-snapshots/</url>-->
-    <!--        </snapshotRepository>-->
-    <!--    </distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/115965-release-XqahFG/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/115965-snapshot-KxEEGn/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
         <!--mvn clean deploy -DskipTests-->
