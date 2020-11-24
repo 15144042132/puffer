@@ -8,6 +8,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/puffer?serverTimezone=Asia/Shanghai&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&useUnicode=true&useSSL=false&useTimezone=false&allowPublicKeyRetrieval=true
     username: root
     password: 1234qwer
+  redis:
+    host: 49.235.16.209
 
 mybatis-plus:
   configuration:
@@ -17,7 +19,6 @@ mybatis-plus:
     lazy-loading-enabled: true
     call-setters-on-nulls: true
   mapper-locations: classpath*:/db-mapper/*.xml
-
 #puffer:
 #  security:
 #    web:
