@@ -9,8 +9,8 @@
         <version>final</version>
     </parent>
 
-    <artifactId>sting-test</artifactId>
-    <name>sting-test</name>
+    <artifactId>puffer-simple</artifactId>
+    <name>puffer-simple</name>
     <version>0.0.1</version>
 
     <dependencies>

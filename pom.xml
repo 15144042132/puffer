@@ -22,12 +22,13 @@
         <module>sting-db</module>
         <module>sting-generate</module>
         <module>sting-wechat</module>
-        <module>sting-test</module>
         <module>sting-mq</module>
         <module>sting-websocket</module>
         <module>sting-cache</module>
         <module>sting-timer</module>
         <module>sting-security</module>
+        <module>puffer-simple</module>
+        <module>puffer-admin</module>
     </modules>
 
     <!--整体项目依赖管理-->
@@ -82,6 +83,16 @@
                 <groupId>com.puffer</groupId>
                 <artifactId>sting-timer</artifactId>
                 <version>${sting.timer}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-admin</artifactId>
+                <version>${puffer.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puffer</groupId>
+                <artifactId>puffer-simple</artifactId>
+                <version>${puffer.simple}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -172,6 +183,8 @@
         <sting.cache>0.0.1</sting.cache>
         <sting.timer>0.0.1</sting.timer>
         <sting.security>0.0.1</sting.security>
+        <puffer.admin>0.0.1</puffer.admin>
+        <puffer.simple>0.0.1</puffer.simple>
 
         <!--    第三方依赖    -->
         <p6spy>3.8.0</p6spy>
