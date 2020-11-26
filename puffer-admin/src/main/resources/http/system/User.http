@@ -1,11 +1,11 @@
 ### 添加用户
-POST {{host}}/system/user/insert
+POST {{host}}/system/user/public/insertRoot
 Content-Type:application/json
 
 {
-  "name": "admin",
-  "account": "admin",
-  "password": "1234qwer"
+  "name": "admin123$$",
+  "account": "1234$$$qwer",
+  "password": "1234$$$$qwer"
 }
 
 ### 登录

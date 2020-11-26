@@ -14,7 +14,6 @@ public class ConfigHandler {
     @Autowired
     private StDao dao;
 
-
     /**
      * 检查并初始化配置
      */

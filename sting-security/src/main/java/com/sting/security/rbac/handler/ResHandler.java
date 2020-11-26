@@ -7,11 +7,8 @@ import com.sting.security.rbac.entity.StLinkRoleResource;
 import com.sting.security.rbac.entity.StResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -30,20 +27,17 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class ResHandler implements ApplicationContextAware, EnvironmentAware {
-
+public class ResHandler {
     @Autowired
     private StDao dao;
+    @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
     private Environment env;
 
     private ArrayList<ResEntity> cList = new ArrayList<>();
-    private ArrayList<ResEntity> mList = new ArrayList<>();
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+    private ArrayList<ResEntity> mList = new ArrayList<>();
 
     //扫描所有资源
     public void scanResource() {
@@ -60,7 +54,9 @@ public class ResHandler implements ApplicationContextAware, EnvironmentAware {
             for (String controllerValue : controllerMapping.value()) {
                 //class
                 String rescValue = StringUtils.isBlank(resC.value()) ? aClass.getName() : resC.value();
-                String controllerPath = contextPath() + controllerValue;
+                String property = this.env.getProperty("server.servlet.context-path");
+                String contextPath = property == null ? "" : property;
+                String controllerPath = contextPath + controllerValue;
                 ResEntity moduleEntity = new ResEntity();
                 moduleEntity.setName(rescValue);
                 moduleEntity.setPName(rescValue);
@@ -190,15 +186,6 @@ public class ResHandler implements ApplicationContextAware, EnvironmentAware {
 
     }
 
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.env = environment;
-    }
-
-    public String contextPath() {
-        String property = this.env.getProperty("server.servlet.context-path");
-        return property == null ? "" : property;
-    }
 
     static class ResEntity {
         //地址

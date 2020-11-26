@@ -22,10 +22,11 @@ import java.time.Duration;
 /**
  * RedisConfig
  */
+@Configuration
 @ConditionalOnClass(RedisConnectionFactory.class)
 @ConditionalOnBean(RedisConnectionFactory.class)
-@Configuration
 public class RedisDefaultConfig {
+
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();

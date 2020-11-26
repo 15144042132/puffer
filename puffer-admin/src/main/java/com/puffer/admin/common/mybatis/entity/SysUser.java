@@ -72,6 +72,12 @@ public class SysUser extends Model<SysUser> implements StEntity {
     private String password;
 
     /**
+     * 随机盐
+     */
+    @TableField("salt")
+    private String salt;
+
+    /**
      * 头像
      */
     @TableField("head")

@@ -8,9 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.sting.core.spring.ContextKit;
+import com.sting.core.util.ContextKit;
 import com.sting.db.entity.StEntity;
-import com.sting.db.wrapper.StWrapper;
 import lombok.Data;
 
 import java.lang.reflect.Field;

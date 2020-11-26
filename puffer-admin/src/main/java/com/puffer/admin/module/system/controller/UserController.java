@@ -17,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @Res("添加root账户")
-    @RequestMapping("/insertRoot")
+    @RequestMapping("/public/insertRoot")
     public SRS insertRoot(@RequestBody SRS param) {
         return userService.insertRoot(param);
     }

@@ -1,6 +1,10 @@
 package com.sting.test.db.entity;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.sting.db.entity.StEntity;
 import lombok.Data;
@@ -97,7 +101,6 @@ public class SysDict extends Model<SysDict> implements StEntity {
     /**
      * 版本号
      */
-    @Version
     @TableField("version")
     private String version;
 
