@@ -1,7 +1,6 @@
 package com.sting.test.db.entity;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.sting.db.entity.StEntity;
 import lombok.Data;

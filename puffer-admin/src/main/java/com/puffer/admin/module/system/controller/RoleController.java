@@ -1,7 +1,7 @@
 package com.puffer.admin.module.system.controller;
 
 
-import com.puffer.admin.module.system.service.DictService;
+import com.puffer.admin.module.system.service.RoleService;
 import com.sting.core.project.SRS;
 import com.sting.security.rbac.Res;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,41 +14,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/system/role")
 public class RoleController {
     @Autowired
-    private DictService dictService;
+    private RoleService roleService;
 
-    @Res("添加字典")
+    @Res("添加觉散热")
     @RequestMapping("/insert")
     public SRS insert(@RequestBody SRS param) {
-        return dictService.insert(param);
+        return roleService.insert(param);
     }
 
-    @Res("删除字典")
+    @Res("删除角色")
     @RequestMapping("/delete")
     public SRS delete(@RequestBody SRS param) {
-        return dictService.delete(param);
+        return roleService.delete(param);
     }
 
-    @Res("修改字典")
+    @Res("修改角色")
     @RequestMapping("/update")
     public SRS update(@RequestBody SRS param) {
-        return dictService.update(param);
+        return roleService.update(param);
     }
 
-    @Res("字典详情查询")
+    @Res("角色详情查询")
     @RequestMapping("/info")
     public SRS info(@RequestBody SRS param) {
-        return dictService.info(param);
+        return roleService.info(param);
     }
 
-    @Res("字典列表查询")
+    @Res("角色列表查询")
     @RequestMapping("/list")
     public SRS list(@RequestBody SRS param) {
-        return dictService.list(param);
+        return roleService.list(param);
     }
 
-    @Res("字典分页查询")
+    @Res("角色分页查询")
     @RequestMapping("/page")
     public SRS page(@RequestBody SRS param) {
-        return dictService.page(param);
+        return roleService.page(param);
     }
 }

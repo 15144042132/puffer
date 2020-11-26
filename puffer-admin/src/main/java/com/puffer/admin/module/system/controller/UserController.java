@@ -1,7 +1,7 @@
 package com.puffer.admin.module.system.controller;
 
 
-import com.puffer.admin.module.system.service.DictService;
+import com.puffer.admin.module.system.service.UserService;
 import com.sting.core.project.SRS;
 import com.sting.security.rbac.Res;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,41 +14,66 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/system/user")
 public class UserController {
     @Autowired
-    private DictService dictService;
+    private UserService userService;
 
-    @Res("添加字典")
+    @Res("添加root账户")
+    @RequestMapping("/insertRoot")
+    public SRS insertRoot(@RequestBody SRS param) {
+        return userService.insertRoot(param);
+    }
+
+    @Res("添加用户")
     @RequestMapping("/insert")
     public SRS insert(@RequestBody SRS param) {
-        return dictService.insert(param);
+        return userService.insert(param);
     }
 
-    @Res("删除字典")
+    @Res("删除用户")
     @RequestMapping("/delete")
     public SRS delete(@RequestBody SRS param) {
-        return dictService.delete(param);
+        return userService.delete(param);
     }
 
-    @Res("修改字典")
+    @Res("修改用户")
     @RequestMapping("/update")
     public SRS update(@RequestBody SRS param) {
-        return dictService.update(param);
+        return userService.update(param);
     }
 
-    @Res("字典详情查询")
+    @Res("用户详情查询")
     @RequestMapping("/info")
     public SRS info(@RequestBody SRS param) {
-        return dictService.info(param);
+        return userService.info(param);
     }
 
-    @Res("字典列表查询")
+    @Res("用户列表查询")
     @RequestMapping("/list")
     public SRS list(@RequestBody SRS param) {
-        return dictService.list(param);
+        return userService.list(param);
     }
 
-    @Res("字典分页查询")
+    @Res("字用户分页查询")
     @RequestMapping("/page")
     public SRS page(@RequestBody SRS param) {
-        return dictService.page(param);
+        return userService.page(param);
     }
+
+    @Res("用户登录")
+    @RequestMapping("/public/login")
+    public SRS login(@RequestBody SRS param) {
+        return userService.login(param);
+    }
+
+    @Res("退出登录")
+    @RequestMapping("/public/logout")
+    public SRS logout(@RequestBody SRS param) {
+        return userService.logout(param);
+    }
+
+    @Res("锁定用户")
+    @RequestMapping("/lockUser")
+    public SRS lockUser(@RequestBody SRS param) {
+        return userService.lockUser(param);
+    }
+
 }

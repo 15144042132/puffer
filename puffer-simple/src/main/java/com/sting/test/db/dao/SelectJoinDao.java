@@ -3,7 +3,6 @@ package com.sting.test.db.dao;
 import com.sting.db.wrapper.StWrapper;
 import com.sting.test.db.entity.SysRole;
 import com.sting.test.db.entity.SysUser;
-import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
 import java.io.Serializable;

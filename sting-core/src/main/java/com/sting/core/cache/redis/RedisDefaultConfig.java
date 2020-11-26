@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,8 @@ import java.time.Duration;
 /**
  * RedisConfig
  */
+@ConditionalOnClass(RedisConnectionFactory.class)
+@ConditionalOnBean(RedisConnectionFactory.class)
 @Configuration
 public class RedisDefaultConfig {
     @Bean

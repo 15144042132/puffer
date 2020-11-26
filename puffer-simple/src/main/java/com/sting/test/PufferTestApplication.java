@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
-@MapperScan(basePackages = {"com.sting.db.mapper","com.sting.test.db.dao"})
+@MapperScan(basePackages = {"com.sting.db.mapper", "com.sting.test.db.dao"})
 @SpringBootApplication(scanBasePackages = {"com.sting"})
 public class PufferTestApplication {
 

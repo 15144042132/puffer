@@ -37,15 +37,15 @@ public class SRS extends JSONObject {
     /**
      * 指定返回消息对象
      */
-    public static SRS byResMsg(StResponseMessage resMsg) {
+    public static SRS byError(StResponseMessage resMsg) {
         return create()
                 .code(resMsg.getCode())
                 .message(resMsg.getMessage())
                 .data(new JSONObject());
     }
 
-    public static SRS byResMsg(StResponseMessage response, Object data) {
-        return byResMsg(response).data(data);
+    public static SRS byError(StResponseMessage resMsg, Object data) {
+        return byError(resMsg).data(data);
     }
 
     public SRS data(Object data) {

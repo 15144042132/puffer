@@ -39,4 +39,24 @@ public interface UserService extends BaseService {
      * 分页查询
      */
     SRS page(SRS param);
+
+    /**
+     * 登录
+     */
+    SRS login(SRS param);
+
+    /**
+     * 登出
+     */
+    SRS logout(SRS param);
+
+    /**
+     * 锁定用户
+     */
+    SRS lockUser(SRS param);
+
+    /**
+     * 添加ROOT账户
+     */
+    SRS insertRoot(SRS param);
 }

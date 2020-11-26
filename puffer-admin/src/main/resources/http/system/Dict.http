@@ -1,0 +1,27 @@
+### 刷新字典缓存
+POST {{host}}/system/dict/public/refresh/5156D05BCCAE98AC70FD2251D35D401A
+Content-Type:application/json
+
+{
+  "aaa": 1
+}
+
+###
+POST {{host}}/system/dict/public/uploadFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="field-name" filename="local_file.txt"
+
+
+--WebAppBoundary--
+
+###
+POST {{host}}/system/dict/public/uploadFile
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="text"
+
+< ./local_file.txt
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

@@ -1,0 +1,41 @@
+### 添加用户
+POST {{host}}/system/user/insert
+Content-Type:application/json
+
+{
+  "name": "admin",
+  "account": "admin",
+  "password": "1234qwer"
+}
+
+### 登录
+POST {{host}}/system/user/public/login
+Content-Type:application/json
+
+{
+  "account": "admin",
+  "password": "1234qwer"
+}
+
+### 修改用户角色
+POST {{host}}/system/user/update
+Content-Type:application/json
+token:{{token}}
+
+{
+  "id": 1,
+  "paramRoleIds": [
+    1,
+    2,
+    3
+  ]
+}
+
+
+### 测试权限
+POST {{host}}/system/menu/page
+Content-Type:application/json
+token:{{token}}
+
+{
+}
