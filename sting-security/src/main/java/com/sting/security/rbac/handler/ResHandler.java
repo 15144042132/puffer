@@ -1,7 +1,5 @@
 package com.sting.security.rbac.handler;
 
-import com.sting.core.spring.ContextKit;
-import com.sting.core.spring.EnvKit;
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
 import com.sting.security.rbac.Res;
@@ -9,8 +7,13 @@ import com.sting.security.rbac.entity.StLinkRoleResource;
 import com.sting.security.rbac.entity.StResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,18 +30,26 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class ResHandler {
+public class ResHandler implements ApplicationContextAware, EnvironmentAware {
+
     @Autowired
     private StDao dao;
+    private ApplicationContext applicationContext;
+    private Environment env;
 
     private ArrayList<ResEntity> cList = new ArrayList<>();
     private ArrayList<ResEntity> mList = new ArrayList<>();
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     //扫描所有资源
     public void scanResource() {
         ArrayList<ResEntity> moduleList = new ArrayList<>();
         ArrayList<ResEntity> resList = new ArrayList<>();
-        Collection<Object> values = ContextKit.getContext().getBeansWithAnnotation(Res.class).values();
+        Collection<Object> values = applicationContext.getBeansWithAnnotation(Res.class).values();
         for (Object bean : values) {
             Class<?> aClass = bean.getClass();
             Res resC = AnnotationUtils.findAnnotation(aClass, Res.class);
@@ -49,7 +60,7 @@ public class ResHandler {
             for (String controllerValue : controllerMapping.value()) {
                 //class
                 String rescValue = StringUtils.isBlank(resC.value()) ? aClass.getName() : resC.value();
-                String controllerPath = EnvKit.contextPath() + controllerValue;
+                String controllerPath = contextPath() + controllerValue;
                 ResEntity moduleEntity = new ResEntity();
                 moduleEntity.setName(rescValue);
                 moduleEntity.setPName(rescValue);
@@ -177,6 +188,16 @@ public class ResHandler {
 //        log.info("全部资源树化结果      {}", JSON.toJSONString(arrayList));
         //        修改后更新资源
 
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.env = environment;
+    }
+
+    public String contextPath() {
+        String property = this.env.getProperty("server.servlet.context-path");
+        return property == null ? "" : property;
     }
 
     static class ResEntity {

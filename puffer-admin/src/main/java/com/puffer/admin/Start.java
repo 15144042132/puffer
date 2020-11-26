@@ -6,13 +6,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
-@MapperScan(basePackages = {"com.sting.db.mapper", "com.sting.test.db.dao"})
-@SpringBootApplication(scanBasePackages = {"com.sting","com.puffer"})
+@MapperScan(basePackages = {"com.sting.db.mapper", "com.puffer.admin.**.mapper"})
+@SpringBootApplication(scanBasePackages = {"com.sting", "com.puffer"})
 public class Start {
 
     public static void main(String[] args) {
         SpringApplication.run(Start.class, args);
-//        TableInfoHelper.getTableInfos();
     }
 
 }
