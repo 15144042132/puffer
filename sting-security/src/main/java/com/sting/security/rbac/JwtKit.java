@@ -10,7 +10,6 @@ import com.sting.core.util.ContextKit;
 import com.sting.security.rbac.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ import java.util.Map;
  * @author WangYongJi
  */
 @Slf4j
-@Component
 public class JwtKit {
     //签名算法
     private static Algorithm algorithm256 = null;

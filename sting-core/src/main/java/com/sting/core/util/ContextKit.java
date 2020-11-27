@@ -17,7 +17,6 @@ public class ContextKit implements ApplicationContextAware {
         return ContextKit.applicationContext;
     }
 
-
     /**
      * 1.通过实例变量名获取实例
      *
@@ -67,7 +66,6 @@ public class ContextKit implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//        System.out.println("333333333333333333333333333333333333333333");
         ContextKit.applicationContext = applicationContext;
     }
 

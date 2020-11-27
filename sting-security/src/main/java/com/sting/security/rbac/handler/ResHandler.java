@@ -1,5 +1,6 @@
 package com.sting.security.rbac.handler;
 
+import com.sting.core.util.ContextKit;
 import com.sting.db.dao.StDao;
 import com.sting.db.wrapper.StWrapper;
 import com.sting.security.rbac.Res;
@@ -43,7 +44,7 @@ public class ResHandler {
     public void scanResource() {
         ArrayList<ResEntity> moduleList = new ArrayList<>();
         ArrayList<ResEntity> resList = new ArrayList<>();
-        Collection<Object> values = applicationContext.getBeansWithAnnotation(Res.class).values();
+        Collection<Object> values = ContextKit.getContext().getBeansWithAnnotation(Res.class).values();
         for (Object bean : values) {
             Class<?> aClass = bean.getClass();
             Res resC = AnnotationUtils.findAnnotation(aClass, Res.class);
