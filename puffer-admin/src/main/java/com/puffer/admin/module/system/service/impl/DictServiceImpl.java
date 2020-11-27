@@ -9,6 +9,9 @@ import com.sting.db.entity.StPage;
 import com.sting.db.wrapper.StWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 /**
  * 字典表 服务实现类
  */
+@CacheConfig(cacheNames = "dict:code")
 @Service
 public class DictServiceImpl implements DictService {
     @Autowired
@@ -68,4 +72,33 @@ public class DictServiceImpl implements DictService {
         return SRS.bySuccess(page);
     }
 
+
+    @Override
+    @Cacheable(key = "#code")
+    public String getValue(String code) {
+        SysDict sysDict = dao.selectOne(new StWrapper<>(SysDict.class).eq("code", code));
+        if (sysDict == null) {
+            return null;
+        }
+        return sysDict.getValue();
+    }
+
+    @Override
+    @Cacheable(key = "#code")
+    public String getValue(String code, String defaultValue) {
+        SysDict sysDict = dao.selectOne(new StWrapper<>(SysDict.class).eq("code", code));
+        if (sysDict == null) {
+            return defaultValue;
+        }
+        return sysDict.getValue();
+    }
+
+    @Override
+    @CachePut(key = "#code")
+    public String setValue(String code, String value) {
+        SysDict sysDict = new SysDict();
+        sysDict.setValue(value);
+        dao.update(sysDict, new StWrapper<>(SysDict.class).eq("code", code));
+        return code;
+    }
 }

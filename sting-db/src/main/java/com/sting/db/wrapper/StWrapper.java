@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 /**
- * 重写Wrapper条件构造器
+ * Wrapper条件构造器
  * 继承 AbstractWrapper 并将 QueryWrapper和 UpdateWrapper整合在一起
  * 并做出适当增强
  *

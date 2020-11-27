@@ -39,4 +39,11 @@ public interface DictService extends BaseService {
      * 分页查询
      */
     SRS page(SRS param);
+
+    String getValue(String code);
+
+    String getValue(String code, String defaultValue);
+
+    String setValue(String code, String value);
+
 }
