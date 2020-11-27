@@ -266,7 +266,7 @@ public class StDaoImpl implements StDao {
     }
 
     @Override
-    public <P extends StEntity> List<P> list(Class<P> pClass, List<Serializable> idList) {
+    public <P extends StEntity> List<P> list(Class<P> pClass, List idList) {
         if (idList == null || idList.size() == 0) return new ArrayList<>();
 
         StWrapper<P> stWrapper = new StWrapper<>(pClass);

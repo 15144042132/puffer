@@ -46,4 +46,6 @@ public interface DictService extends BaseService {
 
     String setValue(String code, String value);
 
+    String deleteValue(String code );
+
 }

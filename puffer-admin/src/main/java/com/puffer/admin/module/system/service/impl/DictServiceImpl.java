@@ -10,6 +10,7 @@ import com.sting.db.wrapper.StWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,10 @@ public class DictServiceImpl implements DictService {
     public SRS delete(SRS param) {
         List<String> ids = param.getJSONArray("ids").toJavaList(String.class);
         dao.deleteByIds(SysDict.class, ids);
+        List<SysDict> list = dao.list(SysDict.class, ids);
+        for (SysDict dict : list) {
+            deleteValue(dict.getCode());
+        }
         return SRS.bySuccess();
     }
 
@@ -43,6 +48,7 @@ public class DictServiceImpl implements DictService {
     public SRS update(SRS param) {
         SysDict sysDict = JSON.parseObject(param.toJSONString(), SysDict.class);
         dao.updateById(sysDict);
+        setValue(sysDict.getCode(), sysDict.getValue());
         return SRS.bySuccess();
     }
 
@@ -72,7 +78,6 @@ public class DictServiceImpl implements DictService {
         return SRS.bySuccess(page);
     }
 
-
     @Override
     @Cacheable(key = "#code")
     public String getValue(String code) {
@@ -101,4 +106,14 @@ public class DictServiceImpl implements DictService {
         dao.update(sysDict, new StWrapper<>(SysDict.class).eq("code", code));
         return code;
     }
+
+    @Override
+    @CacheEvict(key = "#code")
+    public String deleteValue(String code) {
+        SysDict sysDict = new SysDict();
+        dao.update(sysDict, new StWrapper<>(SysDict.class).eq("code", code));
+        return code;
+    }
+
+
 }

@@ -97,8 +97,7 @@ public interface StDao {
 
     List<Object> listObj(String sqlString);
 
-    <P extends StEntity> List<P> list(Class<P> pClass, List<Serializable> idList);
-
+    <P extends StEntity> List<P> list(Class<P> pClass, List idList);
 
     List<Map<String, Object>> listMap(String sqlString);
 
