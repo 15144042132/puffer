@@ -14,9 +14,17 @@ public class Start {
 
     public static void main(String[] args) {
         SpringApplication.run(Start.class, args);
-        SimpleMapper bean = ContextKit.getBean(SimpleMapper.class);
-        Object id = bean.getId("10");
-        System.out.println(bean);
+        //testDbMapper();
     }
+
+    /**
+     * 测试SimpleMapper
+     */
+    private static void testDbMapper() {
+        SimpleMapper bean = ContextKit.getBean(SimpleMapper.class);
+
+
+    }
+
 
 }
