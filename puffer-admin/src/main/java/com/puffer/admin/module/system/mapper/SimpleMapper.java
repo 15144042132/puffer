@@ -1,34 +1,22 @@
 package com.puffer.admin.module.system.mapper;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.puffer.admin.common.mybatis.entity.SysDict;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
- * 系统相关
+ * Mapper操作模板
  * <p>
- * 两种形式 1.@注解 2.xml
+ * 基于基本类型参数的  增 / 删 / 改 / 查 / 分页
+ * <p>
+ * 基于对象参数的  增 / 删 / 改 / 查 / 分页
  *
  * @author WangYongJi
  */
 @Component
 public interface SimpleMapper {
 
-    @Select("select value from sys_dict where code = #{code}")
-    List<SysDict> dictList(@Param("code") Object code);
+    @Select("select id from sys_user where id = #{id}")
+    Object getId(@Param("id") Object id);
 
-    SysDict dict(@Param("code") Object code);
-
-    @Select("select 0_template.*,a_user.name as userName, a_user.phone as userPhone "
-            + "from 0_template "
-            + "left join a_user on 0_template.create_uid=a_user.id "
-            + "${ew.customSqlSegment}")
-    IPage<Object> leftJoinPage(Page<Object> page, @Param(Constants.WRAPPER) QueryWrapper<Object> wrapper);
 }

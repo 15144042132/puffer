@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("com.sting.db")
 @MapperScan("com.sting.db.mapper")
-public class DbAutoConfiguration {
-    DbAutoConfiguration(){
+public class StingDbAutoConfiguration {
+    StingDbAutoConfiguration(){
         System.out.println("");
     }
 }
