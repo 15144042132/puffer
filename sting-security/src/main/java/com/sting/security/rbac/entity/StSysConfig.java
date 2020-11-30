@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("sys_config")
 public class StSysConfig extends Model<StSysConfig> implements StEntity {
-    public static final String TABLE_NAME = "sys_security_config";
+    public static final String TABLE_NAME = "sys_config";
 
     private static final long serialVersionUID = 1L;
 

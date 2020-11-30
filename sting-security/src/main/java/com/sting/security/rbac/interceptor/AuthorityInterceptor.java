@@ -7,6 +7,9 @@ import com.sting.security.rbac.config.SecurityConfig;
 import com.sting.security.rbac.service.SecurityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -29,6 +32,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     private SecurityConfig config;
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    CacheManager cacheManager;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -37,14 +43,15 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         log.info("AuthorityInterceptor---preHandle");
 
         //开关检查
-        if (config.rbacIsOpen().getValue().equals("false")) {
+        if ("false".equals(config.rbacIsOpen().getValue())) {
             return true;
         }
 
         //OPTIONS 请求直接放行
-        if (request.getMethod().equals("OPTIONS")) {
+        if ("OPTIONS".equals(request.getMethod())) {
             return true;
         }
+
 
         if (object instanceof HandlerMethod) {
             //放行检查
@@ -57,6 +64,23 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             if (!JwtKit.check(token)) {
                 log.info("请求地址：{} 身份认证失败，Token: {} ，原因：Token不存在或已失效  ", request.getRequestURI(), token);
                 throw new StException(StMsg.ERROR_401);
+            }
+
+            //单一登录检查
+            if ("true".equals(config.singleLoginIsOpen().getValue())) {
+                Object single_login1 = JwtKit.getParam(token, "single_login");
+                Cache cache = cacheManager.getCache("puffer:security:user");
+                if (single_login1 == null || cache == null) {
+                    throw new StException(StMsg.ERROR_401);
+                }
+                String single_login2 = cache.get(single_login1, String.class);
+                if (single_login2 == null) {
+                    throw new StException(StMsg.ERROR_401);
+                }
+                if (!single_login1.equals(single_login2)) {
+                    throw new StException(StMsg.ERROR_401);
+                }
+
             }
 
             //权限检查
@@ -85,8 +109,10 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     }
 
     private boolean isPublic(String requestURI) {
+        PathMatchingResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
         for (String url : config.publicUrl().getValue().split(",")) {
-            if (requestURI.contains(url)) {
+            boolean match1 = resourceLoader.getPathMatcher().match(url, requestURI);
+            if (match1) {
                 return true;
             }
         }

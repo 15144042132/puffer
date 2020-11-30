@@ -83,6 +83,11 @@ public class SecurityConfigDefaultImpl implements SecurityConfig {
         return getSysConfig("security_rbac_is_open");
     }
 
+    @Override
+    public StSysConfig singleLoginIsOpen() {
+        return getSysConfig("security_single_login_is_open");
+    }
+
     @CachePut(key = "'security_system_secret'")
     @Override
     public StSysConfig systemSecret(String value) {

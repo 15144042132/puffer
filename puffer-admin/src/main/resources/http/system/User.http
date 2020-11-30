@@ -1,11 +1,11 @@
-### 添加用户
+### 创建ROOT账户（只能存在一个）
 POST {{host}}/system/user/public/insertRoot
 Content-Type:application/json
 
 {
-  "name": "admin123$$",
+  "name": "1234$$$qwer",
   "account": "1234$$$qwer",
-  "password": "1234$$$$qwer"
+  "password": "1234$$$qwer"
 }
 
 ### 登录

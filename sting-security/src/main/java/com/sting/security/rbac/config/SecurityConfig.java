@@ -61,6 +61,11 @@ public interface SecurityConfig {
      */
     StSysConfig rbacIsOpen();
 
+    /**
+     * 单一登录是否开启（默认关闭）
+     */
+    StSysConfig singleLoginIsOpen();
+
     StSysConfig systemSecret(String value);
 
     StSysConfig loginErrorInputMaxCount(String value);

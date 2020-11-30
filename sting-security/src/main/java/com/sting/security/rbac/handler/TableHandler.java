@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TableHandler {
     //数据库操作对象
     @Autowired
-    private  StDao dao;
+    private StDao dao;
 
     /**
      * 检查并建表
@@ -23,13 +23,13 @@ public class TableHandler {
      * sys_resource 资源表
      * sys_link_role_user 角色用户关联表
      * sys_link_role_resource 角色资源关联表
-     * sys_security_config 配置表
+     * sys_config 配置表
      */
     @Transactional(rollbackFor = Exception.class)
     public void checkAndCreateTable() {
-        dao.insert(sys_security_config);
+        dao.insert(sys_config);
 
-        Object initStatus = dao.selectObj(" select id from sys_security_config where code='init_status' and value='1' ");
+        Object initStatus = dao.selectObj(" select id from sys_config where code='init_status' and value='1' ");
         if (initStatus == null) {
             dao.insert(sys_role);
             dao.insert(sys_user);
@@ -122,8 +122,8 @@ public class TableHandler {
                     "  UNIQUE INDEX `emaile`(`email`) USING BTREE COMMENT '邮箱唯一'\n" +
                     ") COMMENT = '用户表';\n";
 
-    private static final String sys_security_config =
-            "CREATE TABLE IF NOT EXISTS `sys_security_config` (\n" +
+    private static final String sys_config =
+            "CREATE TABLE IF NOT EXISTS `sys_config` (\n" +
                     "  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',\n" +
                     "  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '配置名称',\n" +
                     "  `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '键',\n" +
@@ -131,6 +131,6 @@ public class TableHandler {
                     "  `des` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',\n" +
                     "  `sort` int unsigned DEFAULT '100' COMMENT '排序(默认=100)',\n" +
                     "  PRIMARY KEY (`id`) USING BTREE\n" +
-                    ") COMMENT='安全配置';";
+                    ") COMMENT='系统配置';";
 
 }
