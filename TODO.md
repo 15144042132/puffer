@@ -3,6 +3,7 @@
 ### [v0.0.1]
 ~~~
 DB模块
+..加一个执行SQL文件的功能，模仿 org.apache.rocketmq.broker.transaction.jdbc.JDBCTransactionStore
 ..DB-空值返回可选,具体实现Demo
 ..DB-SQL拦截注入实现,具体实现Demo
 ..DB-乐观锁,具体实现Demo
